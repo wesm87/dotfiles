@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# shellcheck disable=1090
+
+include_exports() {
+  local exports_dir="$HOME/.dotfiles/exports"
+
+  source $exports_dir/bash-colors
+  source $exports_dir/bash-prompt
+  source $exports_dir/homebrew
+  source $exports_dir/github
+  source $exports_dir/composer
+  source $exports_dir/rbenv
+  source $exports_dir/gnu-utils
+}
+
+include_exports
+
+# Add user `bin` folder to `$PATH`
+export PATH="$HOME/.dotfiles/bin:$PATH"

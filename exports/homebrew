@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Install Cask apps in the root Applications folder.
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+# Update `$PATH`.
+export PATH="/usr/local/sbin:/usr/local/bin:$PATH"

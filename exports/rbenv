@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# The default Ruby version.
+export RBENV_VERSION="2.3.1"
+
+# The directory under which Ruby versions and shims reside.
+# export RBENV_ROOT="/usr/local/var/rbenv"
+
+# Initialize rbenv.
+eval "$(rbenv init -)"

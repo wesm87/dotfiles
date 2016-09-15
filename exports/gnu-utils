@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Update `$PATH`.
+bin_path="$(brew --prefix coreutils)/libexec/gnubin"
+export PATH="$bin_path:$PATH"

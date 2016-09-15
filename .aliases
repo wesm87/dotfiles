@@ -45,7 +45,7 @@ export CLICOLOR_FORCE=1
 # ls options: A = include hidden (but not . or ..), F = put `/` after folders, h = byte unit suffixes
 alias ls="gls -AFh ${colorflag} --group-directories-first"
 alias lsd='ls -l | grep "^d"' # only directories
-#    `la` defined in .functions
+# `la` and its alias `lsa` are defined in `.functions`
 ###
 
 

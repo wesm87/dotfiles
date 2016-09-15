@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+line_number=$1
+head -$line_number | tail -1

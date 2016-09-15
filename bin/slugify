@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+def slugify(s)
+  s.strip.gsub(/[^a-zA-Z0-9]+/, '-')
+  .gsub(/[^a-zA-Z0-9]+$/, "")
+  .gsub(/^[^a-zA-Z0-9]+/, "")
+  .downcase
+end
+
+if ARGV.any?
+  ARGV.each { |arg| puts slugify(arg) }
+else
+  $stdin.readlines.each { |line| puts slugify(line) }
+end

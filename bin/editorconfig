@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+cat << EOF > .editorconfig
+root = true
+
+[*]
+charset = utf-8
+indent_size = 2
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+EOF

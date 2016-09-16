@@ -1,37 +1,41 @@
 #!/usr/bin/env bash
 # shellcheck disable=2155
 
-bash_profile() {
-	local base_dir="$HOME/.dotfiles"
+function _bash_profile() {
+  local base_dir="$HOME/.dotfiles"
 
-	# shellcheck source=./.aliases
-	source $base_dir/.aliases;
+  # shellcheck source=.functions
+  source $base_dir/.functions;
 
-	# shellcheck source=./.exports
-	source $base_dir/.exports;
+  # shellcheck source=.aliases
+  source $base_dir/.aliases;
 
-	# shellcheck source=./.functions
-	source $base_dir/.functions;
+  # shellcheck source=.exports
+  source $base_dir/.exports;  
 
-	# shellcheck source=/dev/null
-	source $HOME/.bash/z/z.sh;
+  # shellcheck source=.libs
+  source $base_dir/.libs;
 
-	# Completions
-	local completions_dir="$(brew --prefix)/etc/bash_completion.d"
+  # shellcheck source=.completions
+  source $base_dir/.completions
 
-	# -- Git
-	# shellcheck source=./completions/git-completion.bash
-	source $base_dir/completions/git-completion.bash
+  # Completions
+  local completions_dir="$(brew --prefix)/etc/bash_completion.d"
 
-	# -- Bash
-	if [ ! -L "$completions_dir/brew_bash_completion.sh" ]; then
-		ln -s "$(brew --repository)/Library/Contributions/brew_bash_completion.sh" "$completions_dir"
-	fi
+  # -- Git
+  # shellcheck source=./completions/git-completion.bash
+  source $base_dir/completions/git-completion.bash
 
-	# -- VV
-	if [ ! -L "$completions_dir/vv-completions" ] && [ -d "$(which vv)-completions" ]; then
-		ln -s "$(which vv)-completions" "$completions_dir"
-	fi
+  # -- Bash
+  if [ ! -L "$completions_dir/brew_bash_completion.sh" ]; then
+    ln -s "$(brew --repository)/Library/Contributions/brew_bash_completion.sh" "$completions_dir"
+  fi
+
+  # -- VV
+  if [ ! -L "$completions_dir/vv-completions" ] && [ -d "$(which vv)-completions" ]; then
+    ln -s "$(which vv)-completions" "$completions_dir"
+  fi
 }
 
-bash_profile
+_bash_profile
+

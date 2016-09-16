@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=1090
 
-include_exports() {
+function _bash_profile_exports() {
   local exports_dir="$HOME/.dotfiles/exports"
 
   source $exports_dir/secrets
@@ -12,9 +12,9 @@ include_exports() {
   source $exports_dir/composer
   source $exports_dir/rbenv
   source $exports_dir/gnu-utils
+
+  # Add user `bin` folder to `$PATH`
+  export PATH="$HOME/.dotfiles/bin:$PATH"
 }
 
-include_exports
-
-# Add user `bin` folder to `$PATH`
-export PATH="$HOME/.dotfiles/bin:$PATH"
+_bash_profile_exports

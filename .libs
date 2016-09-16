@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+function _bash_profile_libs() {
+  local libs_dir="$HOME/.dotfiles/libs"
+
+  source $libs_dir/z/z.sh
+}
+
+_bash_profile_libs

@@ -14,6 +14,9 @@ Plugin 'editorconfig/editorconfig-vim'
 " Status bar
 Plugin 'itchyny/lightline.vim'
 
+" Git integration
+Plugin 'tpope/vim-fugitive'
+
 " Show git diff in gutter
 Plugin 'airblade/vim-gitgutter'
 

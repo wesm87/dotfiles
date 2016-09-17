@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=1090
 
 function _bash_profile_libs() {
   local libs_dir="$HOME/.dotfiles/libs"

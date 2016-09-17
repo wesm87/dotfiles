@@ -5,6 +5,7 @@ function _bash_profile_exports() {
   local exports_dir="$HOME/.dotfiles/exports"
 
   source $exports_dir/secrets
+  source $exports_dir/bash
   source $exports_dir/bash-colors
   source $exports_dir/bash-prompt
   source $exports_dir/homebrew

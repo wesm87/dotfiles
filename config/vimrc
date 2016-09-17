@@ -1,0 +1,49 @@
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Add support for `.editorconfig` files 
+Plugin 'editorconfig/editorconfig-vim'
+
+" Status bar
+Plugin 'itchyny/lightline.vim'
+
+" Show git diff in gutter
+Plugin 'airblade/vim-gitgutter'
+
+" Code completion engine
+" Plugin 'valloric/youcompleteme'
+
+" Color schemes
+Plugin 'flazz/vim-colorschemes'
+
+" Syntax plugins
+Plugin 'pangloss/vim-javascript'
+Plugin 'tpope/vim-markdown'
+Plugin 'vim-ruby/vim-ruby'
+
+" Rails helpers / tools
+Plugin 'tpope/vim-rails'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" Set color scheme
+colorscheme smyck
+
+" Lightline config
+set laststatus=2 " Always show tab
+set noshowmode " Hide default vim mode indicator
+
+" Text expansions
+iabbrev #! #!/usr/bin/env bash
+
+" Backspace over everything in insert mode
+set backspace=2

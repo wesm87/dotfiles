@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export VIMINIT='source $MYVIMRC'
+export MYVIMRC="$HOME/.dotfiles/config/vimrc"

@@ -12,6 +12,7 @@ function _bash_profile_exports() {
   source $exports_dir/composer
   source $exports_dir/rbenv
   source $exports_dir/gnu-utils
+  source $exports_dir/vim
   source $exports_dir/z
 
   # Add user `bin` folder to `$PATH`

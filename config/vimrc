@@ -47,10 +47,10 @@ set hidden
 " remember more commands and search history
 set history=10000
 
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
 set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
 set autoindent
 set showmatch
 set incsearch
@@ -95,7 +95,7 @@ set wildmenu
 let mapleader=","
 
 " Fix slow O inserts
-:set timeout timeoutlen=1000 ttimeoutlen=100
+set timeout timeoutlen=1000 ttimeoutlen=100
 
 " Normally, Vim messes with iskeyword when you open a shell file. This can
 " leak out, polluting other file types even after a 'set ft=' change. This
@@ -125,15 +125,15 @@ set re=1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set t_Co=256 " 256 colors
-:set background=dark
-:color grb256
+set t_Co=256 " 256 colors
+set background=dark
+color grb256
 colorscheme smyck
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -206,6 +206,9 @@ function! LightLineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
+
+" Ensure EditorConfig and Fugitive plugins play nice
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Text expansions
 iabbrev #! #!/usr/bin/env bash

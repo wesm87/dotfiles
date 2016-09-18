@@ -11,6 +11,9 @@ Plugin 'VundleVim/Vundle.vim'
 " Add support for `.editorconfig` files
 Plugin 'editorconfig/editorconfig-vim'
 
+" File tree plugin
+Plugin 'scrooloose/nerdtree'
+
 " Status bar
 Plugin 'itchyny/lightline.vim'
 
@@ -20,16 +23,33 @@ Plugin 'tpope/vim-fugitive'
 " Show git diff in gutter
 Plugin 'airblade/vim-gitgutter'
 
-" Code completion engine
-" Plugin 'valloric/youcompleteme'
-
 " Color schemes
 Plugin 'flazz/vim-colorschemes'
 
+" Comment / un-comment code
+Plugin 'tpope/vim-commentary'
+
+" Automatically add `end` in Ruby and equivalents in Vimscript, Bash, etc.
+Plugin 'tpope/vim-endwise'
+
+" Automatically close quotes, parens, brackets, etc.
+Plugin 'raimondi/delimitmate'
+
+" Visual indentation guide
+Plugin 'yggdroot/indentline'
+
 " Syntax plugins
-Plugin 'pangloss/vim-javascript'
 Plugin 'tpope/vim-markdown'
 Plugin 'vim-ruby/vim-ruby'
+Plugin 'pangloss/vim-javascript'
+Plugin 'isruslan/vim-es6'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'elzr/vim-json'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'othree/html5.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'cakebaker/scss-syntax.vim'
 
 " Rails helpers / tools
 Plugin 'tpope/vim-rails'
@@ -47,11 +67,14 @@ set hidden
 " remember more commands and search history
 set history=10000
 
+" Configure indentation
 set shiftwidth=2
 set tabstop=2
 set softtabstop=2
 set expandtab
 set autoindent
+let g:indentLine_char = '│'
+
 set showmatch
 set incsearch
 set hlsearch
@@ -59,8 +82,9 @@ set hlsearch
 " make searches case-sensitive only if they contain upper-case characters
 set ignorecase smartcase
 
-" highlight current line
+" Highlight current line / column
 set cursorline
+set cursorcolumn
 
 set cmdheight=1
 set switchbuf=useopen
@@ -129,6 +153,9 @@ set t_Co=256 " 256 colors
 set background=dark
 color grb256
 colorscheme smyck
+
+hi clear CursorLine
+hi CursorLine gui=underline cterm=underline
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE

@@ -238,4 +238,15 @@ endfunction
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Text expansions
-iabbrev #! #!/usr/bin/env bash
+iabbrev #! #!/usr/bin/env 
+iabbrev #!b #!/usr/bin/env bash
+iabbrev #!r #!/usr/bin/env ruby
+
+" Toggle Paste Mode on or off
+set pastetoggle=<F10>
+
+" Use `Ctrl-V` in Insert Mode to paste text in Paste Mode
+inoremap <C-V> <F10><C-R>+<F10>
+
+" Use `,v` in Normal Mode to paste text in Paste Mode 
+nnoremap <Leader>v O<F10><C-R>+<F10><Esc> 

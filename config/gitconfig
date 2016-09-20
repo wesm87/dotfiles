@@ -3,7 +3,8 @@
 	email = wesm87@gmail.com
 
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesfile = ~/.dotfiles/config/gitignore
+	editor       = vim
 
 [filter "lfs"]
 	required = true

@@ -11,6 +11,9 @@ Plugin 'VundleVim/Vundle.vim'
 " Add support for `.editorconfig` files
 Plugin 'editorconfig/editorconfig-vim'
 
+" Fuzzy search
+Plugin 'wincent/command-t'
+
 " File tree plugin
 Plugin 'scrooloose/nerdtree'
 

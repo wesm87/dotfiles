@@ -15,7 +15,10 @@
   ui = auto
 
 [alias]
-  st     = status
+  s      = status
+  f      = fetch
+  c      = commit
+  m      = merge
   ci     = commit --verbose
   co     = checkout
   di     = diff

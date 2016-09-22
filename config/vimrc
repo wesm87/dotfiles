@@ -17,6 +17,9 @@ Plugin 'wincent/command-t'
 " File tree plugin
 Plugin 'scrooloose/nerdtree'
 
+" Set `wildignore` from `.gitignore`
+Plugin 'gitignore'
+
 " Status bar
 Plugin 'itchyny/lightline.vim'
 
@@ -44,6 +47,9 @@ Plugin 'raimondi/delimitmate'
 " Visual indentation guide
 Plugin 'yggdroot/indentline'
 
+" Highlight trailing whitespace, `:FixWhitespace` helper
+Plugin 'bronson/vim-trailing-whitespace'
+
 " Syntax plugins
 Plugin 'sheerun/vim-polyglot'
 Plugin 'isruslan/vim-es6'
@@ -54,6 +60,9 @@ Plugin 'cakebaker/scss-syntax.vim'
 
 " Rails helpers / tools
 Plugin 'tpope/vim-rails'
+
+" Rspec runner
+Plugin 'thoughtbot/vim-rspec'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -238,8 +247,12 @@ endfunction
 " Ensure EditorConfig and Fugitive plugins play nice
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
+" Set ignore pattern for Command-T plugin to match `wildignore`
+:set wildignore+=tmp/**,.keep,.gitkeep
+let g:CommandTWildIgnore=&wildignore
+
 " Text expansions
-iabbrev #! #!/usr/bin/env 
+iabbrev #! #!/usr/bin/env
 iabbrev #!b #!/usr/bin/env bash
 iabbrev #!r #!/usr/bin/env ruby
 

@@ -23,6 +23,26 @@ Plugin 'gitignore'
 " Status bar
 Plugin 'itchyny/lightline.vim'
 
+" By default only native commands are repeated when using the `.` command.
+" This plugin remaps the `.` key to allow plugin commands to be repeated.
+Plugin 'tpope/vim-repeat'
+
+" Use `<Ctrl-A>` and `<Ctrl-X>` to increment / decrement dates.
+Plugin 'tpope/vim-speeddating'
+
+" Shortcut key mappings for common ex commands. For example:
+"   [<Space> adds a newline above the current one
+"   ]<Space> adds a newline below the current one
+"   [e exchanges the current line with the one above it
+"   ]e exchanges the current line with the one below it
+" See: https://github.com/tpope/vim-unimpaired
+Plugin 'tpope/vim-unimpaired'
+
+" Replace surrounding quotes / brackets
+" e.g. `cs"'` replaces surrounding double-quotes with single-quotes
+" See: https://github.com/tpope/vim-surround
+Plugin 'tpope/vim-surround'
+
 " Git integration
 Plugin 'tpope/vim-fugitive'
 
@@ -50,6 +70,34 @@ Plugin 'yggdroot/indentline'
 " Highlight trailing whitespace, `:FixWhitespace` helper
 Plugin 'bronson/vim-trailing-whitespace'
 
+" 1 - Automatic correction of commonly-misspelled words
+"   e.g. to convert all variants of `seperate` to `separate`:
+"   :Abolish seperat{e,es,ed,ely,ing,ion,ions,or} separat{}
+" 2 - Search for and replace multiple variants of a word
+"   e.g. to replace all variants of `facility` with `building`:
+"   :S/facilit{y,ies}/building{,s}/g
+" 3 - Format strings:
+"   crs => snake_case
+"   crm => MixedCase
+"   crc => camelCase
+"   cru => UPPER_CASE
+Plugin 'tpope/vim-abolish'
+
+" Async command runner
+Plugin 'tpope/vim-dispatch'
+
+" Rails helpers / tools
+Plugin 'tpope/vim-rails'
+
+" Bundler integration
+Plugin 'tpope/vim-bundler'
+
+" Heroku integration
+Plugin 'tpope/vim-heroku'
+
+" Rspec runner
+Plugin 'thoughtbot/vim-rspec'
+
 " Syntax plugins
 Plugin 'sheerun/vim-polyglot'
 Plugin 'isruslan/vim-es6'
@@ -57,12 +105,6 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'cakebaker/scss-syntax.vim'
-
-" Rails helpers / tools
-Plugin 'tpope/vim-rails'
-
-" Rspec runner
-Plugin 'thoughtbot/vim-rspec'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -187,11 +229,16 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
-" Lightline config
-set laststatus=2 " Always show Lightline
-set showtabline=2 " Always show tab bar at the top
-set noshowmode " Hide default vim mode indicator
+" Alows show the status line
+set laststatus=2
 
+" Always show the tab line
+set showtabline=2
+
+" Hide default mode indicator
+set noshowmode
+
+" Lightline config
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -251,6 +298,16 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 :set wildignore+=tmp/**,.keep,.gitkeep
 let g:CommandTWildIgnore=&wildignore
 
+" vim-abolish config: replace commonly misspelled words
+if exists(":Abolish")
+  Abolish desparat{e,ely,ion}                   desperat{}
+  Abolish seperat{e,es,ed,ing,ely,ion,ions,or}  separat{}
+  Abolish persistan{ce,t,tly}                   persisten{}
+  Abolish delimeter{,s}                         delimiter{}
+  Abolish {,non}existan{ce,t}                   {}existen{}
+  Abolish cal{a,e}nder{,s}                      cal{e}ndar{}
+endif
+
 " Text expansions
 iabbrev #! #!/usr/bin/env
 iabbrev #!b #!/usr/bin/env bash
@@ -262,8 +319,6 @@ set pastetoggle=<F10>
 " Use `Ctrl-V` in Insert Mode to paste text in Paste Mode
 inoremap <C-V> <F10><C-R>+<F10>
 
-" Use `,p` in Normal Mode to paste text in Paste Mode
+" Use `,p` or `,v` in Normal Mode to paste text in Paste Mode
 nnoremap <Leader>p i<F10><C-R>+<F10><Esc>
-
-" Use `,v` in Normal Mode to paste text in Paste Mode and add a newline
-nnoremap <Leader>v O<F10><C-R>+<F10><Esc> 
+nnoremap <Leader>v i<F10><C-R>+<F10><Esc>

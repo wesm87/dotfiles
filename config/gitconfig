@@ -14,14 +14,19 @@
 [color]
   ui = auto
 
+[merge]
+  tool = vimdiff
+
 [alias]
   s      = status
   f      = fetch
-  c      = commit
+  p      = pull
+  b      = branch
   m      = merge
-  ci     = commit --verbose
+  c      = commit --verbose
+  cm     = commit --verbose -m
   co     = checkout
-  di     = diff
+  d      = diff
   dc     = diff --cached
   amend  = commit --amend
   aa     = add --all
@@ -30,7 +35,6 @@
   noff   = merge --no-ff
   fa     = fetch --all
   pom    = push origin master
-  b      = branch
   ds     = diff --stat=160,120
   dh1    = diff HEAD~1
 
@@ -55,6 +59,3 @@
   ra   = !git r --all
   l    = "!. ~/.dotfiles/libs/git-helpers && pretty_git_log"
   la   = !git l --all
-
-[merge]
-    tool = vimdiff

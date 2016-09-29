@@ -134,25 +134,22 @@ set hlsearch
 " make searches case-sensitive only if they contain upper-case characters
 set ignorecase smartcase
 
-" Highlight current line / column
+" Highlight current line
 set cursorline
-set cursorcolumn
 
+" Height of the command line
 set cmdheight=1
+
 set switchbuf=useopen
 set winwidth=79
 
 " This makes RVM work inside Vim. I have no idea why.
 set shell=bash
 
-" keep more context when scrolling off the end of a buffer
-set scrolloff=3
-
-" Don't make backups at all
-set nobackup
-set nowritebackup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" Location for backup / temp files
+set backup
+set backupdir=~/.dotfiles/data/vim-tmp
+set directory=~/.dotfiles/data/vim-tmp
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -171,7 +168,7 @@ set wildmenu
 let mapleader=","
 
 " Fix slow O inserts
-set timeout timeoutlen=1000 ttimeoutlen=100
+set timeout ttimeout timeoutlen=1000 ttimeoutlen=100
 
 " Normally, Vim messes with iskeyword when you open a shell file. This can
 " leak out, polluting other file types even after a 'set ft=' change. This
@@ -192,6 +189,9 @@ set nojoinspaces
 
 " If a file is changed outside of vim, automatically reload it without asking
 set autoread
+
+" Automatically save file changes
+set autowriteall
 
 " Use the old vim regex engine (version 1, as opposed to version 2, which was
 " introduced in Vim 7.3.969). The Ruby syntax highlighting is significantly

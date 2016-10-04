@@ -11,7 +11,7 @@ function f() {
   find . -name "$1" 2>&1 | grep -v 'Permission denied'
 }
 
-# List all files, long format, colorized, permissions in octal
+# List non-hidden files and directories, long format, permissions in octal
 function la() {
   ls -l  "$@" | awk '
   {
@@ -22,10 +22,6 @@ function la() {
     printf("%0o ",k);
     printf(" %9s  %3s %2s %5s  %6s  %s %s %s\n", $3, $6, $7, $8, $5, $9,$10, $11);
   }'
-}
-
-function lsa() {
-  la "$@"
 }
 
 # cd into whatever is the forefront Finder window.
@@ -43,13 +39,10 @@ function server() {
   python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
 }
 
-
 # Copy w/ progress
 function cp_p() {
   rsync -WavP --human-readable --progress $1 $2
 }
-
-
 
 # get gzipped size
 function gz() {
@@ -222,4 +215,13 @@ function set-proxy-vars() {
   launchctl setenv HTTPS_PROXY $HTTPS_PROXY
   launchctl setenv HTTP_PROXY $HTTP_PROXY
   launchctl setenv NO_PROXY $NO_PROXY
+}
+
+# `cd` to the root directory of a git repo
+function git-root() {
+  $(git rev-parse --is-inside-work-tree >& /dev/null)
+
+  if ! [ "$?" == "128" ]; then
+    cd "$(git rev-parse --show-toplevel)"
+  fi
 }

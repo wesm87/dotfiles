@@ -168,3 +168,43 @@ function code () {
 function shellswitch () {
 	chsh -s "$(brew --prefix)/bin/$1"
 }
+
+function get-network-location() {
+	echo "$(scselect 2>&1 | grep '^ \*' | sed -e 's:^[^(]*(\([^)]*\))$:\1:g')"
+}
+
+function disable-proxy() {
+	unset HTTP_PROXY
+	unset HTTPS_PROXY
+	unset NO_PROXY
+	git config --global --unset https.proxy
+	git config --global --unset http.proxy
+}
+
+function enable-proxy() {
+	export HTTP_PROXY='http://http-proxy.corporate.ge.com:80'
+	export HTTPS_PROXY='http://http-proxy.corporate.ge.com:80'
+	export NO_PROXY='localhost,127.0.1.1'
+}
+
+function toggle-proxy() {
+  local current_location="$(get-network-location)"
+
+  if [[ $current_location == $PROXY_NETWORK_LOCATION ]]; then
+    scselect $DEFAULT_NETWORK_LOCATION
+  else
+    scselect $PROXY_NETWORK_LOCATION
+  fi
+
+	set-proxy-vars
+}
+
+function set-proxy-vars() {
+	local current_location="$(get-network-location)"
+
+	if [[ $current_location == $PROXY_NETWORK_LOCATION ]]; then
+		enable-proxy
+	else
+		disable-proxy
+	fi
+}

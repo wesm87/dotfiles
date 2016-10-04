@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+export DEFAULT_NETWORK_LOCATION='Automatic'
+export PROXY_NETWORK_LOCATION='GE'
+
+set-proxy-vars

@@ -5,6 +5,7 @@ function _bash_profile_exports() {
   local exports_dir="$HOME/.dotfiles/exports"
   local sources=(
     secrets
+    proxy
     bash
     bash-prompt
     homebrew

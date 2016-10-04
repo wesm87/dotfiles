@@ -177,14 +177,24 @@ function disable-proxy() {
 	unset HTTP_PROXY
 	unset HTTPS_PROXY
 	unset NO_PROXY
+
+	# Reset git proxy config
 	git config --global --unset https.proxy
 	git config --global --unset http.proxy
+
+	# Reset npm / apm SSL config if installed
+	[ $(which npm) ] &&  npm config set strict-ssl true
+	[ $(which apm) ] &&  apm config set strict-ssl true
 }
 
 function enable-proxy() {
 	export HTTP_PROXY='http://http-proxy.corporate.ge.com:80'
 	export HTTPS_PROXY='http://http-proxy.corporate.ge.com:80'
 	export NO_PROXY='localhost,127.0.1.1'
+
+	# Fix SSL errors in npm / apm if installed
+	[ $(which npm) ] &&  npm config set strict-ssl false
+	[ $(which apm) ] &&  apm config set strict-ssl false
 }
 
 function toggle-proxy() {

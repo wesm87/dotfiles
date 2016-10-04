@@ -2,8 +2,8 @@
 
 # Copied from vv script and modified
 get_vv_config_value() {
-	value=$(grep "$1" ~/.vv-config | sed 's/"//g' | sed "s/$1://g" | sed "s/,//g" )
-	echo "$value"
+  value=$(grep "$1" ~/.vv-config | sed 's/"//g' | sed "s/$1://g" | sed "s/,//g" )
+  echo "$value"
 }
 
 # VVV / Vagrant aliases
@@ -91,5 +91,5 @@ alias update_brew_npm_gem='brew_update; npm install npm -g; npm update -g; sudo 
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	alias "$method"="lwp-request -m '$method'"
+  alias "$method"="lwp-request -m '$method'"
 done

@@ -1,3 +1,6 @@
 [submodule "libs/z"]
 	path = libs/z
 	url = https://github.com/rupa/z/
+[submodule "libs/dev-tools"]
+	path = libs/dev-tools
+	url = https://github.build.ge.com/AviationAppFactory/dev-tools.git

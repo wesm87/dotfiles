@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+touch $@
+chmod +x $@
+
+for file in $@; do
+  if [[ -z $(cat "$file") ]]; then
+    echo "#!/usr/bin/env bash" > "$file"
+  fi
+done

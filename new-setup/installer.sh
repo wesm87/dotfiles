@@ -66,9 +66,14 @@ brew install grc
 brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
-brew install vim --override-system-vi
 brew install homebrew/dupes/grep
 brew install homebrew/dupes/screen
+
+# Install Vim and Vundle
+brew install vim --with-override-system-vi
+if ! [ -f '~/.vim/bundle/Vundle.vim' ]; then
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
 
 # Node
 brew install node
@@ -116,16 +121,18 @@ brew cask install \
   webpquicklook \
   suspicious-package
 
-
-# Install some useful apps
+# Browsers
 brew cask install \
-  appcleaner \
-  dropbox \
-  google-drive \
-  google-hangouts \
-  transmission \
-  vlc \
-  mplayerx \
+  google-chrome \
+  firefox \
+  firefoxdeveloperedition
+
+# Developer tools
+brew cask install \
+  atom \
+  dash \
+  sourcetree \
+  postman \
   imagealpha \
   imageoptim \
   gpgtools
@@ -139,6 +146,14 @@ brew cask install \
 
 # Docker, Docker Compose
 brew install docker docker-compose
+
+# Some other useful apps
+brew cask install \
+  appcleaner \
+  dropbox \
+  transmission \
+  vlc \
+  mplayerx
 
 # Pygments (allows for syntax-highlighted terminal output)
 sudo easy_install -U Pygments

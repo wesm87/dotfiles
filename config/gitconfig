@@ -22,13 +22,19 @@
   f         = fetch
   p         = pull
   b         = branch
+  branches  = branch --all
+  remotes   = remote -v
   m         = merge
   c         = commit --verbose
   cm        = commit --verbose -m
   co        = checkout
+  cob       = checkout -b
   d         = diff
   dc        = diff --cached
   amend     = commit --amend
+  un-commit = reset --mixed HEAD~
+  re-commit = commit --amend -C HEAD
+  un-stage  = reset HEAD --
   aa        = add --all
   ff        = merge --ff-only
   pullff    = pull --ff-only
@@ -38,6 +44,9 @@
   undo-push = push -f origin HEAD^:master
   ds        = diff --stat=160,120
   dh1       = diff HEAD~1
+  conflicts = diff --name-status --diff-filter=U
+  detach    = checkout --detach
+  discard   = checkout --
 
   # Divergence (commits we added and commits remote added)
   div = divergence
@@ -60,3 +69,16 @@
   ra   = !git r --all
   l    = "!. ~/.dotfiles/libs/git-helpers && pretty_git_log"
   la   = !git l --all
+
+  # Open any files with merge conflicts in vim (or your preferred editor)
+  view-conflicts = "!f() { git diff --name-only --diff-filter=U | xargs `git config alias-config.viewer`; }; f"
+
+  # Add a `.keep` file inside the specified directory.
+  # Useful for ignoring files in a directory but not the directory itself.
+  keep = "!f() { touch ${1%/}/.keep; }; f"
+
+  # Add a new entry to `.gitignore`
+  ignore = "!f() { touch .gitignore; printf %\"s\\n\" \"$@\" >> .gitignore; }; f"
+
+[alias-config]
+  viewer = vim

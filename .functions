@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
+# shellcheck disable=2155
 
 # Create a new directory and enter it
 function md() {
   mkdir -p "$@" && cd "$@" || exit
 }
-
 
 # find shorthand
 function f() {
@@ -40,7 +40,7 @@ function server() {
 }
 
 # Copy w/ progress
-function cp_p() {
+function cp-p() {
   rsync -WavP --human-readable --progress $1 $2
 }
 
@@ -176,8 +176,8 @@ function disable-proxy() {
   git config --global --unset http.proxy
 
   # Reset npm / apm SSL config if installed
-  [ $(which npm) ] &&  npm config set strict-ssl true
-  [ $(which apm) ] &&  apm config set strict-ssl true
+  [ "$(which npm)" ] &&  npm config set strict-ssl true
+  [ "$(which apm)" ] &&  apm config set strict-ssl true
 }
 
 function enable-proxy() {
@@ -186,14 +186,14 @@ function enable-proxy() {
   export NO_PROXY='localhost,127.0.1.1'
 
   # Fix SSL errors in npm / apm if installed
-  [ $(which npm) ] &&  npm config set strict-ssl false
-  [ $(which apm) ] &&  apm config set strict-ssl false
+  [ "$(which npm)" ] &&  npm config set strict-ssl false
+  [ "$(which apm)" ] &&  apm config set strict-ssl false
 }
 
 function toggle-proxy() {
   local current_location="$(get-network-location)"
 
-  if [[ $current_location == $PROXY_NETWORK_LOCATION ]]; then
+  if [[ $current_location == "$PROXY_NETWORK_LOCATION" ]]; then
     scselect $DEFAULT_NETWORK_LOCATION
   else
     scselect $PROXY_NETWORK_LOCATION
@@ -203,9 +203,7 @@ function toggle-proxy() {
 }
 
 function set-proxy-vars() {
-  local current_location="$(get-network-location)"
-
-  if [[ $current_location == $PROXY_NETWORK_LOCATION ]]; then
+  if [[ "$(get-network-location)" == "$PROXY_NETWORK_LOCATION" ]]; then
     enable-proxy
   else
     disable-proxy
@@ -215,4 +213,14 @@ function set-proxy-vars() {
   launchctl setenv HTTPS_PROXY "$HTTPS_PROXY"
   launchctl setenv HTTP_PROXY "$HTTP_PROXY"
   launchctl setenv NO_PROXY "$NO_PROXY"
+}
+
+function git-root() {
+  git rev-parse --is-inside-work-tree >& /dev/null
+
+  if [ "$?" == "128" ]; then
+    echo 'Not a git repository'
+  else
+    cd "$(git rev-parse --show-toplevel)" || exit
+  fi
 }

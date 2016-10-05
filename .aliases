@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
-
-# Copied from vv script and modified
-get_vv_config_value() {
-  value=$(grep "$1" ~/.vv-config | sed 's/"//g' | sed "s/$1://g" | sed "s/,//g" )
-  echo "$value"
-}
-
-# VVV / Vagrant aliases
-alias cd-vvv='cd $(get_vv_config_value path)'
+# shellcheck disable=2139
 
 # Hide a file or folder
 alias hide="chflags hidden"
@@ -22,15 +14,16 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
-alias -- -="cd -"
+alias -- -="cd -" # the `--` lets us use `-` as an alias name
 
-# mv, rm, cp
+# mv, rm, cp, mkdir
 alias mv='mv -v'
 alias rm='rm -i -v'
 alias cp='cp -v'
+alias mkdir='mkdir -p'
 
+# Cask shortcut
 alias cask='brew cask'
-
 
 ###
 # time to upgrade `ls`
@@ -46,8 +39,7 @@ export CLICOLOR_FORCE=1
 alias ls="gls -AFh ${colorflag} --group-directories-first"
 alias lsd='ls -l | grep "^d"' # only directories
 alias lsf='ls -l | grep "^-"' # only files
-alias lsa='ls -l' # files and directoriesx
-# `la` is defined in `.functions`
+alias lsa='ls -l' # files and directories
 
 # `cat` with beautiful colors. requires: sudo easy_install -U Pygments
 alias c='pygmentize -O style=monokai -f console256 -g'
@@ -57,11 +49,11 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias dig="dig +nocmd any +multiline +noall +answer"
 
 # Recursively delete `.DS_Store` files
-alias cleanup_dsstore="find . -name '*.DS_Store' -type f -ls -delete"
-alias cleanup_dsstore_unhidden="find . -name 'DS_Store' -type f -ls -delete"
+alias cleanup-dsstore="find . -name '*.DS_Store' -type f -ls -delete"
 
-alias diskspace_report="df -P -kHl"
-alias free_diskspace_report="diskspace_report"
+# Show total size, space used, space available, etc. for each volume
+alias disk-space-report="df -P -kHl"
+alias -- disk-space?="disk-space-report"
 
 # Shortcuts
 alias g="git"
@@ -75,11 +67,10 @@ alias fs="stat -f \"%z bytes\""
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
 
 # Update installed Ruby gems, Homebrew, npm, and their installed packages
-alias brew_update="brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor"
-alias update_brew_npm_gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-rdoc --no-ri'
-
+alias brew-update="brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor"
+alias update-brew-npm-gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-rdoc --no-ri'
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-  alias "$method"="lwp-request -m '$method'"
+  alias $method="lwp-request -m '$method'"
 done

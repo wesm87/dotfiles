@@ -1,2 +1,4 @@
-/data/*
 /exports/secrets
+/data/z
+/data/vim-tmp/*
+!/data/**/*.keep

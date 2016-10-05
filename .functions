@@ -212,9 +212,9 @@ function set-proxy-vars() {
   fi
 
   # Set proxy vars for GUI apps as well
-  launchctl setenv HTTPS_PROXY $HTTPS_PROXY
-  launchctl setenv HTTP_PROXY $HTTP_PROXY
-  launchctl setenv NO_PROXY $NO_PROXY
+  launchctl setenv HTTPS_PROXY "$HTTPS_PROXY"
+  launchctl setenv HTTP_PROXY "$HTTP_PROXY"
+  launchctl setenv NO_PROXY "$NO_PROXY"
 }
 
 # `cd` to the root directory of a git repo

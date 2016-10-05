@@ -47,7 +47,7 @@ function show_git_head() {
 }
 
 function pretty_git_log() {
-  git log --graph --pretty="tformat:${FORMAT}" $* |
+  git log --graph --pretty="tformat:${FORMAT}" "$@" |
     # Replace (2 years ago) with (2 years)
     sed -Ee 's/(^[^<]*) ago\)/\1)/' |
     # Replace (2 years, 5 months) with (2 years)
@@ -55,7 +55,7 @@ function pretty_git_log() {
     # Line columns up based on delimiter
     column -s "$COLSEP" -t |
     # Color merge commits specially
-    sed -Ee "s/(Merge (branch|remote-tracking branch|pull request) .*$)/$(printf $ANSI_RED)\1$(printf $ANSI_RESET)/" |
+    sed -Ee "s/(Merge (branch|remote-tracking branch|pull request) .*$)/$(printf "%s" "$ANSI_RED")\1$(printf "%s" "$ANSI_RESET")/" |
     # Page only if we're asked to.
     if [ -n "$GIT_NO_PAGER" ]; then
       cat
@@ -63,12 +63,4 @@ function pretty_git_log() {
       # Page only if needed.
       less --quit-if-one-screen --no-init --RAW-CONTROL-CHARS --chop-long-lines
     fi
-}
-
-function cd_git_root() {
-  $(git rev-parse --is-inside-work-tree >& /dev/null)
-
-  if [ "$?" != "128" ]; then
-    cd "$(git rev-parse --show-toplevel)"
-  fi
 }

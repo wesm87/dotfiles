@@ -60,3 +60,6 @@
   ra   = !git r --all
   l    = "!. ~/.dotfiles/libs/git-helpers && pretty_git_log"
   la   = !git l --all
+
+  # `cd` to the root directory of a git repo
+  root = "!. ~/.dotfiles/libs/git-helpers && cd_git_root"

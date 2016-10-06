@@ -1,15 +1,21 @@
 [user]
-	name  = Wes Moberly
-	email = wesm87@gmail.com
+  name  = Wes Moberly
+  email = wesm87@gmail.com
 
 [core]
-	excludesfile = ~/.dotfiles/config/gitignore
-	editor       = vim
+  excludesfile = ~/.dotfiles/config/gitignore
+  editor       = vim
+
+[credential]
+  helper = osxkeychain
+
+[push]
+  default = simple
 
 [filter "lfs"]
-	required = true
-	clean    = git-lfs clean %f
-	smudge   = git-lfs smudge %f
+  required = true
+  clean    = git-lfs clean %f
+  smudge   = git-lfs smudge %f
 
 [color]
   ui = auto

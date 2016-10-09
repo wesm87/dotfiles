@@ -106,6 +106,10 @@ Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'cakebaker/scss-syntax.vim'
 
+" Syntax checking / linting
+Plugin 'scrooloose/syntastic'
+Plugin 'gcorne/vim-sass-lint'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -219,12 +223,12 @@ set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 " Indent if we're at the beginning of a line. Else, do completion.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
@@ -287,16 +291,23 @@ endfunction
 
 function! LightLineFilename()
   return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-       \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
-       \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
 
 " Ensure EditorConfig and Fugitive plugins play nice
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Set ignore pattern for Command-T plugin to match `wildignore`
-:set wildignore+=tmp/**,.keep,.gitkeep
+set wildignore+=tmp/**,.keep,.gitkeep,node_modules,bower_components,.git
+set wildignore-=.githooks
 let g:CommandTWildIgnore=&wildignore
+let g:CommandTAlwaysShowDotFiles=1
+let g:CommandTScanDotDirectories=1
+
+" Enable sass-lint syntax checker
+let g:syntastic_sass_checkers=["sass_lint"]
+let g:syntastic_scss_checkers=["sass_lint"]
 
 " vim-abolish config: replace commonly misspelled words
 if exists(":Abolish")

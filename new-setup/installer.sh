@@ -94,7 +94,6 @@ brew install git-flow-avh
 brew install gh
 
 # -- Other git-related tools
-# bash < <( curl https://raw.github.com/jamiew/git-friendly/master/install.sh)
 brew install bash-git-prompt
 npm install -g git-open
 

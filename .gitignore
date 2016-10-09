@@ -2,3 +2,4 @@
 /data/z
 /data/vim-tmp/*
 !/data/**/*.keep
+npm-debug.log

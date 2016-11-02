@@ -169,7 +169,7 @@ set wildmode=longest,list
 
 " make tab completion for files/buffers act like bash
 set wildmenu
-let mapleader=","
+let mapleader=','
 
 " Fix slow O inserts
 set timeout ttimeout timeoutlen=1000 ttimeoutlen=100
@@ -260,14 +260,14 @@ let g:lightline = {
       \ }
 
 function! LightLineModified()
-  if &filetype == "help"
-    return ""
+  if &filetype == 'help'
+    return ''
   elseif &modified
-    return "+"
+    return '+'
   elseif &modifiable
-    return ""
+    return ''
   else
-    return ""
+    return ''
   endif
 endfunction
 
@@ -304,6 +304,7 @@ set wildignore-=.githooks
 let g:CommandTWildIgnore=&wildignore
 let g:CommandTAlwaysShowDotFiles=1
 let g:CommandTScanDotDirectories=1
+let g:CommandTFileScanner='find'
 
 " Enable sass-lint syntax checker
 let g:syntastic_sass_checkers=["sass_lint"]

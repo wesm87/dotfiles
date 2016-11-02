@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+def char_count(s)
+  s.strip.length
+end
+
+if ARGV.any?
+  ARGV.each { |arg| puts char_count(arg) }
+else
+  $stdin.readlines.each { |line| puts char_count(line) }
+end

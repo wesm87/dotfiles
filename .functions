@@ -162,32 +162,78 @@ function shellswitch () {
   chsh -s "$(brew --prefix)/bin/$1"
 }
 
+function git-root() {
+  git rev-parse --is-inside-work-tree >& /dev/null
+
+  if [ "$?" == "128" ]; then
+    echo 'Not a git repository'
+  else
+    cd "$(git rev-parse --show-toplevel)" || exit
+  fi
+}
+
 function get-network-location() {
   echo "$(scselect 2>&1 | grep '^ \*' | sed -e 's:^[^(]*(\([^)]*\))$:\1:g')"
 }
 
 function disable-proxy() {
+
+  # Unset proxy vars for CLI
   unset HTTP_PROXY
   unset HTTPS_PROXY
   unset NO_PROXY
+
+  # Unset proxy vars for GUI apps
+  launchctl unsetenv HTTPS_PROXY
+  launchctl unsetenv HTTP_PROXY
+  launchctl unsetenv NO_PROXY
 
   # Reset git proxy config
   git config --global --unset https.proxy
   git config --global --unset http.proxy
 
-  # Reset npm / apm SSL config if installed
-  [ "$(which npm)" ] &&  npm config set strict-ssl true
-  [ "$(which apm)" ] &&  apm config set strict-ssl true
+  # Reset npm / apm proxy config if installed
+  if [ "$(which npm)" ]; then
+    npm config rm proxy
+    npm config rm https-proxy
+    npm config set strict-ssl true
+  fi
+  if [ "$(which apm)" ]; then
+    apm config rm proxy
+    apm config rm https-proxy
+    apm config set strict-ssl true
+  fi
 }
 
 function enable-proxy() {
-  export HTTP_PROXY='http://http-proxy.corporate.ge.com:80'
-  export HTTPS_PROXY='http://http-proxy.corporate.ge.com:80'
+  local git_npm_proxy='http://http-proxy.corporate.ge.com:80'
+  local cf_proxy='http://PITC-Zscaler-Americas-Cincinnati3PR.proxy.corporate.ge.com:80'
+
+  # Set proxy vars for CLI
+  export HTTP_PROXY="$cf_proxy"
+  export HTTPS_PROXY="$cf_proxy"
   export NO_PROXY='localhost,127.0.1.1'
 
-  # Fix SSL errors in npm / apm if installed
-  [ "$(which npm)" ] &&  npm config set strict-ssl false
-  [ "$(which apm)" ] &&  apm config set strict-ssl false
+  # Set proxy vars for GUI apps
+  launchctl setenv HTTPS_PROXY "$HTTPS_PROXY"
+  launchctl setenv HTTP_PROXY "$HTTP_PROXY"
+  launchctl setenv NO_PROXY "$NO_PROXY"
+
+  # Update git proxy config
+  git config --global https.proxy "$git_npm_proxy"
+  git config --global http.proxy "$git_npm_proxy"
+
+  # Update npm / apm proxy `config if installed
+  if [ "$(which npm)" ]; then
+    npm config set proxy "$git_npm_proxy"
+    npm config set https-proxy "$git_npm_proxy"
+    npm config set strict-ssl false
+  fi
+  if [ "$(which apm)" ]; then
+    apm config set proxy "$git_npm_proxy"
+    apm config set https-proxy "$git_npm_proxy"
+    apm config set strict-ssl false
+  fi
 }
 
 function toggle-proxy() {
@@ -207,20 +253,5 @@ function set-proxy-vars() {
     enable-proxy
   else
     disable-proxy
-  fi
-
-  # Set proxy vars for GUI apps as well
-  launchctl setenv HTTPS_PROXY "$HTTPS_PROXY"
-  launchctl setenv HTTP_PROXY "$HTTP_PROXY"
-  launchctl setenv NO_PROXY "$NO_PROXY"
-}
-
-function git-root() {
-  git rev-parse --is-inside-work-tree >& /dev/null
-
-  if [ "$?" == "128" ]; then
-    echo 'Not a git repository'
-  else
-    cd "$(git rev-parse --show-toplevel)" || exit
   fi
 }

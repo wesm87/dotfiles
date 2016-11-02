@@ -237,9 +237,7 @@ function enable-proxy() {
 }
 
 function toggle-proxy() {
-  local current_location="$(get-network-location)"
-
-  if [[ $current_location == "$PROXY_NETWORK_LOCATION" ]]; then
+  if [[ "$(get-network-location)" == "$PROXY_NETWORK_LOCATION" ]]; then
     scselect $DEFAULT_NETWORK_LOCATION
   else
     scselect $PROXY_NETWORK_LOCATION

@@ -212,7 +212,7 @@ function enable-proxy() {
   # Set proxy vars for CLI
   export HTTP_PROXY="$cf_proxy"
   export HTTPS_PROXY="$cf_proxy"
-  export NO_PROXY='localhost,127.0.1.1'
+  export NO_PROXY='localhost,127.0.1.1,*.local'
 
   # Set proxy vars for GUI apps
   launchctl setenv HTTPS_PROXY "$HTTPS_PROXY"

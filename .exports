@@ -18,11 +18,7 @@ function _bash_profile_exports() {
     z
   )
 
-  for file in "${sources[@]}"; do
-    if [ -f "$exports_dir/$file" ]; then
-      source "$exports_dir/$file";
-    fi
-  done
+  _bash_profile_includes $base_dir $sources
 
   # Add user `bin` folder to `$PATH`
   export PATH="$HOME/.dotfiles/bin:$PATH"

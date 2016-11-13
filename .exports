@@ -2,7 +2,7 @@
 # shellcheck disable=1090
 
 function _bash_profile_exports() {
-  local exports_dir="$HOME/.dotfiles/exports"
+  local base_dir="$HOME/.dotfiles/exports"
   local sources=(
     secrets
     proxy
@@ -18,7 +18,7 @@ function _bash_profile_exports() {
     z
   )
 
-  _bash_profile_includes $base_dir $sources
+  _bash_profile_includes "$base_dir" "${sources[@]}"
 
   # Add user `bin` folder to `$PATH`
   export PATH="$HOME/.dotfiles/bin:$PATH"

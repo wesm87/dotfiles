@@ -8,7 +8,7 @@ function _bash_profile_functions() {
     private
   )
 
-  _bash_profile_includes $base_dir $sources
+  _bash_profile_includes "$base_dir" "${sources[@]}"
 }
 
 _bash_profile_functions

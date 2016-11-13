@@ -2,10 +2,9 @@
 # shellcheck disable=1090,2155
 
 function _bash_profile_includes() {
-  local args=("$@")
-  local base_dir="${args[0]}"
-  unset args[0]
-  local sources="${args[@]}"
+  local base_dir="$1"
+  shift
+  local sources="$@"
 
   for file in $sources; do
     local full_path="$base_dir/$file"

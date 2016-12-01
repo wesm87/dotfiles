@@ -98,9 +98,13 @@ Plugin 'tpope/vim-heroku'
 " Rspec runner
 Plugin 'thoughtbot/vim-rspec'
 
+" TypeScript Tools
+Plugin 'clausreinke/typescript-tools.vim'
+
 " Syntax plugins
 Plugin 'sheerun/vim-polyglot'
 Plugin 'isruslan/vim-es6'
+Plugin 'leafgarland/typescript-vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'

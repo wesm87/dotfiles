@@ -8,11 +8,12 @@ function _bash_profile_exports() {
     proxy
     bash
     bash-prompt
-    homebrew
-    github
-    composer
     nvm
     rbenv
+    github
+    homebrew
+    yarn
+    composer
     gnu-utils
     vim
     z

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+_base_path="$(brew --prefix coreutils)/libexec/"
+
 # Update `$PATH`.
-bin_path="$(brew --prefix coreutils)/libexec/gnubin"
-export PATH="$bin_path:$PATH"
+export PATH="$_base_path/gnubin:$PATH"
+
+# Update `$MANPATH`
+
+export MANPATH="$_base_path/gnuman:$MANPATH"

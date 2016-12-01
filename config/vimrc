@@ -98,8 +98,11 @@ Plugin 'tpope/vim-heroku'
 " Rspec runner
 Plugin 'thoughtbot/vim-rspec'
 
-" TypeScript Tools
+" TypeScript tools
 Plugin 'clausreinke/typescript-tools.vim'
+
+" Dart tools
+Plugin 'dart-lang/dart-vim-plugin'
 
 " Syntax plugins
 Plugin 'sheerun/vim-polyglot'

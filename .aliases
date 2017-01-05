@@ -2,19 +2,19 @@
 # shellcheck disable=2139
 
 # Hide a file or folder
-alias hide="chflags hidden"
+alias hide='chflags hidden'
 
 # Lock the computer and show the login window
-alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+alias lock='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
 
 # Easier navigation: .., ..., ~ and -
-alias ..="cd .."
-alias cd..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
-alias -- -="cd -" # the `--` lets us use `-` as an alias name
+alias ..='cd ..'
+alias cd..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ~='cd ~' # `cd` is probably faster to type though
+alias -- -='cd -' # the `--` lets us use `-` as an alias name
 
 # mv, rm, cp, mkdir
 alias mv='mv -v'
@@ -29,10 +29,10 @@ alias cask='brew cask'
 # time to upgrade `ls`
 
 # use coreutils `ls` if possible…
-hash gls >/dev/null 2>&1 || alias gls="ls"
+hash gls >/dev/null 2>&1 || alias gls='ls'
 
 # always use color, even when piping (to awk,grep,etc)
-if gls --color > /dev/null 2>&1; then colorflag="--color"; else colorflag="-G"; fi;
+if gls --color > /dev/null 2>&1; then colorflag='--color'; else colorflag='-G'; fi;
 export CLICOLOR_FORCE=1
 
 # ls options: A = include hidden (but not . or ..), F = put `/` after folders, h = byte unit suffixes
@@ -45,30 +45,30 @@ alias lsa='ls -l' # files and directories
 alias c='pygmentize -O style=monokai -f console256 -g'
 
 # Networking. IP address, dig, DNS
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias dig="dig +nocmd any +multiline +noall +answer"
+alias ip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias dig='dig +nocmd any +multiline +noall +answer'
 
 # Recursively delete `.DS_Store` files
-alias cleanup-dsstore="find . -name '*.DS_Store' -type f -ls -delete"
+alias cleanup-dsstore='find . -name "*.DS_Store" -type f -ls -delete'
 
 # Show total size, space used, space available, etc. for each volume
-alias disk-space-report="df -P -kHl"
-alias -- disk-space?="disk-space-report"
+alias disk-space-report='df -P -kHl'
+alias -- disk-space?='disk-space-report'
 
 # Shortcuts
-alias g="git"
-alias v="vim"
-alias ungz="gunzip -k"
+alias g='git'
+alias v='vim'
+alias ungz='gunzip -k'
 
 # File size
-alias fs="stat -f \"%z bytes\""
+alias fs='stat -f "%z bytes"'
 
 # Empty the Trash on all mounted volumes and the main HDD.
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
+alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash'
 
 # Update installed Ruby gems, Homebrew, npm, and their installed packages
-alias brew-update="brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor"
-alias update-brew-npm-gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-rdoc --no-ri'
+alias brew-update='brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor'
+alias update-brew-npm-gem="brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-rdoc --no-ri"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Install Cask apps in the root Applications folder.
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
 # GitHub API token
 export HOMEBREW_GITHUB_API_TOKEN="$GITHUB_TOKEN_HOMEBREW"

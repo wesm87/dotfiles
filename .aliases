@@ -56,6 +56,7 @@ alias disk-space-report='df -P -kHl'
 alias -- disk-space?='disk-space-report'
 
 # Shortcuts
+alias git='hub'
 alias g='git'
 alias v='vim'
 alias ungz='gunzip -k'

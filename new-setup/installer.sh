@@ -90,8 +90,8 @@ git config --global credential.helper osxkeychain
 # -- Git flow
 brew install git-flow-avh
 
-# -- GitHub util
-brew install gh
+# -- GitHub utils
+brew install hub
 
 # -- Other git-related tools
 brew install bash-git-prompt

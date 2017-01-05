@@ -181,7 +181,9 @@ function enable-wifi() {
 }
 
 function toggle-wifi() {
-  disable-wifi && enable-wifi
+  disable-wifi
+  sleep 1
+  enable-wifi
 }
 
 function get-wifi-mac-address() {

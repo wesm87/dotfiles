@@ -5,6 +5,5 @@ defscrollback 5000
 term screen-256color
 
 screen -t "Server"
-screen -t "Watch"
 screen -t "Console"
 screen -t "Code"

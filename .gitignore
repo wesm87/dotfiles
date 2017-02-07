@@ -1,6 +1,16 @@
+
+# Private functions
 /functions/private
+
+# Secret keys, tokens, etc.
 /exports/secrets
-/data/z
+
+# Personal data
 /data/vim-tmp/*
+/data/z
+/data/z.*
 !/data/**/*.keep
-npm-debug.log
+!/data/**/*.secret
+
+# Log files
+*.log

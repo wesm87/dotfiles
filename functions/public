@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # shellcheck disable=2155
 
+# Check if bash function exists
+function fn-exists() {
+  declare -f "$1" > /dev/null
+}
+
 # Create a new directory and enter it
 function md() {
   mkdir -p "$@" && cd "$@" || exit

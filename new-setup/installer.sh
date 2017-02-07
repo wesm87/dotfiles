@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 # Xcode
 if ! xcode-select --print-path &> /dev/null; then
@@ -71,7 +71,7 @@ brew install homebrew/dupes/screen
 
 # Install Vim and Vundle
 brew install vim --with-override-system-vi
-if ! [ -f '~/.vim/bundle/Vundle.vim' ]; then
+if ! [ -f "$HOME/.vim/bundle/Vundle.vim" ]; then
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
@@ -83,8 +83,8 @@ brew install watchman
 
 # Git
 brew install git
-git config --global user.name "Wes Moberly"
-git config --global user.email "wesm87@gmail.com"
+git config --global user.name 'Wes Moberly'
+git config --global user.email 'wesm87@gmail.com'
 git config --global credential.helper osxkeychain
 
 # -- Git flow
@@ -208,4 +208,4 @@ sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 
 # -- Create resolver config file
 sudo mkdir -v /etc/resolver
-echo "nameserver 127.0.0.1" | sudo tee /etc/resolver/dev >/dev/null
+echo 'nameserver 127.0.0.1' | sudo tee /etc/resolver/dev >/dev/null

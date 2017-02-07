@@ -4,7 +4,7 @@
 function _bash_profile_includes() {
   local base_dir="$1"
   shift
-  local sources="$@"
+  local sources="$*"
 
   for file in $sources; do
     local full_path="$base_dir/$file"

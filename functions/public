@@ -191,6 +191,11 @@ function toggle-wifi() {
   enable-wifi
 }
 
+function spoof-mac-address() {
+  sudo ifconfig en0 ether "$1"
+  toggle-wifi
+}
+
 function get-wifi-mac-address() {
   echo "$(ifconfig | grep ether | head -n 1 | awk {'print $2'})"
 }

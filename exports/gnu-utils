@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
-_base_path="$(brew --prefix coreutils)/libexec"
+_coreutils_base_path="$(brew --prefix coreutils)/libexec"
+_coreutils_bin_path="$_coreutils_base_path/gnubin"
+_coreutils_man_path="$_coreutils_base_path/gnuman"
+
+_sed_base_path="$(brew --prefix gnu-sed)/libexec"
+_sed_bin_path="$_sed_base_path/gnubin"
+_sed_man_path="$_sed_base_path/gnuman"
 
 # Update `$PATH`.
-export PATH="$_base_path/gnubin:$PATH"
+export PATH="$_coreutils_bin_path:$_sed_bin_path:$PATH"
 
 # Update `$MANPATH`
 
-export MANPATH="$_base_path/gnuman:$MANPATH"
+export MANPATH="$_coreutils_man_path:$_sed_man_path:$MANPATH"

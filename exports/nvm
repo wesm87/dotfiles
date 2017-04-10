@@ -6,5 +6,5 @@ export NVM_DIR="$HOME/.nvm"
 _nvm_script_path="$(brew --prefix nvm)/nvm.sh"
 
 if [ -f "$_nvm_script_path" ]; then
-  source "$_nvm_script_path";
+  source "$_nvm_script_path"
 fi

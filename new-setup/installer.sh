@@ -50,6 +50,9 @@ brew install moreutils
 # GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed
 brew install findutils
 
+# GNU `sed`
+brew install gnu-sed
+
 # Bash 4
 brew install bash
 brew install bash-completion2

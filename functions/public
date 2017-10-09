@@ -195,9 +195,13 @@ function spoof-mac-address() {
 }
 
 function get-wifi-mac-address() {
-  echo "$(ifconfig | grep ether | head -n 1 | awk {'print $2'})"
+  echo "$(ifconfig | grep ether | head -n 1 | field 2)"
 }
 
 function get-network-location() {
   echo "$(scselect 2>&1 | grep '^ \*' | sed -e 's:^[^(]*(\([^)]*\))$:\1:g')"
+}
+
+function docker-clean-images() {
+  docker rmi $(docker images | grep "^<none>" | field 3)
 }

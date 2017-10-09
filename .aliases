@@ -64,6 +64,10 @@ alias ungz='gunzip -k'
 # File size
 alias fs='stat -f "%z bytes"'
 
+# Get today's date in YYYY-MM-DD format
+alias date-today='date +%Y-%m-%d'
+alias date-now='date-today'
+
 # Empty the Trash on all mounted volumes and the main HDD.
 alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash'
 

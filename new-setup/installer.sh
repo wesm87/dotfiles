@@ -29,12 +29,8 @@ if ! [ "$(which brew)" ]; then
 fi
 
 # -- Add Homebrew sources
-brew tap homebrew/versions
 brew tap homebrew/completions
 brew tap homebrew/php
-
-# -- Add Cask sources
-brew tap caskroom/versions
 
 # Make sure we’re using the latest Homebrew
 brew update
@@ -81,6 +77,9 @@ fi
 # Node
 brew install node
 
+# Yarn
+brew install yarn
+
 # Watchman
 brew install watchman
 
@@ -98,7 +97,6 @@ brew install hub
 
 # -- Other git-related tools
 brew install bash-git-prompt
-npm install -g git-open
 
 # ImageMagick w/ WebP support
 brew install imagemagick --with-webp
@@ -134,28 +132,26 @@ brew cask install \
   atom \
   dash \
   sourcetree \
+  github-desktop \
+  docker \
   postman \
   imagealpha \
   imageoptim \
   gpgtools
 
-# Virtualbox, Parallels Desktop, Vagrant, and Vagrant Manager
-brew cask install \
-  virtualbox
-  parallels-desktop \
-  vagrant \
-  vagrant-manager
-
-# Docker, Docker Compose
-brew install docker docker-compose
-
 # Some other useful apps
 brew cask install \
   appcleaner \
   dropbox \
+  slack \
   transmission \
   vlc \
-  mplayerx
+  mplayerx \
+  soda-player \
+  istat-menus \
+  product-hunt \
+  macdown \
+  kaomoji
 
 # Pygments (allows for syntax-highlighted terminal output)
 sudo easy_install -U Pygments
@@ -168,29 +164,8 @@ RBENV_VERSION=${RBENV_VERSION:-'2.3.1'}
 rbenv install $RBENV_VERSION
 rbenv global $RBENV_VERSION
 
-# Unit testing
-
-# -- PHPUnit
-brew install phpunit
-
-# Functional testing
-
-# -- Selenium
-brew install selenium-server-standalone
-
-# -- PhantomJS
-brew install phantomjs
-
 # Linters
-gem install scss_lint
-npm i -g eslint babel-eslint
 brew install shellcheck
-
-# MongoDB
-brew install mongo
-
-# PostgreSQL
-brew install postgresql
 
 # pa11y (accessibility testing)
 npm install -g pa11y
@@ -199,16 +174,16 @@ npm install -g pa11y
 brew install dnsmasq
 
 # -- Create config file
-mkdir -pv "$(brew --prefix)/etc/"
-tee "$(brew --prefix)/etc/dnsmasq.conf" >/dev/null <<EOF
-# WordPress Sites (VVV)
-address=/.dev/192.168.50.4
-EOF
+# mkdir -pv "$(brew --prefix)/etc/"
+# tee "$(brew --prefix)/etc/dnsmasq.conf" >/dev/null <<EOF
+# # WordPress Sites (VVV)
+# address=/.dev/192.168.50.4
+# EOF
 
 # -- Copy & start the launch daemon
-sudo cp -v "$(brew --prefix dnsmasq)/homebrew.mxcl.dnsmasq.plist" /Library/LaunchDaemons
-sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+# sudo cp -v "$(brew --prefix dnsmasq)/homebrew.mxcl.dnsmasq.plist" /Library/LaunchDaemons
+# sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 
 # -- Create resolver config file
-sudo mkdir -v /etc/resolver
-echo 'nameserver 127.0.0.1' | sudo tee /etc/resolver/dev >/dev/null
+# sudo mkdir -v /etc/resolver
+# echo 'nameserver 127.0.0.1' | sudo tee /etc/resolver/dev >/dev/null

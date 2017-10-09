@@ -3,8 +3,12 @@
 # Ask for the administrator password upfront
 sudo -v
 
-# Keep-alive: update existing `sudo` time stamp until `.osx` has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+# Keep-alive: update existing `sudo` time stamp until script has finished
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
 
 # Quieter boot chime
 sudo nvram SystemAudioVolume=%20
@@ -110,7 +114,7 @@ defaults write com.apple.finder EmptyTrashSecurely -bool true
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
 # Remove Dropbox’s green checkmark icons in Finder
-file=/Applications/Dropbox.app/Contents/Resources/emblem-dropbox-uptodate.icns
+file='/Applications/Dropbox.app/Contents/Resources/emblem-dropbox-uptodate.icns'
 [ -e "${file}" ] && mv -f "${file}" "${file}.bak"
 
 # Enable highlight hover effect for the grid view of a stack (Dock)
@@ -177,7 +181,7 @@ defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\
 
 # Disable Spotlight indexing for any volume that gets mounted and has not yet
 # been indexed before.
-# Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
+# Use `sudo mdutil -i off '/Volumes/foo'` to stop indexing any volume.
 sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
 
 # Only use UTF-8 in Terminal.app
@@ -249,7 +253,6 @@ defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool t
 # Transmission.app                                                            #
 ###############################################################################
 
-
 # Don’t prompt for confirmation before downloading
 defaults write org.m0k.transmission DownloadAsk -bool false
 
@@ -297,9 +300,24 @@ defaults write com.twitter.twitter-mac HideInBackground -bool true
 # Kill affected applications                                                  #
 ###############################################################################
 
-for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-	"Dock" "Finder" "Google Chrome" "Mail" "Messages" "Safari" "SystemUIServer" \
-	"Terminal" "Transmission" "Twitter" "iCal"; do
-	killall "${app}" > /dev/null 2>&1
+for app in \
+  'Activity Monitor' \
+  'Address Book' \
+  'Calendar' \
+  'Contacts' \
+  'cfprefsd' \
+  'Dock' \
+  'Finder' \
+  'Google Chrome' \
+  'Mail' \
+  'Messages' \
+  'Safari' \
+  'SystemUIServer' \
+  'Terminal' \
+  'Transmission' \
+  'Twitter'
+do
+  killall "${app}" > /dev/null 2>&1
 done
-echo "Done. Note that some of these changes require a logout/restart to take effect."
+
+echo 'Done. Note that some of these changes require a logout / restart to take effect.'

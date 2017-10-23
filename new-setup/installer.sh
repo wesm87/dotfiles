@@ -82,7 +82,7 @@ brew install watchman
 # Git
 brew install git
 git config --global user.name 'Wes Moberly'
-git config --global user.email 'wesm87@gmail.com'
+git config --global user.email 'github.wes@mailhero.io'
 git config --global credential.helper osxkeychain
 
 # -- Git flow

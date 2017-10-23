@@ -164,10 +164,10 @@ rbenv global $RBENV_VERSION
 brew install shellcheck
 
 # pa11y (accessibility testing)
-npm install -g pa11y
+# npm install -g pa11y
 
 # Install dnsmasq
-brew install dnsmasq
+# brew install dnsmasq
 
 # -- Create config file
 # mkdir -pv "$(brew --prefix)/etc/"

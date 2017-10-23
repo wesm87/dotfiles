@@ -28,10 +28,6 @@ if ! [ "$(which brew)" ]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# -- Add Homebrew sources
-brew tap homebrew/completions
-brew tap homebrew/php
-
 # Make sure we’re using the latest Homebrew
 brew update
 

@@ -98,7 +98,7 @@ brew install bash-git-prompt
 brew install imagemagick --with-webp
 
 # FFmpeg w/ WebM and AAC support
-brew install ffmpeg --with-libvpx --with-faac
+brew install ffmpeg --with-libvpx --with-fdk-aac --with-x265 --with-tools --with-freetype --with-libass
 
 # Some other useful tools
 brew install \

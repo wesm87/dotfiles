@@ -121,14 +121,14 @@ brew cask install \
 brew cask install \
   google-chrome \
   firefox \
-  firefoxdeveloperedition
+  caskroom/versions/firefoxdeveloperedition
 
 # Developer tools
 brew cask install \
   atom \
   dash \
   sourcetree \
-  github-desktop \
+  github \
   docker \
   postman \
   imagealpha \

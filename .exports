@@ -9,6 +9,7 @@ function _bash_profile_exports() {
     bash
     bash-prompt
     nvm
+    ndenv
     rbenv
     github
     homebrew

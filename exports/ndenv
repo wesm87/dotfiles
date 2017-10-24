@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ -d "$(brew --prefix ndenv)" ]; then
+  # Contains Node versions, ndenv plugins, etc.
+  export NDENV_ROOT="$(brew --prefix ndenv)"
+
+  # The default Node version.
+  export NDENV_VERSION="8.7.0"
+
+  # Initialize ndenv.
+  eval "$(ndenv init -)"
+fi

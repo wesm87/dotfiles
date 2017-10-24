@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=1090
 
-export NVM_DIR="$HOME/.nvm"
-
 _nvm_script_path="$(brew --prefix nvm)/nvm.sh"
 
 if [ -f "$_nvm_script_path" ]; then
+  export NVM_DIR="$HOME/.nvm"
+
   source "$_nvm_script_path"
 fi

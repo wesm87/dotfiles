@@ -1,6 +1,6 @@
 [user]
   name  = Wes Moberly
-  email = wesm87@gmail.com
+  email = github.wes@mailhero.com
 
 [core]
   excludesfile = ~/.dotfiles/config/gitignore

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-#
+set -euo pipefail
+IFS=$'\n\t'
+
 # This script runs a given command over a range of Git revisions. Note that it
 # will check past revisions out! Exercise caution if there are important
 # untracked files in your working tree.
@@ -9,8 +11,6 @@
 #
 # Example usage:
 #     $ run-command-on-git-revisions origin/master master 'python runtests.py'
-
-set -e
 
 if [[ $1 == -v ]]; then
   verbose=1

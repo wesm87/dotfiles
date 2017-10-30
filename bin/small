@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
 if [[ ! -z $@ ]]; then
   if [[ $1 == "help" ]]; then
@@ -15,4 +16,3 @@ if [[ ! -z $@ ]]; then
 else
   open -a "Syntra Small"
 fi
-

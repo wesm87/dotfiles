@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=1090,2155
+# shellcheck disable=1090
 
 function _bash_profile_includes() {
   local base_dir="$1"

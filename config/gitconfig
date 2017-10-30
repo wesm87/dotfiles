@@ -24,35 +24,37 @@
   tool = vimdiff
 
 [alias]
-  s         = status
-  f         = fetch
-  p         = pull
-  b         = branch
-  branches  = branch --all
-  remotes   = remote -v
-  m         = merge
-  c         = commit --verbose
-  cm        = commit --verbose -m
-  co        = checkout
-  cob       = checkout -b
-  d         = diff
-  dc        = diff --cached
-  amend     = commit --amend
-  un-commit = reset --mixed HEAD~
-  re-commit = commit --amend -C HEAD
-  un-stage  = reset HEAD --
-  aa        = add --all
-  ff        = merge --ff-only
-  pullff    = pull --ff-only
-  noff      = merge --no-ff
-  fa        = fetch --all
-  pom       = push origin master
-  undo-push = push -f origin HEAD^:master
-  ds        = diff --stat=160,120
-  dh1       = diff HEAD~1
-  conflicts = diff --name-status --diff-filter=U
-  detach    = checkout --detach
-  discard   = checkout --
+  s             = status
+  f             = fetch
+  p             = pull
+  b             = branch
+  branches      = branch --all
+  rename-branch = branch -m
+  delete-branch = branch -d
+  remotes       = remote -v
+  m             = merge
+  c             = commit --verbose
+  cm            = commit --verbose -m
+  co            = checkout
+  cob           = checkout -b
+  d             = diff
+  dc            = diff --cached
+  amend         = commit --amend
+  un-commit     = reset --mixed HEAD~
+  re-commit     = commit --amend -C HEAD
+  un-stage      = reset HEAD --
+  aa            = add --all
+  ff            = merge --ff-only
+  pullff        = pull --ff-only
+  noff          = merge --no-ff
+  fa            = fetch --all
+  pom           = push origin master
+  undo-push     = push -f origin HEAD^:master
+  ds            = diff --stat=160,120
+  dh1           = diff HEAD~1
+  conflicts     = diff --name-status --diff-filter=U
+  detach        = checkout --detach
+  discard       = checkout --
 
   # Divergence (commits we added and commits remote added)
   div = divergence

@@ -2,11 +2,14 @@
 
 if [ -d "$(brew --prefix rbenv)" ]; then
   # Contains Ruby versions and shims.
-  export RBENV_ROOT="$(brew --prefix rbenv)"
-
-  # The default Ruby version.
-  export RBENV_VERSION="2.3.1"
+  export RBENV_ROOT
+  RBENV_ROOT="$(brew --prefix rbenv)"
 
   # Initialize rbenv.
   eval "$(rbenv init -)"
+
+  # Set global version if one isn't already set.
+  if [ -z "$(rbenv global)" ]; then
+    rbenv global 2.4.2
+  fi
 fi

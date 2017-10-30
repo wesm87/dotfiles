@@ -6,4 +6,3 @@ term screen-256color
 
 screen -t "Server"
 screen -t "Console"
-screen -t "Code"

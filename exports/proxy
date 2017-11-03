@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-if fn-exists 'set-proxy-vars'; then
-  set-proxy-vars
-fi

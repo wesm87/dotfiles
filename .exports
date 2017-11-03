@@ -5,7 +5,6 @@ function _bash_profile_exports() {
   local base_dir="$HOME/.dotfiles/exports"
   local sources=(
     secrets
-    proxy
     bash
     bash-prompt
     nvm

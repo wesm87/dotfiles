@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 # bash completion support for core Git.
 

@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-export PATH="$PATH:$(yarn global bin)"
+yarn_global_bin="$(yarn global bin)"
+
+export PATH="$PATH:$yarn_global_bin"

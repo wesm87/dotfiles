@@ -32,8 +32,13 @@ alias cask='brew cask'
 hash gls >/dev/null 2>&1 || alias gls='ls'
 
 # always use color, even when piping (to awk,grep,etc)
-if gls --color > /dev/null 2>&1; then colorflag='--color'; else colorflag='-G'; fi;
 export CLICOLOR_FORCE=1
+
+if gls --color > /dev/null 2>&1; then
+  colorflag='--color'
+else
+  colorflag='-G'
+fi
 
 # ls options: A = include hidden (but not . or ..), F = put `/` after folders, h = byte unit suffixes
 alias ls="gls -AFh ${colorflag} --group-directories-first"
@@ -53,10 +58,12 @@ alias cleanup-dsstore='find . -name "*.DS_Store" -type f -ls -delete'
 
 # Show total size, space used, space available, etc. for each volume
 alias disk-space-report='df -P -kHl'
-alias -- disk-space?='disk-space-report'
+alias -- disk-space?='disk-space-report' # the `--` lets us use `disk-space?` as an alias name
 
 # Shortcuts
-alias git='hub'
+if [ -d "$(brew --prefix hub)" ]; then
+  alias git='hub'
+fi
 alias g='git'
 alias v='vim'
 alias ungz='gunzip -k'
@@ -70,10 +77,6 @@ alias date-now='date-today'
 
 # Empty the Trash on all mounted volumes and the main HDD.
 alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash'
-
-# Update installed Ruby gems, Homebrew, npm, and their installed packages
-alias brew-update='brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor'
-alias update-brew-npm-gem="brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-rdoc --no-ri"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do

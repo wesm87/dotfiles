@@ -23,6 +23,17 @@ Plugin 'gitignore'
 " Status bar
 Plugin 'itchyny/lightline.vim'
 
+" Tmux integration
+Plugin 'tmux-plugins/vim-tmux'
+
+" Key mappings for navigating between Vim and Tmux splits:
+"   <Ctrl-h> => Left
+"   <Ctrl-j> => Down
+"   <Ctrl-k> => Up
+"   <Ctrl-l> => Right
+"   <Ctrl-\> => Previous
+Plugin 'christoomey/vim-tmux-navigator'
+
 " By default only native commands are repeated when using the `.` command.
 " This plugin remaps the `.` key to allow plugin commands to be repeated.
 Plugin 'tpope/vim-repeat'

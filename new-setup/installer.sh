@@ -34,6 +34,17 @@ brew update
 # Upgrade any already-installed formulae
 brew upgrade
 
+# Tap additional sources for Homebrew and Cask
+brew tap \
+  caskroom/cask \
+  caskroom/fonts \
+  caskroom/versions \
+  homebrew/completions \
+  homebrew/core \
+  homebrew/dupes \
+  homebrew/php \
+  homebrew/services
+
 # GNU core utilities (those that come with OS X are outdated)
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils
@@ -71,7 +82,7 @@ if ! [ -f "$HOME/.vim/bundle/Vundle.vim" ]; then
 fi
 
 # Install Fira Code font
-brew cask install caskroom/fonts/font-fira-code
+brew cask install font-fira-code
 
 # Node
 brew install node

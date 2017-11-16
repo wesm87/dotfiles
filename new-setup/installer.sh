@@ -112,7 +112,13 @@ brew install bash-git-prompt
 brew install imagemagick --with-webp
 
 # FFmpeg w/ WebM and AAC support
-brew install ffmpeg --with-libvpx --with-fdk-aac --with-x265 --with-tools --with-freetype --with-libass
+brew install ffmpeg \
+  --with-libvpx \
+  --with-fdk-aac \
+  --with-x265 \
+  --with-tools \
+  --with-freetype \
+  --with-libass
 
 # Some other useful tools
 brew install \
@@ -170,7 +176,7 @@ sudo easy_install -U Pygments
 echo 'gem: --no-document' > ~/.gemrc
 brew install rbenv
 eval "$(rbenv init -)"
-RBENV_VERSION=${RBENV_VERSION:-'2.3.1'}
+RBENV_VERSION=${RBENV_VERSION:-'2.4.2'}
 rbenv install $RBENV_VERSION
 rbenv global $RBENV_VERSION
 

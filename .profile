@@ -22,6 +22,7 @@ function _bash_profile() {
     .exports
     .libs
     .completions
+    .profile.local
   )
 
   _bash_profile_includes "$base_dir" "${sources[@]}"

@@ -22,8 +22,15 @@ alias rm='rm -i -v'
 alias cp='cp -v'
 alias mkdir='mkdir -p'
 
-# Cask shortcut
+# Shortcuts
+if [ -d "$(brew --prefix hub)" ]; then
+  alias git='hub'
+fi
+alias g='git'
+alias v='vim'
+alias tm='tmuxinator'
 alias cask='brew cask'
+alias ungz='gunzip -k'
 
 ###
 # time to upgrade `ls`
@@ -59,14 +66,6 @@ alias cleanup-dsstore='find . -name "*.DS_Store" -type f -ls -delete'
 # Show total size, space used, space available, etc. for each volume
 alias disk-space-report='df -P -kHl'
 alias -- disk-space?='disk-space-report' # the `--` lets us use `disk-space?` as an alias name
-
-# Shortcuts
-if [ -d "$(brew --prefix hub)" ]; then
-  alias git='hub'
-fi
-alias g='git'
-alias v='vim'
-alias ungz='gunzip -k'
 
 # File size
 alias fs='stat -f "%z bytes"'

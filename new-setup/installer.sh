@@ -75,6 +75,10 @@ brew install wget --with-iri
 brew install homebrew/dupes/grep
 brew install homebrew/dupes/screen
 
+# Install tmux and tmuxinator
+brew install tmux
+gem install tmuxinator
+
 # Install Vim and Vundle
 brew install vim --with-override-system-vi
 if ! [ -f "$HOME/.vim/bundle/Vundle.vim" ]; then

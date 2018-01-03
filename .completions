@@ -6,7 +6,7 @@ function _bash_profile_completions() {
   local brew_completions_dir="$(brew --prefix)/etc/bash_completion.d"
 
   # -- Git
-  source $completions_dir/git-completion.bash
+  source "$completions_dir/git-completion.bash"
 
   # -- Bash
   if [ ! -L "$brew_completions_dir/brew_bash_completion.sh" ]; then

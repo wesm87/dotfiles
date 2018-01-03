@@ -29,6 +29,7 @@ fi
 alias g='git'
 alias v='vim'
 alias tm='tmuxinator'
+alias mux='tmuxinator'
 alias cask='brew cask'
 alias ungz='gunzip -k'
 

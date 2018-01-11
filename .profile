@@ -29,3 +29,6 @@ function _bash_profile() {
 }
 
 _bash_profile
+
+# Increase the max number of files that can be open at once
+ulimit -n 65536 65536

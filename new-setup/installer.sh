@@ -145,7 +145,7 @@ brew cask install \
 brew cask install \
   google-chrome \
   firefox \
-  caskroom/versions/firefoxdeveloperedition
+  caskroom/versions/firefox-developer-edition
 
 # Developer tools
 brew cask install \

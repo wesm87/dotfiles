@@ -184,6 +184,28 @@ function git-root() {
   fi
 }
 
+TERMINAL_TITLE_TARGET_WINDOW=0
+TERMINAL_TITLE_TARGET_TAB=1
+
+function set-terminal-title() {
+  local target="${1:-$TERMINAL_TITLE_TARGET_WINDOW}"
+  local title="${2:-}"
+
+  printf '\e]%s;%s\a' "$target" "$title"
+}
+
+function set-terminal-window-title() {
+  local title="${1:-}"
+
+  set-terminal-title $TERMINAL_TITLE_TARGET_WINDOW "$title"
+}
+
+function set-terminal-tab-title() {
+  local title="${1:-}"
+
+  set-terminal-title $TERMINAL_TITLE_TARGET_TAB "$title"
+}
+
 function disable-wifi() {
   sudo ifconfig en0 down
 }

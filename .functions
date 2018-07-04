@@ -6,6 +6,7 @@ function _bash_profile_functions() {
   local sources=(
     public
     private
+    logging
   )
 
   _bash_profile_includes "$base_dir" "${sources[@]}"

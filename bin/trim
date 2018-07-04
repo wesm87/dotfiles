@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+if ARGV.any?
+  ARGV.each { |arg| print arg.strip }
+elsif $stdin.readlines.any?
+  $stdin.readlines.each { |line| print line.strip }
+else
+  print ''
+end

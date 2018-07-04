@@ -2,7 +2,7 @@
 # shellcheck disable=1090
 
 function _bash_profile_includes() {
-  local base_dir="$1"
+  local base_dir="${1:-}"
   shift
   local sources="$*"
 
@@ -31,4 +31,4 @@ function _bash_profile() {
 _bash_profile
 
 # Increase the max number of files that can be open at once
-ulimit -n 65536 65536
+ulimit -n 65536 65536 &>/dev/null

@@ -7,8 +7,6 @@ function _bash_profile_exports() {
     secrets
     bash
     bash-prompt
-    nvm
-    ndenv
     rbenv
     github
     homebrew
@@ -17,6 +15,8 @@ function _bash_profile_exports() {
     gnu-utils
     vim
     z
+    ndenv
+    nvm
   )
 
   _bash_profile_includes "$base_dir" "${sources[@]}"

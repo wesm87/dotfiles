@@ -41,12 +41,12 @@ ANSI_WHITE_BOLD='\033[0;37;1m'
 ANSI_RESET='\033[0m'
 
 
-function show_git_head() {
+function __git_show_head() {
   pretty_git_log -1
   git show -p --pretty="tformat:"
 }
 
-function pretty_git_log() {
+function __git_pretty_log() {
   git log --graph --pretty="tformat:${FORMAT}" "$@" |
     # Replace (2 years ago) with (2 years)
     sed -Ee 's/(^[^<]*) ago\)/\1)/' |
@@ -63,4 +63,35 @@ function pretty_git_log() {
       # Page only if needed.
       less --quit-if-one-screen --no-init --RAW-CONTROL-CHARS --chop-long-lines
     fi
+}
+
+function __git_view_conflicts() {
+  git diff --name-only --diff-filter=U | xargs "$(git config alias-config.viewer)"
+}
+
+function __git_keep() {
+  local path="${1:-'.'}"
+
+  touch ${path%/}/.keep
+}
+
+function __git_ignore() {
+  touch .gitignore
+  printf %"s\n" "$@" >> .gitignore
+}
+
+function __git_branch_name() {
+  git rev-parse --abbrev-ref HEAD
+}
+
+function __git_merge_from() {
+  local source_branch="${1:-'develop'}"
+  # shellcheck disable=2155
+  local current_branch="$(__git_branch_name)"
+  local target_branch="${2:-$current_branch}"
+
+  git checkout $source_branch \
+    && git pull \
+    && git checkout $target_branch \
+    && git merge $source_branch
 }

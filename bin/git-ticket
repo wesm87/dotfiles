@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __git-ticket() {
+  # shellcheck disable=2155
+  local branch_name="$(git rev-parse --abbrev-ref HEAD)"
+  local ticket_name="${branch_name##*/}"
+  local action="${1:-}"
+
+  if [ "$action" == "copy" ]; then
+    printf $ticket_name | pbcopy
+  else
+    echo $ticket_name
+  fi
+}
+
+__git-ticket "$@"

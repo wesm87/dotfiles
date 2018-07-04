@@ -2,4 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-lsof -P -i :$1
+function __which-using-port() {
+  local port="${1:-}"
+
+  lsof -P -i :$port
+}
+
+__which-using-port "$@"

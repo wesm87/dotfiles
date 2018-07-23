@@ -12,8 +12,8 @@ COLOR_RESET='\033[0m'
 NUM_COLS=$(tput cols)
 
 function color() {
-  local color_code="$1"
-  local message="$2"
+  local color_code="${1:-}"
+  local message="${2:-}"
 
   echo -e "${color_code}${message}${COLOR_RESET}"
 }

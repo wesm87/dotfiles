@@ -95,3 +95,7 @@ function __git_merge_from() {
     && git checkout $target_branch \
     && git merge $source_branch
 }
+
+function __git_patch() {
+  git --no-pager diff --no-color
+}

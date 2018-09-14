@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles_populate_test_file() {
+  local test_file_path="$1"
+  local test_file_name="${test_file_path##*/}"
+  local test_name="${test_file_name%.test.*}"
+
+  cat <<EOF >"${test_file_path}"
+describe('${test_name}', () => {
+  test.skip('skip', () => {});
+});
+EOF
+}
+
+function __dotfiles_create_test_files_for_file_type() {
+  # Strip out trailing slash if it was included
+  local target_dir="${1%/}"
+  local file_type="${2:-js}"
+  local debug_only=false
+
+  for file_path in "${target_dir}"/*.$file_type; do
+    if [ ! -f "$file_path" ]; then
+      continue
+    fi
+
+    local dir_path="${file_path%/*}"
+    local file_name="${file_path##*/}"
+    local test_dir_path="${dir_path}/__tests__"
+    local test_file_name="${file_name/.${file_type}/.test.${file_type}}"
+    local test_file_path="${test_dir_path}/${test_file_name}"
+
+    if $debug_only; then
+      echo "Original file path:   ${dir_path}/${file_name}"
+      echo "Test file path:       ${test_file_path}"
+    else
+      mkdir -p "${test_dir_path}"
+      touch "${test_file_path}"
+
+      if [ -z "$(cat "${test_file_path}")" ]; then
+        __dotfiles_populate_test_file "${test_file_path}"
+      fi
+    fi
+  done
+}
+
+function __dotfiles_create_test_files() {
+  local target_dir="$1"
+
+  __dotfiles_create_test_files_for_file_type "${target_dir}" 'js'
+  __dotfiles_create_test_files_for_file_type "${target_dir}" 'jsx'
+}
+
+__dotfiles_create_test_files ${1:-.}

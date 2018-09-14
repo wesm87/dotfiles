@@ -80,7 +80,7 @@ function local-ip() {
   echo "$(local-ip-for-device en0 || local-ip-for-device en1)"
 }
 
-function network-info () {
+function network-info() {
   function print-ip() {
     echo "📶  $(local-ip-for-device $1)";
   }

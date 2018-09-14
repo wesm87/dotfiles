@@ -69,6 +69,7 @@
   ds            = diff --stat=160,120
   dh1           = diff HEAD~1
   conflicts     = diff --name-status --diff-filter=U
+  patch         = "!. ~/.dotfiles/libs/git-helpers && __git_patch"
   detach        = checkout --detach
   discard       = checkout --
   merge-from    = "!. ~/.dotfiles/libs/git-helpers && __git_merge_from"

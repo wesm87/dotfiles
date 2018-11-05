@@ -6,5 +6,7 @@ _nvm_script_path="$(brew --prefix nvm)/nvm.sh"
 if [ -f "$_nvm_script_path" ]; then
   export NVM_DIR="$HOME/.nvm"
 
+  npm config delete prefix
+
   source "$_nvm_script_path"
 fi

@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 (
   function branch() {
-    git branch 2>/dev/null | grep -e '^*' | tr -d '\* '
+    git branch-name 2>/dev/null
   }
 
   function ensure_valid_ref() {
@@ -23,7 +23,7 @@ IFS=$'\n\t'
     rev=$1
     git log -1 $rev --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     echo
-    git di $rev^..$rev | diffstat
+    git diff $rev^..$rev | diffstat
     echo
   }
 

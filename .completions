@@ -2,8 +2,11 @@
 # shellcheck disable=1090
 
 function _bash_profile_completions() {
-  local completions_dir="$HOME/.dotfiles/completions"
-  local brew_completions_dir="$(brew --prefix)/etc/bash_completion.d"
+  local completions_dir
+  local brew_completions_dir
+
+  completions_dir="$HOME/.dotfiles/completions"
+  brew_completions_dir="$(brew --prefix)/etc/bash_completion.d"
 
   # -- Git
   source "$completions_dir/git-completion.bash"

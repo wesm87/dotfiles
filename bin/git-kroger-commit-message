@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles-parse-kroger-commit-message() {
+  local commit_message
+  local ticket_name
+
+  commit_message="${1}"
+  ticket_name="$(git-kroger-ticket --print)"
+
+  echo "${ticket_name} | Wes | ${commit_message}"
+}
+
+function __dotfiles-git-kroger-commit-message() {
+  local commit_message
+  local action
+
+  commit_message="$(__dotfiles-parse-kroger-commit-message "${1:-}")"
+  action="${2:-}"
+
+  if [ "$action" == "--print" ]; then
+    echo $commit_message
+  else
+    printf $commit_message | pbcopy
+  fi
+}
+
+__dotfiles-git-kroger-commit-message "$@"

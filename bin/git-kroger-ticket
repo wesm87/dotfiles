@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles-get-kroger-ticket-from-git-branch() {
+  local branch_name
+  local ticket_name
+
+  branch_name="$(git branch-name)"
+  ticket_name="${branch_name##*/}"
+
+  if [[ "${ticket_name}" =~ ^DCPART[A-Z]-[0-9]{5}$ ]]; then
+    echo "${ticket_name}"
+  else
+    echo 'NOJIRA'
+  fi
+}
+
+function __dotfiles-git-kroger-ticket() {
+  local action
+  local ticket_name
+
+  action="${1:-}"
+  ticket_name="$(__dotfiles-get-kroger-ticket-from-git-branch)"
+
+  if [ "$action" == "--print" ]; then
+    echo $ticket_name
+  else
+    printf $ticket_name | pbcopy
+  fi
+}
+
+__dotfiles-git-kroger-ticket "$@"

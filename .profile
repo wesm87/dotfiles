@@ -32,3 +32,7 @@ _bash_profile
 
 # Increase the max number of files that can be open at once
 ulimit -n 65536 65536 &>/dev/null
+
+if fn-exists '__proxy_switch_set_proxy_from_location'; then
+  __proxy_switch_set_proxy_from_location
+fi

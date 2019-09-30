@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-if [ -d "$(brew --prefix rbenv)" ]; then
+RBENV_ROOT="$(brew --prefix rbenv)"
+
+if [ -d "$RBENV_ROOT" ]; then
   # Contains Ruby versions and shims.
   export RBENV_ROOT
-  RBENV_ROOT="$(brew --prefix rbenv)"
 
   # Initialize rbenv.
   eval "$(rbenv init -)"
 
   # Set global version if one isn't already set.
   if [ -z "$(rbenv global)" ]; then
-    rbenv global 2.4.2
+    rbenv global 2.5.3
   fi
 fi

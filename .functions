@@ -7,6 +7,7 @@ function _bash_profile_functions() {
     public
     private
     logging
+    proxy
   )
 
   _bash_profile_includes "$base_dir" "${sources[@]}"

@@ -50,6 +50,8 @@ function __dotfiles_create_test_files() {
 
   __dotfiles_create_test_files_for_file_type "${target_dir}" 'js'
   __dotfiles_create_test_files_for_file_type "${target_dir}" 'jsx'
+  __dotfiles_create_test_files_for_file_type "${target_dir}" 'ts'
+  __dotfiles_create_test_files_for_file_type "${target_dir}" 'tsx'
 }
 
 __dotfiles_create_test_files ${1:-.}

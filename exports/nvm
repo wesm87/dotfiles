@@ -1,12 +1,28 @@
 #!/usr/bin/env bash
 # shellcheck disable=1090
 
-_nvm_script_path="$(brew --prefix nvm)/nvm.sh"
+NVM_HOMEBREW_DIR="$(brew --prefix nvm)"
+NVM_DIR="$HOME/.nvm"
 
-if [ -f "$_nvm_script_path" ]; then
-  export NVM_DIR="$HOME/.nvm"
+function __dotfiles_symlink_nvm_file() {
+  local file_name="$1"
+
+  if [ ! -e "$NVM_DIR/$file_name" ] && [ -e "$NVM_HOMEBREW_DIR/$file_name" ]; then
+    ln -s "$NVM_HOMEBREW_DIR/$file_name" "$NVM_DIR/$file_name"
+  fi
+}
+
+if [ -d "$NVM_HOMEBREW_DIR" ]; then
+  export NVM_DIR
+
+  if [ ! -d "$NVM_DIR" ]; then
+    mkdir -p "$NVM_DIR"
+  fi
 
   npm config delete prefix
 
-  source "$_nvm_script_path"
+  __dotfiles_symlink_nvm_file 'nvm.sh'
+  __dotfiles_symlink_nvm_file 'nvm-exec'
+
+  source "$NVM_DIR/nvm.sh"
 fi

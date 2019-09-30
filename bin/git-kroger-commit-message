@@ -5,9 +5,15 @@ IFS=$'\n\t'
 function __dotfiles-parse-kroger-commit-message() {
   local commit_message
   local ticket_name
+  local branch_name
 
   commit_message="${1}"
+  branch_name="${2:-master}"
   ticket_name="$(git-kroger-ticket --print)"
+
+  if [ "$commit_message" == "--merge" ] || [ "$commit_message" == "-m" ]; then
+    commit_message="Merge upstream changes from ${branch_name}"
+  fi
 
   echo "${ticket_name} | Wes | ${commit_message}"
 }
@@ -15,9 +21,22 @@ function __dotfiles-parse-kroger-commit-message() {
 function __dotfiles-git-kroger-commit-message() {
   local commit_message
   local action
+  local gkcm_branch_name
+  local temp_swap
 
-  commit_message="$(__dotfiles-parse-kroger-commit-message "${1:-}")"
+  commit_message="${1:-}"
   action="${2:-}"
+  gkcm_branch_name="${3:-master}"
+
+  if [ "$commit_message" == "--merge" ] || [ "$commit_message" == "-m" ]; then
+    if [ "$action" != "--print" ]; then
+      temp_swap="${gkcm_branch_name}"
+      gkcm_branch_name="${action}"
+      action="${temp_swap}"
+    fi
+  fi
+
+  commit_message="$(__dotfiles-parse-kroger-commit-message "${commit_message}" ${gkcm_branch_name})"
 
   if [ "$action" == "--print" ]; then
     echo $commit_message

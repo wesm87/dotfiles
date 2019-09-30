@@ -9,7 +9,7 @@ function __dotfiles-get-kroger-ticket-from-git-branch() {
   branch_name="$(git branch-name)"
   ticket_name="${branch_name##*/}"
 
-  if [[ "${ticket_name}" =~ ^DCPART[A-Z]-[0-9]{5}$ ]]; then
+  if [[ "${ticket_name}" =~ ^DCP(ART[A-Z]|EXP)-[0-9]+$ ]]; then
     echo "${ticket_name}"
   else
     echo 'NOJIRA'

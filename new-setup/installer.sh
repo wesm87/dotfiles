@@ -36,14 +36,14 @@ brew upgrade
 
 # Tap additional sources for Homebrew and Cask
 brew tap \
-  caskroom/cask \
-  caskroom/fonts \
-  caskroom/versions \
+  homebrew/cask-fonts \
+  homebrew/cask-versions \
   homebrew/completions \
   homebrew/core \
   homebrew/dupes \
   homebrew/php \
-  homebrew/services
+  homebrew/services \
+  burnsra/tap
 
 # GNU core utilities (those that come with OS X are outdated)
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
@@ -58,7 +58,7 @@ brew install gnu-sed
 
 # Bash 4
 brew install bash
-brew install bash-completion2
+brew install bash-completion@2
 brew install brew-cask-completion
 
 BASHPATH="$(brew --prefix)/bin/bash"
@@ -68,19 +68,19 @@ chsh -s $BASHPATH # will set for current user only.
 # Generic Colorizer
 brew install grc
 
-# Install wget with IRI support
-brew install wget --with-iri
+# Install wget
+brew install wget
 
 # Install more recent versions of some OS X tools
-brew install homebrew/dupes/grep
-brew install homebrew/dupes/screen
+brew install grep
+brew install screen
 
 # Install tmux and tmuxinator
 brew install tmux
 gem install tmuxinator
 
 # Install Vim and Vundle
-brew install vim --with-override-system-vi
+brew install vim
 if ! [ -f "$HOME/.vim/bundle/Vundle.vim" ]; then
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
@@ -112,24 +112,19 @@ brew install hub
 # -- Other git-related tools
 brew install bash-git-prompt
 
-# ImageMagick w/ WebP support
-brew install imagemagick --with-webp
+# ImageMagick
+brew install imagemagick
 
-# FFmpeg w/ WebM and AAC support
-brew install ffmpeg \
-  --with-libvpx \
-  --with-fdk-aac \
-  --with-x265 \
-  --with-tools \
-  --with-freetype \
-  --with-libass
+# FFmpeg
+brew install ffmpeg
 
 # Some other useful tools
 brew install \
   pv \
   rename \
   tree \
-  zopfli
+  zopfli \
+  stormssh
 
 # QuickLook plugins
 brew cask install \
@@ -145,7 +140,7 @@ brew cask install \
 brew cask install \
   google-chrome \
   firefox \
-  caskroom/versions/firefox-developer-edition
+  firefox-developer-edition
 
 # Developer tools
 brew cask install \
@@ -157,7 +152,8 @@ brew cask install \
   postman \
   imagealpha \
   imageoptim \
-  gpgtools
+  gpg-suite \
+  spike
 
 # Some other useful apps
 brew cask install \
@@ -171,7 +167,8 @@ brew cask install \
   istat-menus \
   product-hunt \
   macdown \
-  kaomoji
+  chai \
+  the-unarchiver
 
 # Pygments (allows for syntax-highlighted terminal output)
 sudo easy_install -U Pygments
@@ -180,7 +177,7 @@ sudo easy_install -U Pygments
 echo 'gem: --no-document' > ~/.gemrc
 brew install rbenv
 eval "$(rbenv init -)"
-RBENV_VERSION=${RBENV_VERSION:-'2.4.2'}
+RBENV_VERSION=${RBENV_VERSION:-'2.6.5'}
 rbenv install $RBENV_VERSION
 rbenv global $RBENV_VERSION
 

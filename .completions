@@ -2,23 +2,22 @@
 # shellcheck disable=1090
 
 function _bash_profile_completions() {
-  local completions_dir
-  local brew_completions_dir
+  local brew_prefix
+  local custom_completions_dir
 
-  completions_dir="$HOME/.dotfiles/completions"
-  brew_completions_dir="$(brew --prefix)/etc/bash_completion.d"
+  brew_prefix="$(brew --prefix)"
+  custom_completions_dir="$HOME/.dotfiles/completions"
 
   # -- Git
-  source "$completions_dir/git-completion.bash"
+  . "$custom_completions_dir/git-completion.bash"
 
-  # -- Bash
-  if [ ! -L "$brew_completions_dir/brew_bash_completion.sh" ]; then
-    ln -s "$(brew --repository)/Library/Contributions/brew_bash_completion.sh" "$brew_completions_dir"
-  fi
-
-  # -- VV
-  if [ ! -L "$brew_completions_dir/vv-completions" ] && [ -d "$(which vv)-completions" ]; then
-    ln -s "$(which vv)-completions" "$brew_completions_dir"
+  if [[ -r "${brew_prefix}/etc/profile.d/bash_completion.sh" ]]; then
+    export BASH_COMPLETION_COMPAT_DIR="$brew_prefix/etc/bash_completion.d"
+    . "${brew_prefix}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${brew_prefix}/etc/bash_completion.d/"*; do
+      [[ -r "$COMPLETION" ]] && . "$COMPLETION"
+    done
   fi
 }
 

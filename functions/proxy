@@ -5,8 +5,8 @@
 
 export PROXY_STATE_PATH="$HOME/.bash/state/"
 
-export _NETWORK_LOCATION_OFFICE="Office"
-export _NETWORK_LOCATION_VPN="Kroger VPN"
+export _NETWORK_LOCATION_WORK="Work"
+export _NETWORK_LOCATION_VPN="VPN"
 export _NETWORK_LOCATION_AUTO="Automatic"
 
 function proxy() {
@@ -22,8 +22,8 @@ function __parse_network_location() {
   local location_slug="$(slugify ${location})"
 
   case $location_slug in
-    "work" | "office") echo "$_NETWORK_LOCATION_OFFICE";;
-    "vpn" | "kroger-vpn") echo "$_NETWORK_LOCATION_VPN";;
+    "work" | "office" | "vpn") echo "$_NETWORK_LOCATION_WORK";;
+    # "vpn" | "kroger-vpn") echo "$_NETWORK_LOCATION_VPN";;
     "home" | "automatic") echo "$_NETWORK_LOCATION_AUTO";;
   esac
 }
@@ -33,7 +33,7 @@ function __proxy_switch_set_proxy() {
   local location_parsed="$(__parse_network_location "${location}")"
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_OFFICE" | "$_NETWORK_LOCATION_VPN") proxy_local;;
+    "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_VPN") proxy_local;;
     "$_NETWORK_LOCATION_AUTO") proxy_stop;;
   esac
 }
@@ -43,7 +43,7 @@ function __proxy_switch_set_location() {
   local location_parsed="$(__parse_network_location "${location}")"
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_OFFICE" | \
+    "$_NETWORK_LOCATION_WORK" | \
     "$_NETWORK_LOCATION_VPN" | \
     "$_NETWORK_LOCATION_AUTO") set-network-location "$location_parsed";;
   esac
@@ -75,7 +75,7 @@ function proxy_switch() {
   }
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_OFFICE" | \
+    "$_NETWORK_LOCATION_WORK" | \
     "$_NETWORK_LOCATION_VPN" | \
     "$_NETWORK_LOCATION_AUTO") __proxy_switch_set_all "$location";;
     *) proxy_switch_usage;;

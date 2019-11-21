@@ -11,6 +11,6 @@ if [ -d "$RBENV_ROOT" ]; then
 
   # Set global version if one isn't already set.
   if [ -z "$(rbenv global)" ]; then
-    rbenv global 2.5.3
+    rbenv global 2.6.5
   fi
 fi

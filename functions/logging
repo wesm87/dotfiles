@@ -11,7 +11,7 @@ COLOR_RESET='\033[0m'
 
 NUM_COLS=$(tput cols)
 
-function color() {
+function _color() {
   local color_code="${1:-}"
   local message="${2:-}"
 
@@ -37,7 +37,7 @@ function _bookend_() {
 }
 
 function _error() {
-  echo "$(color $COLOR_ERROR "$1")"
+  echo "$(_color $COLOR_ERROR "$1")"
 }
 
 function _error_() {
@@ -45,7 +45,7 @@ function _error_() {
 }
 
 function _warn() {
-  echo "$(color $COLOR_WARN "$1")"
+  echo "$(_color $COLOR_WARN "$1")"
 }
 
 function _warn_() {
@@ -53,7 +53,7 @@ function _warn_() {
 }
 
 function _info() {
-  echo "$(color $COLOR_INFO "$1")"
+  echo "$(_color $COLOR_INFO "$1")"
 }
 
 function _info_() {
@@ -61,7 +61,7 @@ function _info_() {
 }
 
 function _debug() {
-  echo "$(color $COLOR_DEBUG "$1")"
+  echo "$(_color $COLOR_DEBUG "$1")"
 }
 
 function _debug_() {
@@ -69,7 +69,7 @@ function _debug_() {
 }
 
 function _log() {
-  echo "$(color $COLOR_LOG "$1")"
+  echo "$(_color $COLOR_LOG "$1")"
 }
 
 function _log_() {
@@ -77,7 +77,7 @@ function _log_() {
 }
 
 function _special() {
-  echo "$(color $COLOR_SPECIAL "$1")"
+  echo "$(_color $COLOR_SPECIAL "$1")"
 }
 
 function _special_() {

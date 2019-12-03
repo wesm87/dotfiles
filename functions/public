@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Reload bash profile
+function reload-bash-profile() {
+  source $HOME/.bash_profile
+}
+
 # Check if bash function exists
 function fn-exists() {
   declare -f "$1" > /dev/null

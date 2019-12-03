@@ -6,7 +6,6 @@
 export PROXY_STATE_PATH="$HOME/.bash/state/"
 
 export _NETWORK_LOCATION_WORK="Work"
-export _NETWORK_LOCATION_VPN="VPN"
 export _NETWORK_LOCATION_AUTO="Automatic"
 
 function proxy() {
@@ -23,7 +22,6 @@ function __parse_network_location() {
 
   case $location_slug in
     "work" | "office" | "vpn") echo "$_NETWORK_LOCATION_WORK";;
-    # "vpn" | "kroger-vpn") echo "$_NETWORK_LOCATION_VPN";;
     "home" | "automatic") echo "$_NETWORK_LOCATION_AUTO";;
   esac
 }
@@ -33,7 +31,7 @@ function __proxy_switch_set_proxy() {
   local location_parsed="$(__parse_network_location "${location}")"
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_VPN") proxy_local;;
+    "$_NETWORK_LOCATION_WORK") proxy_start;;
     "$_NETWORK_LOCATION_AUTO") proxy_stop;;
   esac
 }
@@ -43,9 +41,7 @@ function __proxy_switch_set_location() {
   local location_parsed="$(__parse_network_location "${location}")"
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_WORK" | \
-    "$_NETWORK_LOCATION_VPN" | \
-    "$_NETWORK_LOCATION_AUTO") set-network-location "$location_parsed";;
+    "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_AUTO") set-network-location "$location_parsed";;
   esac
 }
 
@@ -70,28 +66,23 @@ function proxy_switch() {
     echo "proxy switch [location]"
     echo "Location can be one of the following:"
     echo "    work / office"
-    echo "    vpn / kroger-vpn"
     echo "    home / automatic"
   }
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_WORK" | \
-    "$_NETWORK_LOCATION_VPN" | \
-    "$_NETWORK_LOCATION_AUTO") __proxy_switch_set_all "$location";;
+    "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_AUTO") __proxy_switch_set_all "$location";;
     *) proxy_switch_usage;;
   esac
 }
 
 function proxy_options() {
-  echo "proxy [custom|init|local|settings|ssh|start|stop|status|vpn]"
-  echo "       custom : sets proxy settings point to user defined user:password@host:port"
-  echo "       init : sets proxy settings including vpn and ssh"
-  echo "       local : sets proxy settings point to localhost:3128"
-  echo "       settings : show the terminal environment settings"
-  echo "       start : sets proxy settings point to user defined host:3128"
-  echo "       stop : disables the proxy"
-  echo "       status : show the status of the environment and proxy settings"
-  echo "       vpn : sets proxy settings for junos pulse, pulse.pac"
+  echo "proxy [switch|start|stop|init|env|status]"
+  echo "       switch : switch between home and work network locations with proxy automatically enabled or disabled"
+  echo "       start : enabled the proxy"
+  echo "       stop : disable the proxy"
+  echo "       init : initial setup for proxy including vpn and ssh"
+  echo "       env : show the proxy environment variables"
+  echo "       status : show the proxy status (active / inactive)"
   echo ""
   echo "This terminal environment the proxy status is:"
 
@@ -116,29 +107,31 @@ function proxy_init() {
 
   __proxy_make_state_dir
 
-  local company=$(proxy_state_confirm_company)
-  local host=$(__proxy_state_get_cache "host")
-  local port
-  local user
-  local pass
-  local use_host
-
-  if [[ -n "$host" ]]; then
-    read -p "Use this proxy host '$host'? (y, n): " use_host
-    if [[ "$use_host" != "y" ]] && [[ "$use_host" != "yes" ]]; then
-      read -p "Proxy host or IP (default: localhost): " host
-    fi
-  fi
-  read -p "Port (default: 3128): " port
-  read -p "Username (default: ''): " user
-  read -p "Password (default: ''): " -s pass &&  echo -e " "
-  host=${host:-"localhost"}
-  port=${port:-"3128"}
-
-  proxy_run $company $host $port $user $pass
-  proxy_vpn -d $company -p $host
+  proxy_init_vpn
+  proxy_start
 
   __proxy_state_set_cache init true
+}
+
+function proxy_init_vpn() {
+  local PULSE_PAC="/Library/Frameworks/pulse.pac"
+
+  if [[ -e "${PULSE_Z}" ]]; then
+    echo "file exists: ${PULSE_PAC}"
+    #unlock the file
+    sudo chflags nouchg $PULSE_PAC
+
+    echo "----[OLD pulse.pac]----"
+    cat $PULSE_PAC
+  else
+    echo "creating file: ${PULSE_PAC}"
+  fi
+
+  # create pulse.pac
+  echo 'function FindProxyForURL(url, host) {return "PROXY 127.0.0.1:3128";}' | sudo tee "${PULSE_PAC}" > /dev/null
+
+  #lock the file
+  sudo chflags uchg $PULSE_PAC
 }
 
 function __proxy_make_state_dir() {
@@ -182,28 +175,18 @@ function proxy_stop() {
   __proxy_state_set_cache state stop
 }
 
-function proxy_run() {
-  local -r company=$1
-  local -r host=$2
-  local -r port=$3
-  local -r username=$4
-  local -r password=$5
+function proxy_start() {
+  local -r host='localhost'
+  local -r port='3128'
 
   __proxy_make_state_dir
-  __proxy_state_set_cache company "$company"
-  __proxy_state_set_cache host "$host"
   __proxy_state_set_cache state run
 
-  if [ -z "${username}" ] && [ -z "${password}" ]; then
-    http_proxy_value="http://${host}:${port}"
-    https_proxy_value="http://${host}:${port}"
-  else
-    http_proxy_value="http://${username}:${password}@${host}:${port}"
-    https_proxy_value="http://${username}:${password}@${host}:${port}"
-  fi
+  http_proxy_value="http://${host}:${port}"
+  https_proxy_value="http://${host}:${port}"
 
   # no_proxy_value="localhost,127.0.0.1,192.168/16,169.254/16,10.*,www-local.*,*.local"
-  no_proxy_value="$(local-ip),*.${company},localhost,127.0.0.1,192.168.0.{1..20},172.16.0.0/1,www-local.*,pay-local.*,*.local,*.test"
+  no_proxy_value="$(local-ip),*.kroger.com,localhost,127.0.0.1,192.168.0.{1..20},172.16.0.0/1,www-local.*,pay-local.*,*.local,*.test"
 
   if [[ -n "$(which npm)" ]]; then
     npm config set strict-ssl false
@@ -276,121 +259,7 @@ function __proxy_state_get_cache() {
   echo $value
 }
 
-function proxy_state_confirm_company() {
-  local company=$(__proxy_state_get_cache "company")
-
-  if [[ -n "$company" ]]; then
-    read -p "Use this company domain '$company'? (y, n): " use_company
-    if [[ "$use_company" != "y" ]] && [[ "$use_company" != "yes" ]]; then
-      company=$(proxy_state_require_company)
-    fi
-  else
-    company=$(proxy_state_require_company)
-  fi
-
-  echo $company
-}
-
-function proxy_state_get_company() {
-  local company=$(__proxy_state_get_cache "company")
-
-  if [[ -z "$company" ]]; then
-    company=$(proxy_state_require_company)
-  fi
-
-  __proxy_state_set_cache "company" "$company"
-  echo $company
-}
-
-function proxy_state_require_company() {
-  local company
-
-  while [[ -z "$company" ]]; do
-    read -p "Company host (ie. company.com): " company
-  done
-
-  __proxy_state_set_cache "company" "$company"
-  echo $company
-}
-
-function proxy_state_confirm_host() {
-  local host=$(__proxy_state_get_cache "host")
-
-  if [[ -n "$host" ]]; then
-    read -p "Use this proxy host '$host'? (y, n): " use_host
-    if [[ "$use_host" != "y" ]] && [[ "$use_host" != "yes" ]]; then
-      host=$(proxy_state_require_host)
-    fi
-  else
-    host=$(proxy_state_require_host)
-  fi
-
-  echo $host
-}
-
-function proxy_state_get_host() {
-  local host=$(__proxy_state_get_cache "host")
-
-  if [[ -z "$host" ]]; then
-    host=$(proxy_state_require_host)
-  fi
-
-  echo $host
-}
-
-function proxy_state_require_host() {
-  local host
-
-  while [[ -z "$host" ]]; do
-    read -p "Proxy host/IP (ie. 10.0.0.1): " host
-  done
-
-  __proxy_state_set_cache "host" "$host"
-  echo $host
-}
-
-function proxy_local() {
-  local company="$(proxy_state_get_company)"
-  local host="localhost"
-  local port="3128"
-
-  proxy_run $company $host $port
-}
-
-function proxy_start() {
-  local company=$(__proxy_state_get_cache "company")
-  local host=$(__proxy_state_get_cache "host")
-  local port="3128"
-
-  if [[ -n "$host" ]]; then
-    read -p "Use this proxy host '$host' (y, n): " use_host
-    if [[ "$use_host" != "y" ]] && [[ "$use_host" != "yes" ]]; then
-      read -p "Host or IP: " host
-    fi
-  fi
-
-  proxy_run $company $host $port
-}
-
-function proxy_custom() {
-  local company="$(proxy_state_get_company)"
-  local host
-  local port
-  local user
-  local pass
-
-  read -p "Username: " user && echo -e ""
-  read -p "Password: " -s pass && echo -e ""
-  read -p "Domain: " host && echo -e ""
-  read -p "Port: " port && echo -e ""
-
-  proxy_run $company $host $port $user $pass
-}
-
-function proxy_settings() {
-  echo ''
-  echo "=====[Settings]Shell Proxy=====";
-  echo ''
+function proxy_env() {
   if [ -z "${NO_PROXY}" ] && [ -z "${HTTP_PROXY}" ]; then
     echo "=====[INACTIVE]=====";
     echo ''
@@ -416,116 +285,18 @@ function proxy_status() {
   echo $status
 }
 
-function proxy_vpn() {
-  local OPTIND
-  local FLAG
-  local HELP
-  local PROXY_HOST
-  local NEW_COMPANY_DOMAIN
-  local OLD_COMPANY_DOMAIN="company.com"
-  local PULSE_PAC="/Library/Frameworks/pulse.pac"
-
-  function proxy_vpn_usage() {
-    echo "Usage"
-    echo "proxy vpn -d [internal host] -p [proxy host name]"
-    echo "-d | internal host, likely your company host (ie. company.com)"
-    echo "-p | proxy host name or ip (ie. localhost)"
-    HELP="help"
-  }
-
-  while getopts "p:d:" FLAG "$@"; do
-    case "${FLAG}" in
-      d) NEW_COMPANY_DOMAIN="${OPTARG}";;
-      p) PROXY_HOST="${OPTARG}";;
-      *) proxy_vpn_usage;;
-    esac
-  done
-
-  echo "NEW_COMPANY_DOMAIN"
-  echo $NEW_COMPANY_DOMAIN
-  echo "PROXY_HOST"
-  echo $PROXY_HOST
-
-  if [[ -z "${NEW_COMPANY_DOMAIN}" ]] || [[ -z "${PROXY_HOST}" ]]; then
-    proxy_vpn_usage
-  fi
-
-  # if help, then just exit
-  if [[ -n "${HELP}" ]]; then
-    return
-  fi
-
-  # Shift option index so that $1 now refers to the first argument
-  shift $(($OPTIND - 1))
-
-  if [[ -e "${PULSE_Z}" ]]; then
-    echo "file exists: ${PULSE_PAC}"
-    #unlock the file
-    sudo chflags nouchg $PULSE_PAC
-  fi
-
-  echo "----[OLD pulse.pac]----"
-  cat $PULSE_PAC
-
-  echo "creating file: ${PULSE_PAC}"
-  # create pulse.pac
-  sudo tee "${PULSE_PAC}" > /dev/null <<EOF
-var proxyHost = "proxy.company.com"
-function FindProxyForURL(url, host) {
-  // If the hostname matches, send direct.
-  if (
-    dnsDomainIs(host, "company.com") ||
-    shExpMatch(host, "(*.company.com|company.com)")
-  ) {
-    return "DIRECT";
-  }
-
-  // If the requested website is hosted within the internal network, send direct.
-  if (
-    isPlainHostName(host) ||
-    shExpMatch(host, "*.local") ||
-    shExpMatch(host, "*.test") ||
-    isInNet(dnsResolve(host), "10.0.0.0", "255.0.0.0") ||
-    isInNet(dnsResolve(host), "172.16.0.0",  "255.240.0.0") ||
-    isInNet(dnsResolve(host), "192.168.0.0",  "255.255.0.0") ||
-    isInNet(dnsResolve(host), "127.0.0.0", "255.255.255.0")
-  ) {
-    return "DIRECT";
-  }
-
-  // DEFAULT RULE: All other traffic, use below proxies, in fail-over order.
-  return "PROXY "+ proxyHost +":3128";
-}
-EOF
-
-  echo "Updating pulse.pac"
-  sudo sed -i "s/proxyHost = \"[A-Za-z.]\+\"/proxyHost = \"${PROXY_HOST}\"/g" $PULSE_PAC
-  sudo sed -i "s/${OLD_COMPANY_DOMAIN}/${NEW_COMPANY_DOMAIN}/g" $PULSE_PAC
-  echo "----[NEW pulse.pac]----"
-  cat $PULSE_PAC
-
-  #lock the file
-  sudo chflags uchg $PULSE_PAC
-}
-
 function proxy_ssh_start() {
-  local -r host=$1
-  local -r ssh_host="github.com"
-  local -r storm_args="\"${ssh_host}\" ssh.github.com:443 --o \"proxycommand=corkscrew ${host} 3128 %h %p\""
+  local storm_command
 
-  if [[ -z "${host}" ]]; then
-    oops "must provide a proxy host string as the first argument to this function" "ie. proxy_ssh_start localhost"
-    return
-  fi
-
-  # echo $(__proxy_ssh_host_exists "$ssh_host")
-  if __proxy_ssh_host_exists "${ssh_host}"; then
-      _info "Editing Host: ${ssh_host}"
-      eval "storm edit ${storm_args}"
+  if __proxy_ssh_host_exists; then
+      _info "Editing Host: github.com"
+      storm_command='edit'
     else
-      _info "Adding Host: ${ssh_host}"
-      eval "storm add ${storm_args}"
+      _info "Adding Host: github.com"
+      storm_command='add'
   fi
+
+  storm ${storm_command} 'github.com' 'ssh.github.com:443' --o 'proxycommand=corkscrew localhost 3128 %h %p'
 
   # Host github.com
   #     hostname ssh.github.com
@@ -543,7 +314,7 @@ function proxy_ssh_stop() {
 }
 
 function __proxy_ssh_host_exists() {
-  local -r search_result="$(storm search "${1}")"
+  local -r search_result="$(storm search 'github.com')"
   local -r search_result_not_found="no results found."
 
 

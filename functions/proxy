@@ -100,9 +100,9 @@ function __proxy_check_init() {
 }
 
 function proxy_init() {
-  # Make sure we have stormssh installed
+  # Make sure we have stormssh and corkscrew installed
   if [[ -z "$(brew --prefix stormssh 2>/dev/null)" ]]; then
-    brew install stormssh
+    brew install stormssh corkscrew
   fi
 
   __proxy_make_state_dir

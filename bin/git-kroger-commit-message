@@ -15,7 +15,7 @@ function __dotfiles-parse-kroger-commit-message() {
     commit_message="Merge upstream changes from ${branch_name}"
   fi
 
-  echo "${ticket_name} | Wes | ${commit_message}"
+  echo "${ticket_name} | @wes-moberly | ${commit_message}"
 }
 
 function __dotfiles-git-kroger-commit-message() {

@@ -57,9 +57,10 @@ brew install findutils
 brew install gnu-sed
 
 # Bash 4
-brew install bash
-brew install bash-completion@2
-brew install brew-cask-completion
+brew install \
+  bash \
+  bash-completion@2 \
+  brew-cask-completion
 
 BASHPATH="$(brew --prefix)/bin/bash"
 echo $BASHPATH | sudo tee -a /etc/shells
@@ -72,8 +73,7 @@ brew install grc
 brew install wget
 
 # Install more recent versions of some OS X tools
-brew install grep
-brew install screen
+brew install grep screen
 
 # Install tmux and tmuxinator
 brew install tmux
@@ -110,7 +110,7 @@ brew install git-flow-avh
 brew install hub
 
 # -- Other git-related tools
-brew install bash-git-prompt
+brew install bash-git-prompt diff-so-fancy
 
 # ImageMagick
 brew install imagemagick

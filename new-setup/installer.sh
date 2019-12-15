@@ -145,6 +145,7 @@ brew cask install \
 # Developer tools
 brew cask install \
   atom \
+  visual-studio-code \
   dash \
   sourcetree \
   github \
@@ -163,6 +164,7 @@ brew cask install \
   transmission \
   vlc \
   mplayerx \
+  elmedia-player \
   soda-player \
   istat-menus \
   product-hunt \

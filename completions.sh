@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
 # shellcheck disable=1090
 
-function _bash_profile_completions() {
+function _dotfiles_bash_completions() {
   local brew_prefix
   local custom_completions_dir
 
@@ -21,4 +20,4 @@ function _bash_profile_completions() {
   fi
 }
 
-_bash_profile_completions
+_dotfiles_bash_completions

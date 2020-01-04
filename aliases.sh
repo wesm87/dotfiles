@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # shellcheck disable=2139
 
 # Hide a file or folder
@@ -66,7 +65,6 @@ alias cleanup-dsstore='find . -name "*.DS_Store" -type f -ls -delete'
 
 # Show total size, space used, space available, etc. for each volume
 alias disk-space-report='df -P -kHl'
-alias -- disk-space?='disk-space-report' # the `--` lets us use `disk-space?` as an alias name
 
 # File size
 alias fs='stat -f "%z bytes"'
@@ -74,13 +72,12 @@ alias fs='stat -f "%z bytes"'
 # Get today's date in YYYY-MM-DD format
 alias date-today='date +%Y-%m-%d'
 alias date-now='date-today'
-alias -- date?='date-today'
 
 # Empty user Trash folder
-alias empty-trash='rm -rfv ~/.Trash'
+alias empty-trash='rm -rfv ~/.Trash/*'
 
 # Empty all the user Trash folders!
-alias -- empty-trash!='sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash'
+alias -- empty-trash!='sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash/*'
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do

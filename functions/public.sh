@@ -1,8 +1,30 @@
-#!/usr/bin/env bash
+function __dotfiles_is_bash() {
+  if [ -n "$BASH" ]; then return 0; else return 1; fi;
+}
+
+function __dotfiles_is_zsh() {
+  if [ -n "$ZSH_NAME" ]; then return 0; else return 1; fi;
+}
 
 # Reload bash profile
 function reload-bash-profile() {
   source $HOME/.bash_profile
+}
+
+# Reload zsh profile
+function reload-zsh-profile() {
+  source $HOME/.zshrc
+}
+
+# Reload profile based on current shell
+function reload-profile() {
+  if __dotfiles_is_bash; then
+    reload-bash-profile
+  fi
+
+  if __dotfiles_is_zsh; then
+    reload-zsh-profile
+  fi
 }
 
 # Check if bash function exists

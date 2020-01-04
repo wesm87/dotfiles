@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
 # shellcheck disable=1090
 
-function _bash_profile_exports() {
+function _dotfiles_exports() {
   local base_dir="$HOME/.dotfiles/exports"
   local sources=(
     secrets
@@ -19,10 +18,10 @@ function _bash_profile_exports() {
     nvm
   )
 
-  _bash_profile_includes "$base_dir" "${sources[@]}"
+  __dotfiles_profile_includes "$base_dir" "${sources[@]}"
 
   # Add user `bin` folder to `$PATH`
   export PATH="$HOME/.dotfiles/bin:$PATH"
 }
 
-_bash_profile_exports
+_dotfiles_exports

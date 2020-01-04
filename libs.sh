@@ -1,10 +1,9 @@
-#!/usr/bin/env bash
 # shellcheck disable=1090
 
-function _bash_profile_libs() {
+function __dotfiles_libs() {
   local libs_dir="$HOME/.dotfiles/libs"
 
   source $libs_dir/z/z.sh
 }
 
-_bash_profile_libs
+__dotfiles_libs

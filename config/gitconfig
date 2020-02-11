@@ -73,7 +73,7 @@
   detach            = checkout --detach
   discard           = checkout --
   merge-from        = "!. ~/.dotfiles/libs/git-helpers && __git_merge_from"
-  pull-submodules   = submodule update --recursive --remote
+  init-submodules   = submodule update --init --recursive --remote
   update-submodules = submodule update --recursive --remote
 
   # Divergence (commits we added and commits remote added)

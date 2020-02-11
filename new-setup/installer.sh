@@ -38,9 +38,7 @@ brew upgrade
 brew tap \
   homebrew/cask-fonts \
   homebrew/cask-versions \
-  homebrew/completions \
   homebrew/core \
-  homebrew/dupes \
   homebrew/php \
   homebrew/services \
   burnsra/tap

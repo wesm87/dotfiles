@@ -51,14 +51,11 @@ brew install findutils
 # GNU `sed`
 brew install gnu-sed
 
-# Bash 4
-brew install \
-  bash \
-  bash-completion@2
-
-BASHPATH="$(brew --prefix)/bin/bash"
-echo $BASHPATH | sudo tee -a /etc/shells
-chsh -s $BASHPATH # will set for current user only.
+# Bash 4 (deprecated now that zsh is the default shell)
+# brew install bash bash-completion@2
+# BASHPATH="$(brew --prefix)/bin/bash"
+# echo $BASHPATH | sudo tee -a /etc/shells
+# chsh -s $BASHPATH # will set for current user only.
 
 # Ruby + rbenv
 echo 'gem: --no-document' > ~/.gemrc

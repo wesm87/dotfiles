@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# GitHub Settings.
-
-# -- Username
-export GITHUB_USERNAME='wesm87'

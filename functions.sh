@@ -5,11 +5,17 @@ function __dotfiles_functions() {
   local sources=(
     public.sh
     private.sh
-    logging.sh
-    proxy.sh
+    # logging.sh
+    # proxy.sh
   )
 
-  __dotfiles_profile_includes "$base_dir" "${sources[@]}"
+  if [ -n "$BASH" ]; then
+    __dotfiles_profile_includes "$base_dir" "${sources[@]}"
+  fi
+
+  if [ -n "$ZSH_NAME" ]; then
+    __dotfiles_profile_includes "$base_dir" $sources
+  fi
 }
 
 __dotfiles_functions

@@ -167,6 +167,8 @@ brew cask install \
   vlc \
   elmedia-player \
   soda-player \
+  plex-media-server \
+  plex \
   istat-menus \
   product-hunt \
   macdown \

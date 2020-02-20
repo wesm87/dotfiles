@@ -35,18 +35,15 @@ brew update
 brew upgrade
 
 # Tap additional sources for Homebrew and Cask
-brew tap \
-  homebrew/cask-fonts \
-  homebrew/cask-versions \
-  homebrew/core \
-  homebrew/php \
-  homebrew/services \
-  burnsra/tap
+brew tap homebrew/cask-fonts
+brew tap homebrew/cask-versions
+brew tap homebrew/core
+brew tap homebrew/services
+brew tap burnsra/tap
 
 # GNU core utilities (those that come with OS X are outdated)
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
-brew install coreutils
-brew install moreutils
+brew install coreutils moreutils
 
 # GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed
 brew install findutils
@@ -57,12 +54,19 @@ brew install gnu-sed
 # Bash 4
 brew install \
   bash \
-  bash-completion@2 \
-  brew-cask-completion
+  bash-completion@2
 
 BASHPATH="$(brew --prefix)/bin/bash"
 echo $BASHPATH | sudo tee -a /etc/shells
 chsh -s $BASHPATH # will set for current user only.
+
+# Ruby + rbenv
+echo 'gem: --no-document' > ~/.gemrc
+brew install rbenv
+eval "$(rbenv init -)"
+RBENV_VERSION=${RBENV_VERSION:-'2.7.0'}
+rbenv install $RBENV_VERSION
+rbenv global $RBENV_VERSION
 
 # Generic Colorizer
 brew install grc
@@ -108,7 +112,7 @@ brew install git-flow-avh
 brew install hub
 
 # -- Other git-related tools
-brew install bash-git-prompt diff-so-fancy
+brew install bash-git-prompt zsh-git-prompt diff-so-fancy
 
 # ImageMagick
 brew install imagemagick
@@ -161,7 +165,6 @@ brew cask install \
   slack \
   transmission \
   vlc \
-  mplayerx \
   elmedia-player \
   soda-player \
   istat-menus \
@@ -172,14 +175,6 @@ brew cask install \
 
 # Pygments (allows for syntax-highlighted terminal output)
 sudo easy_install -U Pygments
-
-# Ruby + rbenv
-echo 'gem: --no-document' > ~/.gemrc
-brew install rbenv
-eval "$(rbenv init -)"
-RBENV_VERSION=${RBENV_VERSION:-'2.6.5'}
-rbenv install $RBENV_VERSION
-rbenv global $RBENV_VERSION
 
 # Linters
 brew install shellcheck

@@ -59,6 +59,7 @@
   un-commit         = reset --mixed HEAD~
   re-commit         = commit --amend -C HEAD
   un-stage          = reset HEAD --
+  revert-last       = revert HEAD~
   aa                = add --all
   ff                = merge --ff-only
   pull-ff           = pull --ff-only

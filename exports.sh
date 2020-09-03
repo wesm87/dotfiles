@@ -3,12 +3,14 @@
 function _dotfiles_exports() {
   local base_dir="$HOME/.dotfiles/exports"
   local sources=(
-    rbenv
-    yarn
+    path
     gnu-utils
     vim
+    yarn
     z
     nvm
+    # rbenv
+    rvm
   )
 
   if [ -n "$BASH" ]; then
@@ -29,9 +31,6 @@ function _dotfiles_exports() {
     __dotfiles_profile_includes "$base_dir" $sources
     __dotfiles_profile_includes "$base_dir" $zsh_only_sources
   fi
-
-  # Add user `bin` folder to `$PATH`
-  export PATH="$HOME/.dotfiles/bin:$PATH"
 }
 
 _dotfiles_exports

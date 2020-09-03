@@ -30,7 +30,7 @@ alias v='vim'
 alias tm='tmuxinator'
 alias mux='tmuxinator'
 alias cask='brew cask'
-alias ungz='gunzip -k'
+alias pzip='zip -e'
 
 ###
 # time to upgrade `ls`

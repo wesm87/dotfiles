@@ -32,14 +32,36 @@ function fn-exists() {
   declare -f "$1" > /dev/null
 }
 
+# Bash implemntation of curry
+# e.g. curry add1 add 1; add1 1; => 2
+function curry() {
+  exportfun=$1
+  shift
+  fun=$1
+  shift
+  params=$*
+  cmd=$"function $exportfun() {
+      more_params=\$*;
+      $fun $params \$more_params;
+  }"
+
+  eval $cmd
+}
+
 # Create a new directory and enter it
 function md() {
-  mkdir -p "$@" && cd "$@" || exit
+  local file_path="$1"
+  shift
+  local mkdir_args="$@"
+
+  mkdir -p "$file_path" "$mkdir_args" && cd "$file_path" || exit
 }
 
 # find shorthand
 function f() {
-  find . -name "$1" 2>&1 | grep -v 'Permission denied'
+  local pattern="$1"
+
+  find . -name "$pattern" 2>&1 | grep -v 'Permission denied'
 }
 
 # List non-hidden files and directories, long format, permissions in octal
@@ -64,6 +86,7 @@ function cdf() {
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
   local port="${1:-8000}"
+
   open "http://localhost:${port}/"
   # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
   # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
@@ -72,31 +95,37 @@ function server() {
 
 # Copy w/ progress
 function cp-p() {
-  rsync -WavP --human-readable --progress $1 $2
+  local source="$1"
+  local target="$2"
+
+  rsync -WavP --human-readable --progress "$source" "$target"
 }
 
 # get gzipped size
 function gz() {
+  local file_path="$1"
+
   echo "orig size (bytes): "
-  cat "$1" | wc -c
+  cat "$file_path" | wc -c
   echo "gzipped size (bytes): "
-  gzip -c "$1" | wc -c
+  gzip -c "$file_path" | wc -c
 }
 
 # whois a domain or a URL
 function whois() {
   local domain
-  domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
 
+  domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
   if [ -z $domain ] ; then
     domain=$1
   fi
+
   echo "Getting whois record for: $domain …"
 
   # avoid recursion
   # this is the best whois server
   # strip extra fluff
-  /usr/bin/whois -h whois.internic.net $domain | sed '/NOTICE:/q'
+  /usr/bin/whois -h whois.internic.net "$domain" | sed '/NOTICE:/q'
 }
 
 function local-ip-for-device() {
@@ -126,15 +155,17 @@ function network-info() {
 # Extract archives - use: extract <file>
 # Based on http://dotfiles.org/~pseup/.bashrc
 function extract() {
-  if [ -f "$1" ] ; then
+  local file_path="$1"
+
+  if [ -f "$file_path" ] ; then
     local filename
     local foldername
     local fullpath
     local folder_exists=false
 
-    filename="$(basename $1)"
+    filename="$(basename $file_path)"
     foldername="${filename%%.*}"
-    fullpath=$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1")
+    fullpath=$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$file_path")
 
     if [ -d "$foldername" ]; then
       folder_exists=true
@@ -147,29 +178,29 @@ function extract() {
 
     mkdir -p "$foldername" && cd "$foldername" || exit
 
-    case $1 in
-      *.tar.bz2) tar xjf "$fullpath" ;;
-      *.tar.gz) tar xzf "$fullpath" ;;
-      *.tar.xz) tar Jxvf "$fullpath" ;;
-      *.tar.Z) tar xzf "$fullpath" ;;
-      *.tar) tar xf "$fullpath" ;;
-      *.taz) tar xzf "$fullpath" ;;
-      *.tb2) tar xjf "$fullpath" ;;
-      *.tbz) tar xjf "$fullpath" ;;
-      *.tbz2) tar xjf "$fullpath" ;;
-      *.tgz) tar xzf "$fullpath" ;;
-      *.txz) tar Jxvf "$fullpath" ;;
-      *.zip) unzip "$fullpath" ;;
-      *) echo "'$1' cannot be extracted via extract()" && cd .. && ! $folder_exists && rm -r "$foldername" ;;
+    case $file_path in
+      *.tar.bz2) tar xjf "$fullpath";;
+      *.tar.gz) tar xzf "$fullpath";;
+      *.tar.xz) tar Jxvf "$fullpath";;
+      *.tar.Z) tar xzf "$fullpath";;
+      *.tar) tar xf "$fullpath";;
+      *.taz) tar xzf "$fullpath";;
+      *.tb2) tar xjf "$fullpath";;
+      *.tbz) tar xjf "$fullpath";;
+      *.tbz2) tar xjf "$fullpath";;
+      *.tgz) tar xzf "$fullpath";;
+      *.txz) tar Jxvf "$fullpath";;
+      *.zip) unzip "$fullpath";;
+      *) echo "'$file_path' cannot be extracted via extract()" && cd .. && ! $folder_exists && rm -r "$foldername" ;;
     esac
   else
-    echo "'$1' is not a valid file"
+    echo "'$file_path' is not a valid file"
   fi
 }
 
-# who is using the laptop's iSight camera?
+# who is using the laptop's camera?
 function camera-used-by() {
-  echo "Checking to see who is using the iSight camera… 📷"
+  echo "Checking to see who is using the camera… 📷"
   usedby=$(lsof | grep -w "AppleCamera\|USBVDC\|iSight" | awk '{printf $2"\n"}' | xargs ps)
   echo -e "Recent camera uses:\n$usedby"
 }
@@ -177,14 +208,17 @@ function camera-used-by() {
 # animated gifs from any video
 # from alex sexton   gist.github.com/SlexAxton/4989674
 function gifify() {
-  if [[ -n "$1" ]]; then
-  if [[ $2 == '--good' ]]; then
-    ffmpeg -i $1 -r 10 -vcodec png out-static-%05d.png
-    time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > $1.gif
-    rm out-static*.png
-  else
-    ffmpeg -i $1 -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > $1.gif
-  fi
+  local $input_file_name="$1"
+  local $quality_flag="$2"
+
+  if [[ -n "$input_file_name" ]]; then
+    if [[ "$quality_flag" == '--good' ]]; then
+      ffmpeg -i $1 -r 10 -vcodec png out-static-%05d.png
+      time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > "$input_file_name.gif"
+      rm out-static*.png
+    else
+      ffmpeg -i "$input_file_name" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$input_file_name.gif"
+    fi
   else
     echo "proper usage: gifify <input_movie.mov>. You DO need to include extension."
   fi
@@ -193,16 +227,21 @@ function gifify() {
 # turn that video into webm.
 # brew reinstall ffmpeg --with-libvpx
 function webmify(){
-  ffmpeg -i $1 -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y $2 $1.webm
+  local $input_file_name="$1"
+  local $output_file_name="$2"
+
+  ffmpeg -i "$input_file_name" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$output_file_name" "$input_file_name.webm"
 }
 
 # visual studio code. a la `subl`
 function vscode() {
+  local file_path
+
   if [[ $# = 0 ]]; then
     open -a "Visual Studio Code"
   else
-    [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
-    open -a "Visual Studio Code" --args "$F"
+    [[ $1 = /* ]] && file_path="$1" || file_path="$PWD/${1#./}"
+    open -a "Visual Studio Code" --args "$file_path"
   fi
 }
 
@@ -212,19 +251,19 @@ function shellswitch() {
   chsh -s "$(brew --prefix)/bin/${1}"
 }
 
+curry shellswitch-bash shellswitch 'bash'
+curry shellswitch-zsh shellswitch 'zsh'
+
 function git-root() {
   git rev-parse --is-inside-work-tree >& /dev/null
+  local git_return="$?"
 
-  if [ "${?}" == "128" ]; then
+  if [ "$git_return" == "128" ]; then
     echo 'Not a git repository'
   else
     cd "$(git rev-parse --show-toplevel)" || exit
   fi
 }
-
-TERMINAL_TITLE_TARGET_ALL=0
-TERMINAL_TITLE_TARGET_TAB=1
-TERMINAL_TITLE_TARGET_WINDOW=2
 
 function set-terminal-title-for-target() {
   local target="${1:-}"
@@ -235,30 +274,22 @@ function set-terminal-title-for-target() {
   fi
 }
 
-function set-terminal-title() {
-  local title="${1:-}"
+curry set-terminal-title set-terminal-title-for-target '0'
+curry set-terminal-tab-title set-terminal-title-for-target '1'
+curry set-terminal-window-title set-terminal-title-for-target '2'
 
-  set-terminal-title-for-target $TERMINAL_TITLE_TARGET_ALL "$title"
-}
+function set-wifi-status() {
+  local status="$1"
 
-function set-terminal-window-title() {
-  local title="${1:-}"
-
-  set-terminal-title-for-target $TERMINAL_TITLE_TARGET_WINDOW "$title"
-}
-
-function set-terminal-tab-title() {
-  local title="${1:-}"
-
-  set-terminal-title-for-target $TERMINAL_TITLE_TARGET_TAB "$title"
+  sudo ifconfig en0 "$status"
 }
 
 function disable-wifi() {
-  sudo ifconfig en0 down
+  set-wifi-status down
 }
 
 function enable-wifi() {
-  sudo ifconfig en0 up
+  set-wifi-status up
 }
 
 function toggle-wifi() {

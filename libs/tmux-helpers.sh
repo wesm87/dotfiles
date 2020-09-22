@@ -7,7 +7,7 @@ get_tmux_cwd() {
 }
 
 ###
-## Show git banch.
+## Show git branch.
 ###
 
 branch_symbol=''
@@ -32,8 +32,7 @@ show_git_branch() {
 }
 
 __parse_git_branch() {
-  type git >/dev/null 2>&1
-  if [ "$?" -ne 0 ]; then
+  if ! git &>/dev/null; then
     return
   fi
 

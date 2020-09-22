@@ -1,7 +1,7 @@
 # shellcheck disable=1090
 
 # Increase the max number of files that can be open at once
-ulimit -n 65536 65536 &>/dev/null
+# ulimit -n 65536 65536 &>/dev/null
 
 if [ -n "$BASH" ]; then
   source "$HOME/.dotfiles/.profile.bash"

@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 current_user="$(whoami)"
 
 export _Z_DATA="$HOME/.dotfiles/data/z"

@@ -4,6 +4,10 @@ function _dotfiles_bash_completions() {
   local brew_prefix
   local custom_completions_dir
 
+  if ! is-brew-installed; then
+    return
+  fi
+
   brew_prefix="$(brew --prefix)"
   custom_completions_dir="$HOME/.dotfiles/completions"
 

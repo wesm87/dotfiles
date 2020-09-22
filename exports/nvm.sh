@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # shellcheck disable=1090
 
 NVM_DIR="$HOME/.nvm"

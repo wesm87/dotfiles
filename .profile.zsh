@@ -17,17 +17,11 @@ function __dotfiles_profile() {
     functions.sh
     aliases.sh
     exports.sh
-    libs.sh
     .profile.local
+    oh-my-zsh.zsh
   )
 
   __dotfiles_profile_includes "$base_dir" $sources
-
-  local zsh_auto_suggest_path="$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-
-  if [ -f "$zsh_auto_suggest_path" ]; then
-    source "$zsh_auto_suggest_path"
-  fi
 }
 
 __dotfiles_profile

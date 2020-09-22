@@ -8,12 +8,14 @@ function __dotfiles_is_zsh() {
 
 # Reload bash profile
 function reload-bash-profile() {
-  source $HOME/.bash_profile
+  # shellcheck disable=1090
+  source "$HOME/.bash_profile"
 }
 
 # Reload zsh profile
 function reload-zsh-profile() {
-  source $HOME/.zshrc
+  # shellcheck disable=1090
+  source "$HOME/.zshrc"
 }
 
 # Reload profile based on current shell
@@ -45,16 +47,23 @@ function curry() {
       $fun $params \$more_params;
   }"
 
-  eval $cmd
+  eval "$cmd"
 }
 
 # Create a new directory and enter it
 function md() {
   local file_path="$1"
   shift
-  local mkdir_args="$@"
+  local mkdir_args="$*"
 
   mkdir -p "$file_path" "$mkdir_args" && cd "$file_path" || exit
+}
+
+function copy_dir() {
+  local source="$1"
+  local dest="${2:-.}"
+
+  cp -rT "$source" "$dest"
 }
 
 # find shorthand
@@ -66,7 +75,8 @@ function f() {
 
 # List non-hidden files and directories, long format, permissions in octal
 function la() {
-  ls -l  "$@" | awk '{
+  # shellcheck disable=2012
+  ls -l  "$*" | awk '{
     k=0;
     for (i=0;i<=8;i++)
     k+=((substr($1,i+2,1)~/[rwx]/) *2^(8-i));
@@ -106,7 +116,7 @@ function gz() {
   local file_path="$1"
 
   echo "orig size (bytes): "
-  cat "$file_path" | wc -c
+  wc -c < "$file_path"
   echo "gzipped size (bytes): "
   gzip -c "$file_path" | wc -c
 }
@@ -116,7 +126,7 @@ function whois() {
   local domain
 
   domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
-  if [ -z $domain ] ; then
+  if [ -z "$domain" ] ; then
     domain=$1
   fi
 
@@ -129,16 +139,18 @@ function whois() {
 }
 
 function local-ip-for-device() {
-  echo "$(ipconfig getifaddr $1)"
+  ipconfig getifaddr "$1"
 }
 
 function local-ip() {
-  echo "$(local-ip-for-device en0 || local-ip-for-device en1)"
+  local-ip-for-device en0 || local-ip-for-device en1
 }
 
 function network-info() {
   function print-ip() {
-    echo "📶  $(local-ip-for-device $1)";
+    local local_ip
+    local_ip=$(local-ip-for-device "$1")
+    echo "📶 $local_ip";
   }
   export -f print-ip
 
@@ -163,13 +175,13 @@ function extract() {
     local fullpath
     local folder_exists=false
 
-    filename="$(basename $file_path)"
+    filename=$(basename "$file_path")
     foldername="${filename%%.*}"
     fullpath=$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$file_path")
 
     if [ -d "$foldername" ]; then
       folder_exists=true
-      read -p "$foldername already exists, do you want to overwrite it? (y/n) " -n 1
+      read -r -p "$foldername already exists, do you want to overwrite it? (y/n) " -n 1
       echo
       if [[ $REPLY =~ ^[Nn]$ ]]; then
         return
@@ -208,12 +220,12 @@ function camera-used-by() {
 # animated gifs from any video
 # from alex sexton   gist.github.com/SlexAxton/4989674
 function gifify() {
-  local $input_file_name="$1"
-  local $quality_flag="$2"
+  local input_file_name="$1"
+  local quality_flag="$2"
 
   if [[ -n "$input_file_name" ]]; then
     if [[ "$quality_flag" == '--good' ]]; then
-      ffmpeg -i $1 -r 10 -vcodec png out-static-%05d.png
+      ffmpeg -i "$1" -r 10 -vcodec png out-static-%05d.png
       time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > "$input_file_name.gif"
       rm out-static*.png
     else
@@ -227,8 +239,8 @@ function gifify() {
 # turn that video into webm.
 # brew reinstall ffmpeg --with-libvpx
 function webmify(){
-  local $input_file_name="$1"
-  local $output_file_name="$2"
+  local input_file_name="$1"
+  local output_file_name="$2"
 
   ffmpeg -i "$input_file_name" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$output_file_name" "$input_file_name.webm"
 }
@@ -248,7 +260,11 @@ function vscode() {
 # `shellswitch [bash |zsh]`
 #   Must be in /etc/shells
 function shellswitch() {
-  chsh -s "$(brew --prefix)/bin/${1}"
+  if is-brew-installed; then
+    chsh -s "$(brew --prefix)/bin/${1}"
+  else
+    chsh -s "/bin/${1}"
+  fi
 }
 
 curry shellswitch-bash shellswitch 'bash'
@@ -269,7 +285,7 @@ function set-terminal-title-for-target() {
   local target="${1:-}"
   local title="${2:-}"
 
-  if [ ! -z "$target" ]; then
+  if [ -n "$target" ]; then
     printf '\e]%s;%s\a' "$target" "$title"
   fi
 }
@@ -304,17 +320,40 @@ function spoof-mac-address() {
 }
 
 function get-wifi-mac-address() {
-  echo "$(ifconfig | grep ether | head -n 1 | field 2)"
+  ifconfig | grep ether | head -n 1 | field 2
 }
 
 function get-network-location() {
-  echo "$(scselect 2>&1 | grep '^ \*' | sed -e 's:^[^(]*(\([^)]*\))$:\1:g')"
+  scselect 2>&1 | grep '^ \*' | sed -e 's:^[^(]*(\([^)]*\))$:\1:g'
 }
 
 function set-network-location() {
   scselect "${1}"
 }
 
-function docker-clean-images() {
-  docker rmi "$(docker images | grep '^<none>' | field 3)"
+function docker-list-all-ids() {
+  docker ps -a -q
+}
+
+function docker-list-unused-ids() {
+  docker images | grep '^<none>' | field 3
+}
+
+function docker-clean-unused() {
+  # shellcheck disable=2046
+  docker rmi "$*" $(docker-list-unused-ids)
+}
+
+function docker-stop-all() {
+  # shellcheck disable=2046
+  docker stop $(docker-list-all-ids)
+}
+
+function docker-remove-all() {
+  # shellcheck disable=2046
+  docker rm $(docker-list-all-ids)
+}
+
+function is-brew-installed() {
+  which brew &>/dev/null
 }

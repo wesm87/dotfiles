@@ -22,11 +22,6 @@ alias cp='cp -v'
 alias mkdir='mkdir -p'
 
 # Shortcuts
-if [ -d "$(brew --prefix hub)" ]; then
-  alias git='hub'
-fi
-alias g='git'
-alias v='vim'
 alias tm='tmuxinator'
 alias mux='tmuxinator'
 alias cask='brew cask'

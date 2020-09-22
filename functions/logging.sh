@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # shellcheck disable=2155
 
 COLOR_ERROR='\033[31m'   # red
@@ -21,9 +20,9 @@ function _color() {
 function repeat_text() {
   local text_to_repeat="${1}"
   local eval_code="echo {1..${2}}"
-  local reps_range="$(eval ${eval_code})"
+  local reps_range=$(eval "${eval_code}")
 
-  printf "${text_to_repeat}"'%.s' $reps_range
+  printf "${text_to_repeat}"'%.s' "$reps_range"
 }
 
 function _bookend_() {
@@ -31,57 +30,63 @@ function _bookend_() {
   local message_suffix=" ]"
   local message="${message_prefix}${1}${message_suffix}"
   local message_chars=${#message}
-  local diff=$((${NUM_COLS}-${message_chars}))
+  local diff=$((NUM_COLS-message_chars))
 
   echo "${message}$(repeat_text '–' ${diff})"
 }
 
 function _error() {
-  echo "$(_color $COLOR_ERROR "$1")"
+  _color "$COLOR_ERROR" "$1"
 }
 
 function _error_() {
-  echo "$(_error "$(_bookend_ "$1")")"
+  local message=$(_bookend_ "$1")
+  _error "$message"
 }
 
 function _warn() {
-  echo "$(_color $COLOR_WARN "$1")"
+  _color "$COLOR_WARN" "$1"
 }
 
 function _warn_() {
-  echo "$(_warn "$(_bookend_ "$1")")"
+  local message=$(_bookend_ "$1")
+  _warn "$message"
 }
 
 function _info() {
-  echo "$(_color $COLOR_INFO "$1")"
+  _color "$COLOR_INFO" "$1"
 }
 
 function _info_() {
-  echo "$(_info "$(_bookend_ "$1")")"
+  local message=$(_bookend_ "$1")
+  _info "$message"
 }
 
 function _debug() {
-  echo "$(_color $COLOR_DEBUG "$1")"
+ " _color $COLOR_DEBUG" "$1"
 }
 
 function _debug_() {
-  echo "$(_debug "$(_bookend_ "$1")")"
+  local message=$(_bookend_ "$1")
+  _debug "$message"
 }
 
 function _log() {
-  echo "$(_color $COLOR_LOG "$1")"
+ " _color $COLOR_LOG" "$1"
 }
 
 function _log_() {
-  echo "$(_log "$(_bookend_ "$1")")"
+  local message=$(_bookend_ "$1")
+  _log "$message"
 }
 
 function _special() {
-  echo "$(_color $COLOR_SPECIAL "$1")"
+ " _color $COLOR_SPECIAL" "$1"
 }
 
 function _special_() {
-  echo "$(_special "$(_bookend_ "$1")")"
+  local message=$(_bookend_ "$1")
+  _special "$message"
 }
 
 function oops() {

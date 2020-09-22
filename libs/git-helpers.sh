@@ -34,24 +34,6 @@ BRANCH_CONTENTS="%(contents:subject)"
 
 BRANCH_FORMAT="$BRANCH_PREFIX}$BRANCH_REF}$BRANCH_HASH}$BRANCH_DATE}$BRANCH_AUTHOR}$BRANCH_CONTENTS"
 
-ANSI_BLACK='\033[30m'
-ANSI_BLACK_BOLD='\033[0;30;1m'
-ANSI_RED='\033[31m'
-ANSI_RED_BOLD='\033[0;31;1m'
-ANSI_GREEN='\033[32m'
-ANSI_GREEN_BOLD='\033[0;32;1m'
-ANSI_YELLOW='\033[33m'
-ANSI_YELLOW_BOLD='\033[0;33;1m'
-ANSI_BLUE='\033[34m'
-ANSI_BLUE_BOLD='\033[0;34;1m'
-ANSI_MAGENTA='\033[35m'
-ANSI_MAGENTA_BOLD='\033[0;35;1m'
-ANSI_CYAN='\033[36m'
-ANSI_CYAN_BOLD='\033[0;36;1m'
-ANSI_WHITE='\033[37m'
-ANSI_WHITE_BOLD='\033[0;37;1m'
-ANSI_RESET='\033[0m'
-
 function __git_show_head() {
   __git_pretty_log -1
   git show -p --pretty="tformat:"
@@ -95,7 +77,7 @@ function __git_view_conflicts() {
 function __git_keep() {
   local path="${1:-'.'}"
 
-  touch ${path%/}/.keep
+  touch "${path%/}/.keep"
 }
 
 function __git_ignore() {
@@ -113,10 +95,10 @@ function __git_merge_from() {
   local current_branch="$(__git_branch_name)"
   local target_branch="${2:-$current_branch}"
 
-  git checkout $source_branch \
+  git checkout "$source_branch" \
     && git pull \
-    && git checkout $target_branch \
-    && git merge $source_branch
+    && git checkout "$target_branch" \
+    && git merge "$source_branch"
 }
 
 function __git_patch() {

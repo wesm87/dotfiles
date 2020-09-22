@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # shellcheck disable=SC2155
 
 # TODO: try using jq for json state management
@@ -13,12 +12,12 @@ function proxy() {
 
   action=${1-"options"}
   shift
-  proxy_${action} "$@"
+  "proxy_${action}" "$@"
 }
 
 function __parse_network_location() {
-  local location="$(trim "${1}")"
-  local location_slug="$(slugify ${location})"
+  local location=$(trim "${1}")
+  local location_slug=$(slugify "${location}")
 
   case $location_slug in
     "work" | "office" | "vpn") echo "$_NETWORK_LOCATION_WORK";;
@@ -101,7 +100,7 @@ function __proxy_check_init() {
 
 function proxy_init() {
   # Make sure we have stormssh and corkscrew installed
-  if [[ -z "$(brew --prefix stormssh 2>/dev/null)" ]]; then
+  if is-brew-installed && [[ -z "$(brew --prefix stormssh 2>/dev/null)" ]]; then
     brew install stormssh corkscrew
   fi
 
@@ -139,7 +138,7 @@ function __proxy_make_state_dir() {
 }
 
 function __proxy_state_set() {
-cat <<EOF > ${PROXY_STATE_PATH}.proxy
+cat <<EOF > "${PROXY_STATE_PATH}.proxy"
 #!/bin/sh
 $@
 EOF
@@ -211,7 +210,7 @@ function proxy_start() {
     git config --global https.proxy $https_proxy_value
   fi
 
-  proxy_assign $http_proxy_value $https_proxy_value $no_proxy_value
+  proxy_assign $http_proxy_value $https_proxy_value "$no_proxy_value"
   proxy_ssh_start $host
 }
 
@@ -225,16 +224,16 @@ function proxy_assign() {
   NO_PROXY_ENV="no_proxy NO_PROXY"
 
   for envar in $HTTP_PROXY_ENV; do
-    export $envar="${http_proxy_value}"
+    export "$envar"="${http_proxy_value}"
   done
   for envar in $HTTPS_PROXY_ENV; do
-    export $envar="${https_proxy_value}"
+    export "$envar"="${https_proxy_value}"
   done
   for envar in $NO_PROXY_ENV; do
-     export $envar="${no_proxy_value}"
+     export "$envar"="${no_proxy_value}"
   done
 
-  __proxy_state_set 'proxy_assign' $1 $2 $3
+  __proxy_state_set 'proxy_assign' "$1" "$2" "$3"
 }
 
 function __proxy_state_set_cache() {
@@ -256,7 +255,7 @@ function __proxy_state_get_cache() {
   file_contents="$(cat "$file")"
   value="$(trim "$file_contents")"
 
-  echo $value
+  echo "$value"
 }
 
 function proxy_env() {

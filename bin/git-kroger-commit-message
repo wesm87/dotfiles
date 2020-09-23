@@ -36,12 +36,12 @@ function __dotfiles-git-kroger-commit-message() {
     fi
   fi
 
-  commit_message="$(__dotfiles-parse-kroger-commit-message "${commit_message}" ${gkcm_branch_name})"
+  commit_message=$(__dotfiles-parse-kroger-commit-message "${commit_message}" "${gkcm_branch_name}")
 
-  if [ "$action" == "--print" ]; then
-    echo $commit_message
+  if [ "$action" == '--print' ]; then
+    echo "$commit_message"
   else
-    printf $commit_message | pbcopy
+    printf '%s' "$commit_message" | pbcopy
   fi
 }
 

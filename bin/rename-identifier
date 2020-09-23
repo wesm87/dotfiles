@@ -60,18 +60,23 @@ IFS=$'\n\t'
 #   happily rename "Day::Range" to "DayRange", behaving as you'd expect, since
 #   it's simply adding word boundaries to both sides of the string.
 
-if [ $# -lt 3 ]; then
-  echo "usage: $(basename $0) old_identifier new_identifier paths ..." >&2
-  echo "example: rename-identifier User Person {app,lib}/**/*.rb" >&2
-  exit 1
-fi
+function __dotfiles_rename_identifier() {
+  if [ $# -lt 3 ]; then
+    echo "usage: rename-identifier old_identifier new_identifier paths ..." >&2
+    echo "example: rename-identifier User Person {app,lib}/**/*.rb" >&2
+    exit 1
+  fi
 
-old=$1
-new=$2
-shift; shift
-files=$*
+  old="$1"
+  new="$2"
+  shift
+  shift
+  files="$*"
 
-files=$(ack -l '\b'$old'\b' $files)
-leader_j='nnoremap <leader>j :%s/\<'$old'\>/'$new'/gc<cr>'
-leader_k='nnoremap <leader>k :update\|:bd<cr>'
-vim -c "$leader_j" -c "$leader_k" $files
+  files=$(ack -l '\b'"$old"'\b' "$files")
+  leader_j='nnoremap <leader>j :%s/\<'$old'\>/'$new'/gc<cr>'
+  leader_k='nnoremap <leader>k :update\|:bd<cr>'
+  vim -c "$leader_j" -c "$leader_k" "$files"
+}
+
+__dotfiles_rename_identifier "$*"

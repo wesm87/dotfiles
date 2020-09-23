@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # shellcheck disable=2139
 
 # Hide a file or folder
@@ -32,9 +33,6 @@ alias pzip='zip -e'
 
 # use coreutils `ls` if possible…
 hash gls >/dev/null 2>&1 || alias gls='ls'
-
-# always use color, even when piping (to awk,grep,etc)
-export CLICOLOR_FORCE=1
 
 if gls --color > /dev/null 2>&1; then
   colorflag='--color'

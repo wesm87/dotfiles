@@ -1,9 +1,16 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
+def print_each(items)
+  items.each do |item|
+    print item.strip
+  end
+end
 
 if ARGV.any?
-  ARGV.each { |arg| print arg.strip }
+  print_each ARGV
 elsif $stdin.readlines.any?
-  $stdin.readlines.each { |line| print line.strip }
+  print_each $stdin.readlines
 else
   print ''
 end

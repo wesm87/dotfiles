@@ -2,5 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-line_number="${1:1}"
-head -$line_number | tail -1
+function __dotfiles_line() {
+  line_number="${1:1}"
+  head -"$line_number" | tail -1
+}
+
+__dotfiles_line "$*"

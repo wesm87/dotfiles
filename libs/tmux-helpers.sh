@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
+# shellcheck shell=bash
 
 get_tmux_cwd() {
   tmux display -p -F '#{pane_current_path}'
@@ -15,7 +13,7 @@ branch_symbol=''
 show_git_branch() {
   tmux_path="$(get_tmux_cwd)"
 
-  cd "$tmux_path"
+  cd "$tmux_path" || exit
 
   branch=""
   git_branch="$(__parse_git_branch)"
@@ -42,6 +40,8 @@ __parse_git_branch() {
     # attempt to get short-sha-name
     branch=":$(git rev-parse --short HEAD 2> /dev/null)"
   fi
+
+  # shellcheck disable=2181
   if [ "$?" -ne 0 ]; then
     # this must not be a git repo
     return

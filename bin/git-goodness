@@ -2,4 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-git diff "$@" | gn
+function __dotfiles_git_goodness() {
+  git diff "$*" | gn
+}
+
+__dotfiles_git_goodness "$*"

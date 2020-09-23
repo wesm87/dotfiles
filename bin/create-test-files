@@ -20,7 +20,7 @@ function __dotfiles_create_test_files_for_file_type() {
   local file_type="${2:-js}"
   local debug_only=false
 
-  for file_path in "${target_dir}"/*.$file_type; do
+  for file_path in "${target_dir}"/*."${file_type}"; do
     if [ ! -f "$file_path" ]; then
       continue
     fi
@@ -54,4 +54,4 @@ function __dotfiles_create_test_files() {
   __dotfiles_create_test_files_for_file_type "${target_dir}" 'tsx'
 }
 
-__dotfiles_create_test_files ${1:-.}
+__dotfiles_create_test_files "${1:-.}"

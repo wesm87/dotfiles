@@ -1,9 +1,13 @@
+# shellcheck shell=bash
+
 function __dotfiles_is_bash() {
-  if [ -n "$BASH" ]; then return 0; else return 1; fi;
+  [ -n "$BASH" ] && return 0
+  return 1
 }
 
 function __dotfiles_is_zsh() {
-  if [ -n "$ZSH_NAME" ]; then return 0; else return 1; fi;
+  [ -n "$ZSH_NAME" ] && return 0
+  return 1
 }
 
 # Reload bash profile

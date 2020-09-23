@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 function gnu_utils_exports() {
   if ! is-brew-installed; then
     return

@@ -24,9 +24,9 @@ function __dotfiles-git-kroger-ticket() {
   ticket_name="$(__dotfiles-get-kroger-ticket-from-git-branch)"
 
   if [ "$action" == "--print" ]; then
-    echo $ticket_name
+    echo "$ticket_name"
   else
-    printf $ticket_name | pbcopy
+    printf '%s' "$ticket_name" | pbcopy
   fi
 }
 

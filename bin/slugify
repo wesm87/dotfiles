@@ -1,15 +1,22 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-def slugify(s)
-  s.strip
+def slugify(str)
+  str.strip
     .gsub(/[^a-zA-Z0-9]+/, '-')
     .gsub(/[^a-zA-Z0-9]+$/, '')
     .gsub(/^[^a-zA-Z0-9]+/, '')
     .downcase
 end
 
+def puts_each_slugified(items)
+  items.each do |item|
+    puts slugify item
+  end
+end
+
 if ARGV.any?
-  ARGV.each { |arg| puts slugify(arg) }
+  puts_each_slugified ARGV
 else
-  $stdin.readlines.each { |line| puts slugify(line) }
+  puts_each_slugified $stdin.readlines
 end

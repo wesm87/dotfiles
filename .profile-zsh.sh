@@ -1,13 +1,15 @@
+# shellcheck shell=bash
+
 function __dotfiles_profile_includes() {
   local base_dir="${1:-}"
   shift
+  # shellcheck disable=2206
   local sources=($*)
 
+  # shellcheck disable=2128
   for file in $sources; do
-    local full_path="$base_dir/$file"
-    if [ -f "$full_path" ]; then
-      source "$full_path"
-    fi
+    # shellcheck disable=1090
+    [ -f "$base_dir/$file" ] && source "$base_dir/$file"
   done
 }
 
@@ -21,6 +23,7 @@ function __dotfiles_profile() {
     oh-my-zsh.zsh
   )
 
+  # shellcheck disable=2086,2128
   __dotfiles_profile_includes "$base_dir" $sources
 }
 

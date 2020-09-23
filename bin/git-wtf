@@ -2,20 +2,26 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ref=${1:-"HEAD"}
+function __dotfiles_git_wtf_log() {
+  local text="${1:-}"
 
-old=$ref@{1}
-new=$ref
-
-log() {
-  git log --graph --pretty=short -1 $1
+  git log --graph --pretty=short -1 "$text"
+  echo
 }
 
-echo "Old revision:"
-log $old
-echo
-echo "New revision:"
-log $new
-echo
-echo "Changes:"
-git diff --stat --summary $new $old
+function __dotfiles_git_wtf() {
+  local ref="${1:-HEAD}"
+  local old="$ref@{1}"
+  local new="$ref"
+
+  echo "Old revision:"
+  __dotfiles_git_wtf_log "$old"
+
+  echo "New revision:"
+  __dotfiles_git_wtf_log "$new"
+
+  echo "Changes:"
+  git diff --stat --summary "$new" "$old"
+}
+
+git_wtf "$*"

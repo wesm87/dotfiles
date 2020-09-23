@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # shellcheck disable=1090
 
 function __dotfiles_functions() {
@@ -14,6 +15,7 @@ function __dotfiles_functions() {
   fi
 
   if [ -n "$ZSH_NAME" ]; then
+    # shellcheck disable=2086,2128
     __dotfiles_profile_includes "$base_dir" $sources
   fi
 }

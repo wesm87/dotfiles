@@ -9,9 +9,9 @@ function __dotfiles_rename_file_extensions() {
   local new_extension="${2}"
   local target_dir="${3:-.}"
 
-  for file in $target_dir/**/*.$old_extension; do
+  for file in "$target_dir"/**/*."$old_extension"; do
     mv "$file" "${file%.${old_extension}}.${new_extension}"
   done
 }
 
-__dotfiles_rename_file_extensions "$@"
+__dotfiles_rename_file_extensions "$*"

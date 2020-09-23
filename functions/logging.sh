@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # shellcheck disable=2155
 
 COLOR_ERROR='\033[31m'   # red

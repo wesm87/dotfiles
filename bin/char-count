@@ -1,11 +1,18 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-def char_count(s)
-  s.strip.length
+def char_count(str)
+  str.strip.length
+end
+
+def char_count_each(items)
+  items.each do |item|
+    puts char_count item
+  end
 end
 
 if ARGV.any?
-  ARGV.each { |arg| puts char_count(arg) }
+  char_count_each ARGV.each
 else
-  $stdin.readlines.each { |line| puts char_count(line) }
+  char_count_each $stdin.readlines
 end

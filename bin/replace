@@ -7,15 +7,18 @@ IFS=$'\n\t'
 ##
 ## > replace foo bar **/*.rb
 ###
+function __dotfiles_replace() {
+  find_this="${1:-}"
+  shift
+  replace_with="${1:-}"
+  shift
 
-find_this="${1:-}"
-shift
-replace_with="${1:-}"
-shift
+  items=$(ag -l --nocolor "$find_this" "$*")
+  temp="${TMPDIR:-/tmp}/replace_temp_file.$$"
 
-items=$(ag -l --nocolor "$find_this" "$@")
-temp="${TMPDIR:-/tmp}/replace_temp_file.$$"
+  for item in $items; do
+    sed "s/$find_this/$replace_with/g" "$item" >"$temp" && mv "$temp" "$item"
+  done
+}
 
-for item in $items; do
-  sed "s/$find_this/$replace_with/g" "$item" > "$temp" && mv "$temp" "$item"
-done
+__dotfiles_replace "$*"

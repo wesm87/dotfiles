@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# shellcheck shell=bash
 
 # Xcode
 if ! xcode-select --print-path &> /dev/null; then
@@ -62,8 +62,8 @@ echo 'gem: --no-document' > ~/.gemrc
 brew install rbenv
 eval "$(rbenv init -)"
 RBENV_VERSION=${RBENV_VERSION:-'2.7.1'}
-rbenv install $RBENV_VERSION
-rbenv global $RBENV_VERSION
+rbenv install "$RBENV_VERSION"
+rbenv global "$RBENV_VERSION"
 
 # Generic Colorizer
 brew install grc

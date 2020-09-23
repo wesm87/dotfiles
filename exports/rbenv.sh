@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 function rbenv_exports() {
   if ! is-brew-installed; then
     return
@@ -17,5 +19,6 @@ function rbenv_exports() {
       rbenv global 2.7.1
     fi
   fi
-
 }
+
+rbenv_exports

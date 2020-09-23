@@ -1,12 +1,16 @@
+# shellcheck shell=bash
 # shellcheck disable=1090
 
-NVM_DIR="$HOME/.nvm"
-export NVM_DIR
+function nvm_exports() {
+  export NVM_DIR="$HOME/.nvm"
 
-if [ ! -d "$NVM_DIR" ]; then
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-fi
+  if [ ! -d "$NVM_DIR" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+  fi
 
-# npm config delete prefix
+  # npm config delete prefix
 
-source "$NVM_DIR/nvm.sh"
+  source "$NVM_DIR/nvm.sh"
+}
+
+nvm_exports

@@ -2,7 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-cat << EOF > .editorconfig
+function __dotfiles_editorconfig() {
+  cat <<EOF >.editorconfig
 root = true
 
 [*]
@@ -12,3 +13,6 @@ indent_style = space
 end_of_line = lf
 insert_final_newline = true
 EOF
+}
+
+__dotfiles_editorconfig

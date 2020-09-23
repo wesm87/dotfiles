@@ -1,25 +1,30 @@
+# shellcheck shell=bash
 # shellcheck disable=1090
 
 function _dotfiles_bash_completions() {
   local brew_prefix
-  local custom_completions_dir
+  local custom_completions_dir_path
+  local bash_completion_file_path
+  local bash_completion_compat_dir_path
 
   if ! is-brew-installed; then
     return
   fi
 
   brew_prefix="$(brew --prefix)"
-  custom_completions_dir="$HOME/.dotfiles/completions"
+  custom_completions_dir_path="${HOME}/.dotfiles/completions"
+  bash_completion_file_path="${brew_prefix}/etc/profile.d/bash_completion.sh"
+  bash_completion_compat_dir_path="${brew_prefix}/etc/bash_completion.d"
 
   # -- Git
-  . "$custom_completions_dir/git-completion.bash"
+  . "$custom_completions_dir_path/git-completion.bash"
 
-  if [[ -r "${brew_prefix}/etc/profile.d/bash_completion.sh" ]]; then
-    export BASH_COMPLETION_COMPAT_DIR="$brew_prefix/etc/bash_completion.d"
-    . "${brew_prefix}/etc/profile.d/bash_completion.sh"
+  if [ -r "$bash_completion_file_path" ]; then
+    export BASH_COMPLETION_COMPAT_DIR="$bash_completion_compat_dir_path"
+    source "$bash_completion_file_path"
   else
-    for COMPLETION in "${brew_prefix}/etc/bash_completion.d/"*; do
-      [[ -r "$COMPLETION" ]] && . "$COMPLETION"
+    for COMPLETION in "$bash_completion_compat_dir_path/"*; do
+      [ -r "$COMPLETION" ] && . "$COMPLETION"
     done
   fi
 }

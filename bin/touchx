@@ -2,11 +2,15 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-touch $@
-chmod +x $@
+function __dotfiles_touchx() {
+  touch "$@"
+  chmod +x "$@"
 
-for file in $@; do
-  if [[ -z $(cat "$file") ]]; then
-    echo "#!/usr/bin/env bash" > "$file"
-  fi
-done
+  for file in "$@"; do
+    if [[ -z $(cat "$file") ]]; then
+      echo "#!/usr/bin/env bash" >"$file"
+    fi
+  done
+}
+
+__dotfiles_touchx "$@"

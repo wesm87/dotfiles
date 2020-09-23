@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # shellcheck disable=1090
 
 function _dotfiles_exports() {
@@ -16,21 +17,20 @@ function _dotfiles_exports() {
   )
 
   if [ -n "$BASH" ]; then
-    local bash_only_sources=(
-      bash-prompt.sh
+    sources+=(
+      bash-git-prompt.sh
     )
 
     __dotfiles_profile_includes "$base_dir" "${sources[@]}"
-    __dotfiles_profile_includes "$base_dir" "${bash_only_sources[@]}"
   fi
 
   if [ -n "$ZSH_NAME" ]; then
-    local zsh_only_sources=(
-      zsh-prompt.sh
+    sources+=(
+      zsh-git-prompt.sh
     )
 
+    # shellcheck disable=2086,2128
     __dotfiles_profile_includes "$base_dir" $sources
-    __dotfiles_profile_includes "$base_dir" $zsh_only_sources
   fi
 }
 

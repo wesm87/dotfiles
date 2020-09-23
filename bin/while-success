@@ -5,6 +5,7 @@ IFS=$'\n\t'
 # Clear $? by doing something that always succeeds
 echo > /dev/null
 
+# shellcheck disable=2181
 while [ "$?" -eq "0" ]; do
-  "$@"
+  "$*"
 done

@@ -1,4 +1,10 @@
+# shellcheck shell=bash
 # shellcheck disable=1090
 
-HEROKU_AC_ZSH_SETUP_PATH="$HOME/.cache/heroku/autocomplete/zsh_setup"
-test -f "$HEROKU_AC_ZSH_SETUP_PATH" && source "$HEROKU_AC_ZSH_SETUP_PATH";
+function heroku_autocomplete_exports() {
+  local heroku_autocomplete_setup_path="$HOME/.cache/heroku/autocomplete/zsh_setup"
+
+  test -f "$heroku_autocomplete_setup_path" && source "$heroku_autocomplete_setup_path"
+}
+
+heroku_autocomplete_exports

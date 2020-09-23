@@ -1,13 +1,13 @@
+# shellcheck shell=bash
+
 function __dotfiles_profile_includes() {
   local base_dir="${1:-}"
   shift
   local sources="$*"
 
   for file in $sources; do
-    local full_path="$base_dir/$file"
-    if [ -f "$full_path" ]; then
-      source "$full_path"
-    fi
+    # shellcheck disable=1090
+    [ -f "$base_dir/$file" ] && source "$base_dir/$file"
   done
 }
 

@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-class WhoDoneIt
+###
+# git-whodoneit
+###
+class GitWhoDoneIt
   PATTERN = ARGV.fetch(0)
 
   def print
@@ -9,32 +13,31 @@ class WhoDoneIt
     end
   end
 
+  def pad_blame(blame)
+    padding = ' ' * (longest_blame_line - blame.length)
+    "#{blame}#{padding}"
+  end
+
   def lines
     blame_and_code.map do |blame, code|
-      blame += " " * (longest_blame_line - blame.length)
-      "#{blame} #{code}"
+      "#{pad_blame blame} #{code}"
     end
   end
 
   def blame_and_code
     @blame_and_code ||= blame_lines.map do |line|
       blame, code = line.split(')', 2)
-      blame += ")"
-      [blame, code]
+      ["#{blame})", code]
     end
   end
 
   def longest_blame_line
-    @longest_blame_line ||= blame_and_code.map do |blame, code|
-      blame.length
-    end.max
+    @longest_blame_line ||= blame_and_code.map(&:length).max
   end
 
   def blame_lines
     @blame_lines ||= matching_files.map do |filename|
-      `git blame -f -- #{filename} | grep #{PATTERN}`
-    end.map do |line|
-      line.split("\n")
+      `git blame -f -- #{filename} | grep #{PATTERN}`.split("\n")
     end.flatten
   end
 
@@ -43,4 +46,4 @@ class WhoDoneIt
   end
 end
 
-WhoDoneIt.new.print
+GitWhoDoneIt.new.print

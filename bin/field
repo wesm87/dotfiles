@@ -2,4 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-awk "{print \$$1}"
+function __dotfiles_field() {
+  awk "{print \$$1}"
+}
+
+__dotfiles_field "$*"

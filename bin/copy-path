@@ -2,4 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-printf "$(pwd)" | pbcopy
+function __dotfiles_copy_path() {
+  copy-text "$(pwd)"
+}
+
+__dotfiles_copy_path "$*"

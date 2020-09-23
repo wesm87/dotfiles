@@ -1,8 +1,9 @@
+# shellcheck shell=bash
 # shellcheck disable=1090,2154
 
 # Git Prompt (enhanced prompt with Git repo info).
 
-function bash_prompt_exports() {
+function bash_git_prompt_exports() {
   if ! is-brew-installed; then
     return
   fi
@@ -28,4 +29,4 @@ function bash_prompt_exports() {
   fi
 }
 
-bash_prompt_exports
+bash_git_prompt_exports

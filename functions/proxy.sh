@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # shellcheck disable=SC2155
 
 # TODO: try using jq for json state management

@@ -2,4 +2,4 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-which "$1" &>/dev/null
+command -v "$1" &>/dev/null

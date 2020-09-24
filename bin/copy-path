@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 function __dotfiles_copy_path() {
-  copy-text "$(pwd)"
+  pwd | copy-to-clipboard
 }
 
-__dotfiles_copy_path "$*"
+__dotfiles_copy_path

@@ -2,20 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-function __dotfiles_print_text() {
-  local text="${1:-}"
-
-  printf '%s' "$text"
-}
-
 function __dotfiles_copy_text() {
   local text="${1:-}"
 
-  if [ -n "$(which pbcopy)" ]; then
-    __dotfiles_print_text "$text" | pbcopy
-  elif [ -n "$(which xclip)" ]; then
-    __dotfiles_print_text "$text" | xclip -sel clip
-  fi
+  printf '%s' "$text" | copy-to-clipboard
 }
 
-__dotfiles_copy_text "$*"
+__dotfiles_copy_text "$1"

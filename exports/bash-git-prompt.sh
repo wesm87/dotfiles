@@ -4,7 +4,7 @@
 # Git Prompt (enhanced prompt with Git repo info).
 
 function bash_git_prompt_exports() {
-  if ! is-brew-installed; then
+  if ! is-installed brew; then
     return
   fi
 

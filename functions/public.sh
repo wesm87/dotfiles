@@ -264,7 +264,7 @@ function vscode() {
 # `shellswitch [bash |zsh]`
 #   Must be in /etc/shells
 function shellswitch() {
-  if is-brew-installed; then
+  if is-installed brew; then
     chsh -s "$(brew --prefix)/bin/${1}"
   else
     chsh -s "/bin/${1}"
@@ -340,12 +340,12 @@ function docker-list-all-ids() {
 }
 
 function docker-list-unused-ids() {
-  docker images | grep '^<none>' | field 3
+  docker images -qf "dangling=true"
 }
 
 function docker-clean-unused() {
   # shellcheck disable=2046
-  docker rmi "$*" $(docker-list-unused-ids)
+  docker rmi $(docker-list-unused-ids)
 }
 
 function docker-stop-all() {
@@ -358,6 +358,22 @@ function docker-remove-all() {
   docker rm $(docker-list-all-ids)
 }
 
-function is-brew-installed() {
-  which brew &>/dev/null
+function docker-prune-containers() {
+  docker container prune -f "$@"
+}
+
+function doocker-prune-images() {
+  docker image prune -f "$@"
+}
+
+function docker-prune-networks() {
+  docker network prune -f "$@"
+}
+
+function docker-prune-volumes() {
+  docker volume prune -f "$@"
+}
+
+function docker-prune-all() {
+  docker system prune
 }

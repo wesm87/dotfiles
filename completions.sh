@@ -7,7 +7,7 @@ function _dotfiles_bash_completions() {
   local bash_completion_file_path
   local bash_completion_compat_dir_path
 
-  if ! is-brew-installed; then
+  if ! is-installed brew; then
     return
   fi
 

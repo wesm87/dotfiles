@@ -24,7 +24,7 @@ if ! xcode-select --print-path &> /dev/null; then
 fi
 
 # Install Homebrew if it's not already installed
-if ! [ "$(which brew)" ]; then
+if ! is-installed brew; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 

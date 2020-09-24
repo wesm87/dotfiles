@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 function rbenv_exports() {
-  if ! is-brew-installed; then
+  if ! is-installed brew; then
     return
   fi
 

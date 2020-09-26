@@ -7,4 +7,4 @@ function __dotfiles_line() {
   head -"$line_number" | tail -1
 }
 
-__dotfiles_line "$*"
+__dotfiles_line "$@"

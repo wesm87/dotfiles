@@ -3,8 +3,8 @@
 
 # Git Prompt (enhanced prompt with Git repo info).
 
-function bash_git_prompt_exports() {
-  if ! is-installed brew; then
+function __dotfiles_bash_git_prompt_exports() {
+  if ! is-command brew; then
     return
   fi
 
@@ -29,4 +29,4 @@ function bash_git_prompt_exports() {
   fi
 }
 
-bash_git_prompt_exports
+__dotfiles_bash_git_prompt_exports

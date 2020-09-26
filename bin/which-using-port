@@ -8,4 +8,4 @@ function __dotfiles_which_using_port() {
   lsof -P -i ":${port}"
 }
 
-__dotfiles_which_using_port "$*"
+__dotfiles_which_using_port "$@"

@@ -14,4 +14,4 @@ function __dotfiles_rename_file_extensions() {
   done
 }
 
-__dotfiles_rename_file_extensions "$*"
+__dotfiles_rename_file_extensions "$@"

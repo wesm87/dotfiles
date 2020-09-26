@@ -101,7 +101,7 @@ function __proxy_check_init() {
 
 function proxy_init() {
   # Make sure we have stormssh and corkscrew installed
-  if is-installed brew && ! is-installed stormssh; then
+  if is-command brew && ! is-command stormssh; then
     brew install stormssh corkscrew
   fi
 
@@ -149,24 +149,24 @@ function proxy_stop() {
   proxy_assign ""
   __proxy_state_set ""
 
-  if is-installed npm; then
+  if is-command npm; then
     npm config set strict-ssl true
     npm config rm proxy
     npm config rm https-proxy
     npm config rm registry
   fi
 
-  if is-installed yarn; then
+  if is-command yarn; then
     yarn config delete registry
   fi
 
-  if is-installed apm; then
+  if is-command apm; then
     apm config set strict-ssl true
     apm config rm proxy
     apm config rm https-proxy
   fi
 
-  if is-installed git; then
+  if is-command git; then
     git config --global --unset http.proxy
     git config --global --unset https.proxy
   fi
@@ -188,25 +188,25 @@ function proxy_start() {
   # no_proxy_value="localhost,127.0.0.1,192.168/16,169.254/16,10.*,www-local.*,*.local"
   no_proxy_value="$(local-ip),*.kroger.com,localhost,127.0.0.1,192.168.0.{1..20},172.16.0.0/1,www-local.*,pay-local.*,*.local,*.test"
 
-  if is-installed npm; then
+  if is-command npm; then
     npm config set strict-ssl false
     npm config set proxy $http_proxy_value
     npm config set https-proxy $http_proxy_value
     npm config set registry http://npm.kroger.com
   fi
 
-  if is-installed yarn; then
+  if is-command yarn; then
     yarn config set registry http://npm.kroger.com
   fi
 
-  if is-installed apm; then
+  if is-command apm; then
     apm config set strict-ssl false
     apm config set proxy $http_proxy_value
     apm config set http-proxy $http_proxy_value
     apm config set https-proxy $http_proxy_value
   fi
 
-  if is-installed git; then
+  if is-command git; then
     git config --global http.proxy $http_proxy_value
     git config --global https.proxy $https_proxy_value
   fi

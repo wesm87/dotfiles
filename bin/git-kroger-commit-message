@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-function __dotfiles-parse-kroger-commit-message() {
+function __dotfiles_parse_kroger_commit_message() {
   local commit_message
   local ticket_name
   local branch_name
@@ -18,7 +18,7 @@ function __dotfiles-parse-kroger-commit-message() {
   echo "${ticket_name} | @wes-moberly | ${commit_message}"
 }
 
-function __dotfiles-git-kroger-commit-message() {
+function __dotfiles_git_kroger_commit_message() {
   local commit_message
   local action
   local gkcm_branch_name
@@ -36,7 +36,7 @@ function __dotfiles-git-kroger-commit-message() {
     fi
   fi
 
-  commit_message=$(__dotfiles-parse-kroger-commit-message "${commit_message}" "${gkcm_branch_name}")
+  commit_message=$(__dotfiles_parse_kroger_commit_message "${commit_message}" "${gkcm_branch_name}")
 
   if [ "$action" == '--print' ]; then
     echo "$commit_message"
@@ -45,4 +45,4 @@ function __dotfiles-git-kroger-commit-message() {
   fi
 }
 
-__dotfiles-git-kroger-commit-message "$@"
+__dotfiles_git_kroger_commit_message "$@"

@@ -1,12 +1,12 @@
 # shellcheck shell=bash
 
 function __dotfiles_is_bash() {
-  [ -n "$BASH" ] && return 0
+  [[ -n "${BASH:-}" || "${BASH_VERSION:-}" ]] && return 0
   return 1
 }
 
 function __dotfiles_is_zsh() {
-  [ -n "$ZSH_NAME" ] && return 0
+  [[ -n "${ZSH_NAME:-}" || -n "${ZSH_VERSION:-}" ]] && return 0
   return 1
 }
 
@@ -26,20 +26,29 @@ function reload-zsh-profile() {
 function reload-profile() {
   if __dotfiles_is_bash; then
     reload-bash-profile
+    return 0
   fi
 
   if __dotfiles_is_zsh; then
     reload-zsh-profile
+    return 0
   fi
+
+  return 1
 }
 
-# Check if bash function exists
+# Check if function exists
 function fn-exists() {
   declare -f "$1" > /dev/null
 }
 
-# Bash implemntation of curry
-# e.g. curry add1 add 1; add1 1; => 2
+# Bash implementation of curry
+# For example, say we have the following `add` function:
+#   function add() { echo $(($1 + $2)) }
+# We can curry it and partially-apply argument(s):
+#   curry add1 add 1
+# ...and call it with the remaining argument(s):
+#   add1 2 # echos "3"
 function curry() {
   exportfun=$1
   shift
@@ -261,10 +270,10 @@ function vscode() {
   fi
 }
 
-# `shellswitch [bash |zsh]`
+# `shellswitch [bash |zsh | fish]`
 #   Must be in /etc/shells
 function shellswitch() {
-  if is-installed brew; then
+  if is-command brew; then
     chsh -s "$(brew --prefix)/bin/${1}"
   else
     chsh -s "/bin/${1}"
@@ -273,10 +282,13 @@ function shellswitch() {
 
 curry shellswitch-bash shellswitch 'bash'
 curry shellswitch-zsh shellswitch 'zsh'
+curry shellswitch-fish shellswitch 'fish'
 
 function git-root() {
+  local git_return
+
   git rev-parse --is-inside-work-tree >& /dev/null
-  local git_return="$?"
+  git_return="$?"
 
   if [ "$git_return" == "128" ]; then
     echo 'Not a git repository'
@@ -344,18 +356,27 @@ function docker-list-unused-ids() {
 }
 
 function docker-clean-unused() {
-  # shellcheck disable=2046
-  docker rmi $(docker-list-unused-ids)
+  # shellcheck disable=2155
+  local images=$(docker-list-unused-ids)
+
+  # shellcheck disable=2086
+  [ -n "$images" ] && docker rmi $images
 }
 
 function docker-stop-all() {
-  # shellcheck disable=2046
-  docker stop $(docker-list-all-ids)
+  # shellcheck disable=2155
+  local images=$(docker-list-all-ids)
+
+  # shellcheck disable=2086
+  [ -n "$images" ] && docker stop $images
 }
 
 function docker-remove-all() {
-  # shellcheck disable=2046
-  docker rm $(docker-list-all-ids)
+  # shellcheck disable=2155
+  local images=$(docker-list-all-ids)
+
+  # shellcheck disable=2086
+  [ -n "$images" ] && docker rm $images
 }
 
 function docker-prune-containers() {

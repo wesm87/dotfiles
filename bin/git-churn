@@ -11,4 +11,4 @@ function __dotfiles_git_churn() {
   | awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}'
 }
 
-__dotfiles_git_churn "$*"
+__dotfiles_git_churn "$@"

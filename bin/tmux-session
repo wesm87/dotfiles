@@ -9,30 +9,36 @@ IFS=$'\n\t'
 ## > tmux-session custom-session-name
 ###
 
-path_name="$(basename "$PWD" | tr . -)"
-session_name="${1:-$path_name}"
-
-not_in_tmux() {
+function __dotfiles_not_in_tmux() {
   [ -z "${TMUX:-}" ]
 }
 
-session_exists() {
+function __dotfiles_tmux_session_exists() {
   tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$session_name$"
 }
 
-create_detached_session() {
+function __dotfiles_create_detached_tmux_session() {
+  local session_name="$1"
+
   (TMUX='' tmux new-session -Ad -s "$session_name")
 }
 
-create_if_needed_and_attach() {
-  if not_in_tmux; then
+function _dotfiles_tmux_session() {
+  local path_name
+  local session_name
+
+  path_name=$(basename "$PWD" | tr . -)
+  session_name="${1:-$path_name}"
+
+  if __dotfiles_not_in_tmux; then
     tmux new-session -As "$session_name"
-  else
-    if ! session_exists; then
-      create_detached_session
-    fi
-    tmux switch-client -t "$session_name"
+    return 0
   fi
+
+  if ! session_exists; then
+    create_detached_session
+  fi
+  tmux switch-client -t "$session_name"
 }
 
-create_if_needed_and_attach
+_dotfiles_tmux_session "$@"

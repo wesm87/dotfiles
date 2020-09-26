@@ -79,4 +79,4 @@ function __dotfiles_rename_identifier() {
   vim -c "$leader_j" -c "$leader_k" "$files"
 }
 
-__dotfiles_rename_identifier "$*"
+__dotfiles_rename_identifier "$@"

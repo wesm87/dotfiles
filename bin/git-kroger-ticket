@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-function __dotfiles-get-kroger-ticket-from-git-branch() {
+function __dotfiles_get_kroger_ticket_from_git_branch() {
   local branch_name
   local ticket_name
 
@@ -16,12 +16,12 @@ function __dotfiles-get-kroger-ticket-from-git-branch() {
   fi
 }
 
-function __dotfiles-git-kroger-ticket() {
+function __dotfiles_git_kroger_ticket() {
   local action
   local ticket_name
 
   action="${1:-}"
-  ticket_name="$(__dotfiles-get-kroger-ticket-from-git-branch)"
+  ticket_name="$(__dotfiles_get_kroger_ticket_from_git_branch)"
 
   if [ "$action" == "--print" ]; then
     echo "$ticket_name"
@@ -30,4 +30,4 @@ function __dotfiles-git-kroger-ticket() {
   fi
 }
 
-__dotfiles-git-kroger-ticket "$@"
+__dotfiles_git_kroger_ticket "$@"

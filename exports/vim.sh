@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-function vim_exports() {
+function __dotfiles_vim_exports() {
   # We use single-quotes intentionally to disable variable interpolation
   # shellcheck disable=2016
   export VIMINIT='source $MYVIMRC'
@@ -8,4 +8,4 @@ function vim_exports() {
   export EDITOR='vim'
 }
 
-vim_exports
+__dotfiles_vim_exports

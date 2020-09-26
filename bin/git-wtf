@@ -24,4 +24,4 @@ function __dotfiles_git_wtf() {
   git diff --stat --summary "$new" "$old"
 }
 
-git_wtf "$*"
+__dotfiles_git_wtf "$@"

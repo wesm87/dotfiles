@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
-function rbenv_exports() {
-  if ! is-installed brew; then
+function __dotfiles_rbenv_exports() {
+  if ! is-command brew; then
     return
   fi
 
@@ -21,4 +21,4 @@ function rbenv_exports() {
   fi
 }
 
-rbenv_exports
+__dotfiles_rbenv_exports

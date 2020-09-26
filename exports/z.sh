@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-function z_exports() {
+function __dotfiles_z_exports() {
   local current_user
 
   current_user=$(whoami)
@@ -9,4 +9,4 @@ function z_exports() {
   export _Z_OWNER="$current_user"
 }
 
-z_exports
+__dotfiles_z_exports

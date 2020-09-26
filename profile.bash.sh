@@ -19,10 +19,17 @@ function __dotfiles_profile() {
     exports.sh
     libs.sh
     completions.sh
-    .profile.local
   )
 
   __dotfiles_profile_includes "$base_dir" "${sources[@]}"
 }
 
+function __dotfiles_local_profile() {
+  local base_dir="$HOME"
+  local sources=(.bash_profile.local)
+
+  __dotfiles_profile_includes "$base_dir" "${sources[@]}"
+}
+
 __dotfiles_profile
+__dotfiles_local_profile

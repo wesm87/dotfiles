@@ -6,4 +6,4 @@ function __dotfiles_field() {
   awk "{print \$$1}"
 }
 
-__dotfiles_field "$*"
+__dotfiles_field "$@"

@@ -21,4 +21,4 @@ function __dotfiles_replace() {
   done
 }
 
-__dotfiles_replace "$*"
+__dotfiles_replace "$@"

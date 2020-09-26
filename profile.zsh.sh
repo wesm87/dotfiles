@@ -19,7 +19,6 @@ function __dotfiles_profile() {
     functions.sh
     aliases.sh
     exports.sh
-    .profile.local
     oh-my-zsh.zsh
   )
 
@@ -27,4 +26,13 @@ function __dotfiles_profile() {
   __dotfiles_profile_includes "$base_dir" $sources
 }
 
+function __dotfiles_local_profile() {
+  local base_dir="$HOME"
+  local sources=(.zshrc.local)
+
+  # shellcheck disable=2086,2128
+  __dotfiles_profile_includes "$base_dir" $sources
+}
+
 __dotfiles_profile
+__dotfiles_local_profile

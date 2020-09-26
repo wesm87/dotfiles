@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
-function path_exports() {
+function __dotfiles_path_exports() {
   export PATH="$HOME/.dotfiles/bin:$PATH"
 }
 
-path_exports
+__dotfiles_path_exports

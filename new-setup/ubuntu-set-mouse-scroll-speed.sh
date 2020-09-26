@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function install_imwheel_if_needed() {
-  if ! is-installed imwheel; then
+  if ! is-command imwheel; then
     sudo apt install imwheel
   fi
 }

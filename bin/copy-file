@@ -8,4 +8,4 @@ function __dotfiles_copy_file() {
   copy-to-clipboard < "$file"
 }
 
-__dotfiles_copy_file "$1"
+__dotfiles_copy_file "$@"

@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 # shellcheck disable=1090
 
-function nvm_exports() {
+function __dotfiles_nvm_exports() {
   export NVM_DIR="$HOME/.nvm"
 
   if [ ! -d "$NVM_DIR" ]; then
@@ -13,4 +13,4 @@ function nvm_exports() {
   source "$NVM_DIR/nvm.sh"
 }
 
-nvm_exports
+__dotfiles_nvm_exports

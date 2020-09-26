@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
-function gnu_utils_exports() {
-  if ! is-installed brew; then
+function __dotfiles_gnu_utils_exports() {
+  if ! is-command brew; then
     return
   fi
 
@@ -27,4 +27,4 @@ function gnu_utils_exports() {
   export MANPATH="$coreutils_man_path:$sed_man_path:$MANPATH"
 }
 
-gnu_utils_exports
+__dotfiles_gnu_utils_exports

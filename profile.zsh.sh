@@ -13,14 +13,27 @@ function __dotfiles_profile_includes() {
   done
 }
 
+function __dotfiles_is_zsh_env() {
+  [[ "$IS_ZSH_ENV" = 'true' ]]
+}
+
 function __dotfiles_profile() {
   local base_dir="$HOME/.dotfiles"
-  local sources=(
-    aliases.sh
-    functions.sh
-    exports.sh
-    oh-my-zsh.zsh
-  )
+  local sources
+
+  if __dotfiles_is_zsh_env; then
+    sources=(
+      functions.sh
+      exports.sh
+    )
+  else
+    sources=(
+      aliases.sh
+      functions.sh
+      exports.sh
+      oh-my-zsh.zsh
+    )
+  fi
 
   # shellcheck disable=2086,2128
   __dotfiles_profile_includes "$base_dir" $sources
@@ -30,8 +43,10 @@ function __dotfiles_local_profile() {
   local base_dir="$HOME"
   local sources=(.zshrc.local)
 
-  # shellcheck disable=2086,2128
-  __dotfiles_profile_includes "$base_dir" $sources
+  if ! __dotfiles_is_zsh_env; then
+    # shellcheck disable=2086,2128
+    __dotfiles_profile_includes "$base_dir" $sources
+  fi
 }
 
 __dotfiles_profile

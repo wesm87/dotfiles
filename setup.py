@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Dotfiles syncronization.
@@ -11,7 +11,7 @@ from glob import glob
 from shutil import rmtree
 from typing import Callable
 
-from toolz.curried import curry, pipe, identity, map
+from toolz.curried import curry, compose, identity, map
 
 SOURCE_DIR = '~/.dotfiles/tilde'
 IGNORE = ['.DS_Store']
@@ -29,7 +29,7 @@ def read_link(_path: str) -> str:
     return readlink(_path)
 
 
-def link_exists(_path: str) -> bool:
+def path_exists(_path: str) -> bool:
     return path.lexists(_path)
 
 
@@ -38,10 +38,14 @@ def strip_trailing_slash(_path: str) -> str:
 
 
 def force_remove(_path: str) -> None:
+    if not path_exists(_path):
+        return None
+
     if is_dir(_path) and not is_link(_path):
         rmtree(_path, False)
-    else:
-        unlink(_path)
+        return None
+
+    unlink(_path)
 
 
 is_equal_with = curry(lambda fn, a, b: fn(a) == fn(b))
@@ -66,16 +70,23 @@ def to_dest_file_path(filename: str) -> str:
     return path.join(path.expanduser('~'), filename)
 
 
-get_source_dest_path_pairs = pipe(
-    get_source_files,
+get_source_dest_path_pairs = compose(
     map(lambda filename: [
         to_source_file_path(filename),
         to_dest_file_path(filename),
-    ])
+    ]),
+    get_source_files,
 )
 
 
-def get_should_overwrite_file_from_user_input(dest_path: str) -> bool:
+def get_should_skip_file(dest_path: str, source_path: str) -> bool:
+    return path_exists(dest_path) and is_link_to(dest_path, source_path)
+
+
+def get_should_overwrite_file(dest_path: str) -> bool:
+    if not path_exists(dest_path):
+        return True
+
     response = input("Overwrite file `%s'? [y/N] " % dest_path)
     should_overwrite_file = response.lower().startswith('y')
 
@@ -83,21 +94,6 @@ def get_should_overwrite_file_from_user_input(dest_path: str) -> bool:
         print("Skipping `%s'..." % dest_path)
 
     return should_overwrite_file
-
-
-def get_should_overwrite_file(dest_path: str, source_path: str) -> bool:
-    if not link_exists(dest_path):
-        return False
-
-    if is_link_to(dest_path, source_path):
-        return False
-
-    return get_should_overwrite_file_from_user_input(dest_path)
-
-
-def force_remove_if_needed(dest_path: str, source_path: str) -> None:
-    if get_should_overwrite_file(dest_path, source_path):
-        force_remove(dest_path)
 
 
 def create_link_to(dest_path: str, source_path: str) -> None:
@@ -109,7 +105,13 @@ def main():
     chdir(path.expanduser(SOURCE_DIR))
 
     for source_path, dest_path in get_source_dest_path_pairs():
-        force_remove_if_needed(dest_path, source_path)
+        if get_should_skip_file(dest_path, source_path):
+            continue
+
+        if not get_should_overwrite_file(dest_path):
+            continue
+
+        force_remove(dest_path)
         create_link_to(dest_path, source_path)
 
 

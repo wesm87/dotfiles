@@ -1,1 +1,3 @@
 toolz
+urllib3
+docopt

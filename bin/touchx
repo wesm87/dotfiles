@@ -1,26 +1,89 @@
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
+#!/usr/bin/env python3
 
-function __dotfiles_create_file_header() {
-  local file="$1"
+"""touchx
 
-  cat <<END_OF_HEADER >> "$file"
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
-END_OF_HEADER
-}
+Usage:
+  touchx <file_path>... [--type=<file_type>]
 
-function __dotfiles_touchx() {
-  touch "$@"
-  chmod +x "$@"
+Options:
+  -h --help           Show this screen.
+  --type=<file_type>  The file type you want to create (bash|python|ruby|node) [default: bash]
 
-  for file in "$@"; do
-    if [[ -z $(cat "$file") ]]; then
-      __dotfiles_create_file_header "$file"
-    fi
-  done
-}
+"""
 
-__dotfiles_touchx "$@"
+from os import path, chmod
+from docopt import docopt
+
+CHMOD_755 = 0o755
+SHEBANG_PREFIX = '#!/usr/bin/env'
+BASH_SETOPTS_LINE = 'set -euo pipefail'
+BASH_IFS_LINE = "IFS=$'\\n\\t'"
+RUBY_FROZEN_STRING_LITERAL_LINE = '# frozen_string_literal: true'
+
+
+def get_file_shebang(file_type: str) -> str:
+    shebang_command = 'python3' if file_type == 'python' else file_type
+
+    return '{} {}\n'.format(SHEBANG_PREFIX, shebang_command)
+
+
+def format_bash_header(shebang: str) -> str:
+    return '{}{}\n{}\n'.format(shebang, BASH_SETOPTS_LINE, BASH_IFS_LINE)
+
+
+def format_ruby_header(shebang: str) -> str:
+    return '{}{}\n'.format(shebang, RUBY_FROZEN_STRING_LITERAL_LINE)
+
+
+def get_file_header(file_type: str) -> str:
+    shebang = get_file_shebang(file_type)
+
+    if file_type == 'bash':
+        return format_bash_header(shebang)
+
+    if file_type == 'ruby':
+        return format_ruby_header(shebang)
+
+    return shebang
+
+
+def get_file_contents(file_path: str) -> str:
+    if not path.exists(file_path):
+        return
+
+    with open(file_path, 'r') as file_descriptor:
+        file_contents = file_descriptor.read().strip()
+
+    file_descriptor.close()
+
+    return file_contents
+
+
+def write_template_to_file(file_type: str, file_path: str) -> None:
+    with open(file_path, 'w') as file_descriptor:
+        file_descriptor.write(get_file_header(file_type))
+
+    file_descriptor.close()
+
+
+def main(arguments: dict) -> None:
+    file_type = arguments['--type']
+    file_paths = arguments['<file_path>']
+
+    for file_path in file_paths:
+        print(file_path)
+
+        file_contents = get_file_contents(file_path)
+
+        if file_contents:
+            print(file_contents)
+
+        if not file_contents:
+            write_template_to_file(file_type, file_path)
+
+        chmod(file_path, CHMOD_755)
+
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__)
+    main(arguments)

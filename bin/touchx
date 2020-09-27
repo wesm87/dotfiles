@@ -2,13 +2,23 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+function __dotfiles_create_file_header() {
+  local file="$1"
+
+  cat <<END_OF_HEADER >> "$file"
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+END_OF_HEADER
+}
+
 function __dotfiles_touchx() {
   touch "$@"
   chmod +x "$@"
 
   for file in "$@"; do
     if [[ -z $(cat "$file") ]]; then
-      echo "#!/usr/bin/env bash" >"$file"
+      __dotfiles_create_file_header "$file"
     fi
   done
 }

@@ -80,3 +80,7 @@ done
 # Kroger aliases
 alias gkcm="git-kroger-commit-message"
 alias gkt="git-kroger-ticket"
+
+# Custom bin aliases
+alias copy-pwd='copy-cwd'
+alias copy-path='copy-cwd'

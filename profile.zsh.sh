@@ -16,8 +16,8 @@ function __dotfiles_profile_includes() {
 function __dotfiles_profile() {
   local base_dir="$HOME/.dotfiles"
   local sources=(
-    functions.sh
     aliases.sh
+    functions.sh
     exports.sh
     oh-my-zsh.zsh
   )

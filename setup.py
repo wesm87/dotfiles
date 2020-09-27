@@ -11,63 +11,106 @@ from glob import glob
 from shutil import rmtree
 from typing import Callable
 
-from toolz.curried import curry, pipe, identity
+from toolz.curried import curry, pipe, identity, map
 
-SOURCE_DIR = '~/dotfiles/tilde'
+SOURCE_DIR = '~/.dotfiles/tilde'
 IGNORE = ['.DS_Store']
 
 
-def is_link(link_path: str) -> bool:
-    return path.islink(link_path)
+def is_dir(_path: str) -> bool:
+    return path.isdir(_path)
 
 
-def read_link(link_path: str) -> str:
-    return readlink(link_path)
+def is_link(_path: str) -> bool:
+    return path.islink(_path)
 
 
-def strip_trailing_slash(path_str: str) -> str:
-    return path_str.rstrip('/')
+def read_link(_path: str) -> str:
+    return readlink(_path)
 
 
-def force_remove(dir_path):
-    if path.isdir(dir_path) and not path.islink(dir_path):
-        rmtree(dir_path, False)
+def link_exists(_path: str) -> bool:
+    return path.lexists(_path)
+
+
+def strip_trailing_slash(_path: str) -> str:
+    return _path.rstrip('/')
+
+
+def force_remove(_path: str) -> None:
+    if is_dir(_path) and not is_link(_path):
+        rmtree(_path, False)
     else:
-        unlink(dir_path)
+        unlink(_path)
 
 
-is_equal_with = curry(lambda fnA, fnB, a, b: fnA(a) == fnB(b))
+is_equal_with = curry(lambda fn, a, b: fn(a) == fn(b))
 
-is_link_to_path = is_equal_with(
-    pipe(read_link, strip_trailing_slash),
-    strip_trailing_slash
+
+is_link_to_path = is_equal_with(strip_trailing_slash)
+
+
+def is_link_to(dest_path: str, source_path: str) -> bool:
+    return is_link(dest_path) and is_link_to_path(read_link(dest_path), source_path)
+
+
+def get_source_files():
+    return [file for file in glob('.*') if file not in IGNORE]
+
+
+def to_source_file_path(filename: str) -> str:
+    return path.join(SOURCE_DIR, filename).replace('~', '.')
+
+
+def to_dest_file_path(filename: str) -> str:
+    return path.join(path.expanduser('~'), filename)
+
+
+get_source_dest_path_pairs = pipe(
+    get_source_files,
+    map(lambda filename: [
+        to_source_file_path(filename),
+        to_dest_file_path(filename),
+    ])
 )
 
 
-def is_link_to(link_path: str, target_path: str) -> bool:
-    return is_link(link_path) and is_link_to_path(link_path, target_path)
+def get_should_overwrite_file_from_user_input(dest_path: str) -> bool:
+    response = input("Overwrite file `%s'? [y/N] " % dest_path)
+    should_overwrite_file = response.lower().startswith('y')
+
+    if not should_overwrite_file:
+        print("Skipping `%s'..." % dest_path)
+
+    return should_overwrite_file
+
+
+def get_should_overwrite_file(dest_path: str, source_path: str) -> bool:
+    if not link_exists(dest_path):
+        return False
+
+    if is_link_to(dest_path, source_path):
+        return False
+
+    return get_should_overwrite_file_from_user_input(dest_path)
+
+
+def force_remove_if_needed(dest_path: str, source_path: str) -> None:
+    if get_should_overwrite_file(dest_path, source_path):
+        force_remove(dest_path)
+
+
+def create_link_to(dest_path: str, source_path: str) -> None:
+    symlink(source_path, dest_path)
+    print("%s => %s" % (source_path, dest_path))
 
 
 def main():
     chdir(path.expanduser(SOURCE_DIR))
-    for filename in [file for file in glob('.*') if file not in IGNORE]:
-        dotfile = path.join(path.expanduser('~'), filename)
-        source = path.join(SOURCE_DIR, filename).replace('~', '.')
 
-        # Check that we aren't overwriting anything
-        if path.lexists(dotfile):
-            if is_link_to(dotfile, source):
-                continue
-
-            response = input("Overwrite file `%s'? [y/N] " % dotfile)
-            if not response.lower().startswith('y'):
-                print("Skipping `%s'..." % dotfile)
-                continue
-
-            force_remove(dotfile)
-
-        symlink(source, dotfile)
-        print("%s => %s" % (dotfile, source))
+    for source_path, dest_path in get_source_dest_path_pairs():
+        force_remove_if_needed(dest_path, source_path)
+        create_link_to(dest_path, source_path)
 
 
 if __name__ == '__main__':

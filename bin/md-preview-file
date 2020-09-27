@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles_md_preview_file() {
+  local file_path="$1"
+
+  md-render-preview < "$file_path"
+}
+
+__dotfiles_md_preview_file "$@"

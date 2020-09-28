@@ -4,6 +4,7 @@
 
 Usage:
   touchx <file_path>... [--type=<file_type>]
+  cat file-list.txt | touchx [--type=<file_type>]
 
 Options:
   -h --help           Show this screen.
@@ -11,6 +12,7 @@ Options:
 
 """
 
+from sys import stdin
 from os import path, chmod
 from docopt import docopt
 
@@ -68,15 +70,11 @@ def write_template_to_file(file_type: str, file_path: str) -> None:
 
 def main(arguments: dict) -> None:
     file_type = arguments['--type']
-    file_paths = arguments['<file_path>']
+    file_paths = arguments['<file_path>'] or stdin
 
-    for file_path in file_paths:
-        print(file_path)
-
+    for file_path_line in file_paths:
+        file_path = file_path_line.strip()
         file_contents = get_file_contents(file_path)
-
-        if file_contents:
-            print(file_contents)
 
         if not file_contents:
             write_template_to_file(file_type, file_path)

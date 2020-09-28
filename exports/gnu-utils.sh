@@ -21,10 +21,20 @@ function __dotfiles_gnu_utils_exports() {
   sed_man_path="$sed_base_path/gnuman"
 
   # Update `$PATH`.
-  export PATH="$coreutils_bin_path:$sed_bin_path:$PATH"
+  if ! string-contains "$sed_bin_path" "$PATH"; then
+    export PATH="$sed_bin_path:$PATH"
+  fi
+  if ! string-contains "$coreutils_bin_path" "$PATH"; then
+    export PATH="$coreutils_bin_path:$PATH"
+  fi
 
   # Update `$MANPATH`
-  export MANPATH="$coreutils_man_path:$sed_man_path:$MANPATH"
+  if ! string-contains "$sed_man_path" "$MANPATH"; then
+    export MANPATH="$sed_man_path:$MANPATH"
+  fi
+  if ! string-contains "$coreutils_man_path" "$MANPATH"; then
+    export MANPATH="$coreutils_man_path:$PATH"
+  fi
 }
 
 __dotfiles_gnu_utils_exports

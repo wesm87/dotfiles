@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'docopt'
+
+script_name = File.basename(__FILE__)
+
+doc = <<~DOCOPT
+  string-contains
+
+  Usage:
+    #{script_name} <needle> <haystack> [--ignore-case]
+    #{script_name} -h | --help
+
+  Options:
+    -h --help      Show this screen.
+    --ignore-case  Ignore case when searching for the substring
+
+DOCOPT
+
+def string_contains(needle, haystack, ignore_case: false)
+  if ignore_case
+    haystack.downcase.include?(needle.downcase)
+  else
+    haystack.include?(needle)
+  end
+end
+
+begin
+  args = Docopt.docopt(doc)
+  needle, haystack = args.values_at('<needle>', '<haystack>')
+  did_contain = string_contains(needle, haystack)
+
+  exit(did_contain)
+rescue Docopt::Exit => e
+  puts e.message
+end

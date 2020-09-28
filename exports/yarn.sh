@@ -5,7 +5,9 @@ function __dotfiles_yarn_exports() {
 
   yarn_global_bin_path="$(yarn global bin 2>/dev/null)"
 
-  export PATH="$PATH:$yarn_global_bin_path"
+  if ! string-contains "$yarn_global_bin_path" "$PATH"; then
+    export PATH="$PATH:$yarn_global_bin_path"
+  fi
 }
 
 __dotfiles_yarn_exports

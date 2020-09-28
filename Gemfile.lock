@@ -1,15 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.4.4)
+    activesupport (6.0.3.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
     ast (2.4.1)
     backport (1.1.2)
     benchmark (0.1.0)
     concurrent-ruby (1.1.7)
+    docopt (0.6.1)
     e2mmap (0.1.0)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
@@ -20,32 +22,32 @@ GEM
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     parallel (1.19.2)
-    parser (2.7.1.4)
+    parser (2.7.1.5)
       ast (~> 2.4.1)
     rack (2.2.3)
     rainbow (3.0.0)
     rcodetools (0.8.5.0)
-    regexp_parser (1.7.1)
+    regexp_parser (1.8.0)
     reverse_markdown (2.0.0)
       nokogiri
     rexml (3.2.4)
-    rubocop (0.91.0)
+    rubocop (0.92.0)
       parallel (~> 1.10)
-      parser (>= 2.7.1.1)
+      parser (>= 2.7.1.5)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.7)
       rexml
-      rubocop-ast (>= 0.4.0, < 1.0)
+      rubocop-ast (>= 0.5.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (0.4.1)
-      parser (>= 2.7.1.4)
+    rubocop-ast (0.6.0)
+      parser (>= 2.7.1.5)
     rubocop-rails (2.8.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 0.87.0)
     ruby-progressbar (1.10.1)
-    solargraph (0.39.15)
+    solargraph (0.39.16)
       backport (~> 1.1)
       benchmark
       bundler (>= 1.17.2)
@@ -66,11 +68,13 @@ GEM
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)
     yard (0.9.25)
+    zeitwerk (2.4.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  docopt
   rcodetools
   rubocop (>= 0.90.0)
   rubocop-rails (>= 2.8.1)

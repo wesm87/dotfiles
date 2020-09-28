@@ -18,20 +18,23 @@ doc = <<~DOCOPT
 
 DOCOPT
 
-def string_contains(needle, haystack, ignore_case: false)
-  if ignore_case
-    haystack.downcase.include?(needle.downcase)
-  else
-    haystack.include?(needle)
-  end
+def format_string(str, ignore_case)
+  ignore_case ? str.downcase : str
+end
+
+def string_contains(needle, haystack, ignore_case)
+  format_string(haystack, ignore_case).include?(
+    format_string(needle, ignore_case)
+  )
 end
 
 begin
   args = Docopt.docopt(doc)
-  needle, haystack = args.values_at('<needle>', '<haystack>')
-  did_contain = string_contains(needle, haystack)
+  needle, haystack, ignore_case = args.values_at(
+    '<needle>', '<haystack>', '--ignore-case'
+  )
 
-  exit(did_contain)
+  exit(string_contains(needle, haystack, ignore_case))
 rescue Docopt::Exit => e
   puts e.message
 end

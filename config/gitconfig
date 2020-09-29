@@ -115,3 +115,7 @@
 
 [alias-config]
   viewer = vim
+
+# Allow local overrides so things like user.email can be modified
+[include]
+  path = ~/.gitconfig_overrides

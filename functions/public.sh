@@ -1,15 +1,5 @@
 # shellcheck shell=bash
 
-function __dotfiles_is_bash() {
-  [[ -n "${BASH:-}" || "${BASH_VERSION:-}" ]] && return 0
-  return 1
-}
-
-function __dotfiles_is_zsh() {
-  [[ -n "${ZSH_NAME:-}" || -n "${ZSH_VERSION:-}" ]] && return 0
-  return 1
-}
-
 # Reload bash profile
 function reload-bash-profile() {
   # shellcheck disable=1090
@@ -38,29 +28,13 @@ function reload-profile() {
 }
 
 # Check if function exists
-function fn-exists() {
+function is-function() {
   declare -f "$1" > /dev/null
 }
 
-# Bash implementation of curry
-# For example, say we have the following `add` function:
-#   function add() { echo $(($1 + $2)) }
-# We can curry it and partially-apply argument(s):
-#   curry add1 add 1
-# ...and call it with the remaining argument(s):
-#   add1 2 # echos "3"
-function curry() {
-  exportfun=$1
-  shift
-  fun=$1
-  shift
-  params=$*
-  cmd=$"function $exportfun() {
-      more_params=\$*;
-      $fun $params \$more_params;
-  }"
-
-  eval "$cmd"
+# Check if command exists
+function is-command() {
+  command -v "$1" >/dev/null
 }
 
 # Create a new directory and enter it
@@ -84,6 +58,13 @@ function f() {
   local pattern="$1"
 
   find . -name "$pattern" 2>&1 | grep -v 'Permission denied'
+}
+
+# fuzzy find
+function fuzzy-find() {
+  local pattern="$1"
+
+  f "*$pattern*"
 }
 
 # List non-hidden files and directories, long format, permissions in octal

@@ -2,7 +2,7 @@
 # shellcheck disable=1090
 
 function __dotfiles_rvm_exports() {
-  export RUBY_VERSION="${RUBY_VERSION:-ruby-2.7.1}"
+  export RUBY_VERSION="${RUBY_VERSION:-ruby-2.7.0}"
   export RVM_DIR="$HOME/.rvm"
   export GEM_HOME="${RVM_DIR}/gems/${RUBY_VERSION}"
 

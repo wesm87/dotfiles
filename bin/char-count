@@ -1,18 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-def char_count(str)
-  str.strip.length
-end
+require_relative '_lib/simple_cli'
+require_relative '_lib/utils'
 
-def char_count_each(items)
-  items.each do |item|
-    puts char_count item
-  end
-end
+cli = SimpleCLI.new(PARSE_ARG_MODE_EXCLUSIVE)
 
-if ARGV.any?
-  char_count_each ARGV.each
-else
-  char_count_each $stdin.readlines
-end
+cli.puts_for_each_arg(:char_count)

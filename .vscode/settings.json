@@ -1,5 +1,5 @@
 {
-  "ruby.interpreter.commandPath": "/usr/share/rvm/rubies/ruby-2.7.1/bin/ruby",
+  "ruby.interpreter.commandPath": "/usr/share/rvm/rubies/ruby-2.7.0/bin/ruby",
   "ruby.useBundler": true,
   "ruby.useLanguageServer": true,
   "ruby.format": "rubocop",

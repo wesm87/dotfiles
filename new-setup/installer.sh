@@ -61,7 +61,7 @@ brew install gnu-sed
 echo 'gem: --no-document' > ~/.gemrc
 brew install rbenv
 eval "$(rbenv init -)"
-RBENV_VERSION=${RBENV_VERSION:-'2.7.1'}
+RBENV_VERSION=${RBENV_VERSION:-'2.7.0'}
 rbenv install "$RBENV_VERSION"
 rbenv global "$RBENV_VERSION"
 

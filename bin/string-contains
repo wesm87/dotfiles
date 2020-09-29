@@ -1,40 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'docopt'
+require_relative '_lib/simple_cli'
+require_relative '_lib/utils'
 
-script_name = File.basename(__FILE__)
+cli = SimpleCLI.new(PARSE_ARG_MODE_INCLUSIVE)
 
-doc = <<~DOCOPT
-  string-contains
+needle, haystack = cli.positional
+ignore_case = cli.flag('--ignore-case')
+result = str_contains?(needle, haystack, ignore_case: ignore_case)
 
-  Usage:
-    #{script_name} <needle> <haystack> [--ignore-case]
-    #{script_name} -h | --help
-
-  Options:
-    -h --help      Show this screen.
-    --ignore-case  Ignore case when searching for the substring
-
-DOCOPT
-
-def format_string(str, ignore_case)
-  ignore_case ? str.downcase : str
-end
-
-def string_contains(needle, haystack, ignore_case)
-  format_string(haystack, ignore_case).include?(
-    format_string(needle, ignore_case)
-  )
-end
-
-begin
-  args = Docopt.docopt(doc)
-  needle, haystack, ignore_case = args.values_at(
-    '<needle>', '<haystack>', '--ignore-case'
-  )
-
-  exit(string_contains(needle, haystack, ignore_case))
-rescue Docopt::Exit => e
-  puts e.message
-end
+exit(result)

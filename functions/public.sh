@@ -27,16 +27,6 @@ function reload-profile() {
   return 1
 }
 
-# Check if function exists
-function is-function() {
-  declare -f "$1" > /dev/null
-}
-
-# Check if command exists
-function is-command() {
-  command -v "$1" >/dev/null
-}
-
 # Create a new directory and enter it
 function md() {
   local file_path="$1"

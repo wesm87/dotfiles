@@ -19,21 +19,22 @@ function __dotfiles_is_zsh_env() {
 function __dotfiles_profile() {
   local base_dir="$HOME/.dotfiles"
   local sources
-  local env_only_sources=(
+  local env_sources=(
     functions.sh
+    exports.noninteractive.sh
   )
-  local profile_only_sources=(
+  local profile_sources=(
     aliases.sh
-    exports.sh
+    exports.interactive.sh
     oh-my-zsh.sh
   )
 
   if __dotfiles_is_zsh_env; then
     # shellcheck disable=2206,2128
-    sources=($env_only_sources)
+    sources=($env_sources)
   else
     # shellcheck disable=2206,2128
-    sources=($profile_only_sources)
+    sources=($profile_sources)
   fi
 
   # shellcheck disable=2086,2128
@@ -42,7 +43,9 @@ function __dotfiles_profile() {
 
 function __dotfiles_local_profile() {
   local base_dir="$HOME"
-  local sources=(.zshrc.local)
+  local sources=(
+    .zshrc.local
+  )
 
   if ! __dotfiles_is_zsh_env; then
     # shellcheck disable=2086,2128

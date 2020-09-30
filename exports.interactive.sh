@@ -1,19 +1,12 @@
-# shellcheck shell=bash
-# shellcheck disable=1090
+# shellcheck shell=bash disable=1090
 
 function _dotfiles_exports() {
   local base_dir="$HOME/.dotfiles/exports"
   local sources=(
-    path.sh
-    gnu-utils.sh
-    ls-colors.sh
+    cli-colors.sh
     vim.sh
     yarn.sh
     z.sh
-    nvm.sh
-    # RVM has to be last or it will complain about the current Ruby path
-    # not being at the very beginning of the $PATH variable.
-    rvm.sh
   )
 
   if [ -n "$BASH" ]; then

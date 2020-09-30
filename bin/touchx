@@ -3,12 +3,11 @@
 """touchx
 
 Usage:
-  touchx <file_path>... [--type=<file_type>]
-  cat file-list.txt | touchx [--type=<file_type>]
+  touchx [<file_path>...] [--type=<file_type>]
 
 Options:
   -h --help           Show this screen.
-  --type=<file_type>  The file type you want to create (bash|python|ruby|node) [default: bash]
+  --type=<file_type>  The file type you want to create (bash, python, ruby, node) [default: bash]
 
 """
 

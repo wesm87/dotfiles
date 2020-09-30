@@ -13,7 +13,7 @@ alias cd..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-alias ~='cd ~' # `cd` is probably faster to type though
+alias ~='cd ~'    # `cd` is probably faster to type though
 alias -- -='cd -' # the `--` lets us use `-` as an alias name
 
 # mv, rm, cp, mkdir
@@ -28,23 +28,46 @@ alias mux='tmuxinator'
 alias cask='brew cask'
 alias pzip='zip -e'
 
+# Colorized grep
+grep --color >/dev/null 2>&1 && alias grep='grep --color'
+grep -f --color >/dev/null 2>&1 && alias fgrep='grep -f --color'
+grep -E --color >/dev/null 2>&1 && alias egrep='grep -E --color'
+
 ###
 # time to upgrade `ls`
 
 # use coreutils `ls` if possible…
 hash gls >/dev/null 2>&1 || alias gls='ls'
 
-if gls --color > /dev/null 2>&1; then
+if gls --color >/dev/null 2>&1; then
   colorflag='--color'
 else
   colorflag='-G'
 fi
 
-# ls options: A = include hidden (but not . or ..), F = put `/` after folders, h = byte unit suffixes
-alias ls="gls -AFh ${colorflag} --group-directories-first"
-alias lsd='ls -l | grep "^d"' # only directories
-alias lsf='ls -l | grep "^-"' # only files
-alias lsa='ls -l' # files and directories
+# ls options:
+#   A = show hidden (but not . or ..)
+#   F = show flags (`/` after folders, `*` after symlinks, etc.)
+#   C = show in column view
+#   l = show in list view
+#   h = show byte unit suffixes
+ls_flags="-AFhp ${colorflag} --group-directories-first"
+lsc_flags="-C ${ls_flags}"
+lsl_flags="-l ${ls_flags}"
+
+# TODO: Figure out what is overriding my ls / grep aliases in Ubuntu
+alias __lsc="gls ${lsc_flags}"  # column view
+alias __lsl="gls ${lsl_flags}"  # list view
+alias __lsd='__lsl | grep "^d"' # only directories
+alias __lsf='__lsl | grep "^-"' # only files
+alias __lsa='__lsl'             # files and directories
+
+alias ls='__lsc'
+alias lsc='__lsc'
+alias lsl='__lsl'
+alias lsd='__lsd'
+alias lsf='__lsf'
+alias lsd='__lsd'
 
 # `cat` with beautiful colors. requires: sudo easy_install -U Pygments
 alias c='pygmentize -O style=monokai -f console256 -g'

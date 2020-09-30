@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# shellcheck shell=bash
+# shellcheck shell=bash disable=1090,2034
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -14,4 +14,4 @@ ZSH_THEME="fwalch"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(nvm rvm z zsh-autosuggestions)
 
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"

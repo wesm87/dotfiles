@@ -1,4 +1,3 @@
-# shellcheck shell=bash
+# shellcheck shell=bash disable=1090
 
-# shellcheck disable=1090
 source "$HOME/.dotfiles/profile.bash.sh"

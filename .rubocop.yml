@@ -3,5 +3,17 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
 
+Metrics/MethodLength:
+  Enabled: false
+
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Naming/PredicateName:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Style/PreferredHashMethods:
+  EnforcedStyle: verbose

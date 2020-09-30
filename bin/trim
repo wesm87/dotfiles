@@ -1,16 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-def print_each(items)
-  items.each do |item|
-    print item.strip
-  end
-end
+require_relative '_lib/simple_cli'
+require_relative '_lib/utils'
 
-if ARGV.any?
-  print_each ARGV
-elsif $stdin.readlines.any?
-  print_each $stdin.readlines
-else
-  print ''
-end
+cli = SimpleCLI.new(PARSE_ARGS_MODE_EXCLUSIVE, STDIN_SEPARATOR_NEWLINE)
+
+cli.puts_for_each_arg(&:strip)

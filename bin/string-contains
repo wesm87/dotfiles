@@ -4,10 +4,10 @@
 require_relative '_lib/simple_cli'
 require_relative '_lib/utils'
 
-cli = SimpleCLI.new(PARSE_ARG_MODE_INCLUSIVE)
+cli = SimpleCLI.new(PARSE_ARGS_MODE_INCLUSIVE)
 
-needle, haystack = cli.positional
-ignore_case = cli.flag('--ignore-case')
+needle, haystack = cli.get_params
+ignore_case = cli.has_flag('ignore-case')
 result = str_contains?(needle, haystack, ignore_case: ignore_case)
 
 exit(result)

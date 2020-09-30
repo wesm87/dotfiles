@@ -4,6 +4,6 @@
 require_relative '_lib/simple_cli'
 require_relative '_lib/utils'
 
-cli = SimpleCLI.new(PARSE_ARG_MODE_EXCLUSIVE)
+cli = SimpleCLI.new(PARSE_ARGS_MODE_EXCLUSIVE, STDIN_SEPARATOR_NEWLINE)
 
 cli.puts_for_each_arg(:slugify)

@@ -18,6 +18,22 @@ SOURCE_DIR = '~/.dotfiles/{}'.format(TILDE_FILES_DIR)
 SOURCE_DIR_RELATIVE = SOURCE_DIR.replace('~/', './')
 IGNORE = ['.DS_Store']
 
+MESSAGE_TEMPLATES = {
+    'link_exists': '%s => %s (link already exists, skipping)',
+    'user_skipped': '%s => %s (different file exists, not overwriting)',
+    'link_created': '%s => %s (created new link)',
+    'should_overwrite_file': 'Overwrite file `%s`? [y/N] ',
+}
+
+
+def get_formatted_message(message_type, template_args):
+    template = MESSAGE_TEMPLATES.get(message_type)
+    return template % template_args
+
+
+def print_formatted_message(message_type, template_args):
+    print(get_formatted_message(message_type, template_args))
+
 
 def is_dir(path_to_check: str) -> bool:
     return path.isdir(path_to_check)
@@ -95,11 +111,13 @@ def get_should_overwrite_file(dest_path: str) -> bool:
     if not path_exists(dest_path):
         return True
 
-    response = input("Overwrite file `%s'? [y/N] " % dest_path)
+    dest_path_printable = to_dest_file_path_printable(dest_path)
+    user_question = get_formatted_message(
+        'should_overwrite_file',
+        dest_path_printable
+    )
+    response = input(user_question)
     should_overwrite_file = response.lower().startswith('y')
-
-    if not should_overwrite_file:
-        print("Skipping `%s'..." % dest_path)
 
     return should_overwrite_file
 
@@ -108,35 +126,25 @@ def create_link_to(dest_path: str, source_path: str) -> None:
     symlink(source_path, dest_path)
 
 
-message_formats = {
-    'link_exists': '%s => %s (link already exists, skipping)',
-    'user_skipped': '%s => %s (different file exists, not overwriting)',
-    'link_created': '%s => %s (created new link)',
-}
-
-
-def print_info_message(source_path: str, dest_path: str, message_type: str) -> None:
-    template = message_formats.get(message_type)
-    source_path_printable = to_source_file_path_printable(source_path)
-    dest_path_printable = to_dest_file_path_printable(dest_path)
-    print(template % (source_path_printable, dest_path_printable))
-
-
 def main():
     chdir(path.expanduser(SOURCE_DIR))
 
     for source_path, dest_path in get_source_dest_path_pairs():
+        source_path_printable = to_source_file_path_printable(source_path)
+        dest_path_printable = to_dest_file_path_printable(dest_path)
+        message_template_args = (source_path_printable, dest_path_printable)
+
         if get_should_skip_file(dest_path, source_path):
-            print_info_message(source_path, dest_path, 'link_exists')
+            print_formatted_message('link_exists', message_template_args)
             continue
 
         if not get_should_overwrite_file(dest_path):
-            print_info_message(source_path, dest_path, 'user_skipped')
+            print_formatted_message('user_skipped', message_template_args)
             continue
 
         force_remove(dest_path)
         create_link_to(dest_path, source_path)
-        print_info_message(source_path, dest_path, 'link_created')
+        print_formatted_message('link_created', message_template_args)
 
 
 if __name__ == '__main__':

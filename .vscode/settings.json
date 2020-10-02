@@ -2,21 +2,38 @@
   "search.exclude": {
     "**/oh-my-zsh/custom/plugins": true
   },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "shellcheck.customArgs": ["-x"],
+  "shellcheck.useWorkspaceRootAsCwd": true,
+  "eslint.format.enable": true,
   "ruby.interpreter.commandPath": "/usr/share/rvm/rubies/ruby-2.7.0/bin/ruby",
-  "ruby.useBundler": true,
-  "ruby.useLanguageServer": true,
+  "ruby.codeCompletion": "rcodetools",
   "ruby.format": "rubocop",
+  "ruby.intellisense": "rubyLocate",
+  "ruby.useLanguageServer": true,
+  "ruby.useBundler": true,
+  "ruby.rubocop.useBundler": true,
   "ruby.lint": {
     "rubocop": {
       "useBundler": true
     }
   },
+  "solargraph.completion": true,
+  "solargraph.definitions": true,
+  "solargraph.references": true,
+  "solargraph.formatting": true,
+  "solargraph.useBundler": true,
+  "[markdown]": {
+    "editor.wordWrap": "on"
+  },
   "[ruby]": {
-    "editor.formatOnSave": true,
     "editor.defaultFormatter": "rebornix.ruby"
   },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
   "[shellscript]": {
-    "editor.formatOnSave": true,
     "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

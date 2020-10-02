@@ -3,22 +3,31 @@ set -euo pipefail
 IFS=$'\n\t'
 
 function __dotfiles_copy_to_clipboard() {
-  case "$(get-os-short-name)" in
-  macOS)
+  if ! is-mac-os && ! is-linux-os; then
+    log-message 'error' '[copy-to-clipboard]: only macOS and Linux are supported'
+    exit 1
+  fi
+
+  if is-mac-os; then
     if is-command pbcopy; then
       pbcopy
+      return 0
+    else
+      return 1
     fi
-    ;;
-  Linux)
+  fi
+
+  if is-linux-os; then
     if is-command xclip; then
       xclip -in -selection clipboard
+      return 0
     elif is-command xsel; then
       xsel --clipboard --input
+      return 0
+    else
+      return 1
     fi
-    ;;
-  esac
-
-  exit 1
+  fi
 }
 
 __dotfiles_copy_to_clipboard

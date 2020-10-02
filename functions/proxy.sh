@@ -13,7 +13,7 @@ function proxy() {
 
   action=${1-"options"}
   shift
-  "proxy_${action}" "$@"
+  "proxy_$action" "$@"
 }
 
 function __parse_network_location() {
@@ -21,8 +21,8 @@ function __parse_network_location() {
   local location_slug=$(slugify "${location}")
 
   case $location_slug in
-    "work" | "office" | "vpn") echo "$_NETWORK_LOCATION_WORK";;
-    "home" | "automatic") echo "$_NETWORK_LOCATION_AUTO";;
+  "work" | "office" | "vpn") echo "$_NETWORK_LOCATION_WORK" ;;
+  "home" | "automatic") echo "$_NETWORK_LOCATION_AUTO" ;;
   esac
 }
 
@@ -31,8 +31,8 @@ function __proxy_switch_set_proxy() {
   local location_parsed="$(__parse_network_location "${location}")"
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_WORK") proxy_start;;
-    "$_NETWORK_LOCATION_AUTO") proxy_stop;;
+  "$_NETWORK_LOCATION_WORK") proxy_start ;;
+  "$_NETWORK_LOCATION_AUTO") proxy_stop ;;
   esac
 }
 
@@ -41,7 +41,7 @@ function __proxy_switch_set_location() {
   local location_parsed="$(__parse_network_location "${location}")"
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_AUTO") set-network-location "$location_parsed";;
+  "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_AUTO") set-network-location "$location_parsed" ;;
   esac
 }
 
@@ -70,8 +70,8 @@ function proxy_switch() {
   }
 
   case $location_parsed in
-    "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_AUTO") __proxy_switch_set_all "$location";;
-    *) proxy_switch_usage;;
+  "$_NETWORK_LOCATION_WORK" | "$_NETWORK_LOCATION_AUTO") __proxy_switch_set_all "$location" ;;
+  *) proxy_switch_usage ;;
   esac
 }
 
@@ -128,7 +128,7 @@ function proxy_init_vpn() {
   fi
 
   # create pulse.pac
-  echo 'function FindProxyForURL(url, host) {return "PROXY 127.0.0.1:3128";}' | sudo tee "${PULSE_PAC}" > /dev/null
+  echo 'function FindProxyForURL(url, host) {return "PROXY 127.0.0.1:3128";}' | sudo tee "${PULSE_PAC}" >/dev/null
 
   #lock the file
   sudo chflags uchg $PULSE_PAC
@@ -139,9 +139,9 @@ function __proxy_make_state_dir() {
 }
 
 function __proxy_state_set() {
-cat <<EOF > "${PROXY_STATE_PATH}.proxy"
-#!/bin/sh
-$@
+  cat <<-EOF >"${PROXY_STATE_PATH}.proxy"
+    #!/bin/sh
+    $@
 EOF
 }
 
@@ -231,7 +231,7 @@ function proxy_assign() {
     export "$envar"="${https_proxy_value}"
   done
   for envar in $NO_PROXY_ENV; do
-     export "$envar"="${no_proxy_value}"
+    export "$envar"="${no_proxy_value}"
   done
 
   __proxy_state_set 'proxy_assign' "$1" "$2" "$3"
@@ -241,8 +241,8 @@ function __proxy_state_set_cache() {
   local -r cache_key=$1
   local -r file="${PROXY_STATE_PATH}.proxy.${cache_key}"
 
-cat <<EOF > "$file"
-$2
+  cat <<-EOF >"$file"
+    $2
 EOF
 }
 
@@ -261,10 +261,10 @@ function __proxy_state_get_cache() {
 
 function proxy_env() {
   if [ -z "${NO_PROXY}" ] && [ -z "${HTTP_PROXY}" ]; then
-    echo "=====[INACTIVE]=====";
+    echo "=====[INACTIVE]====="
     echo ''
   else
-    echo "=====[ACTIVE]=====";
+    echo "=====[ACTIVE]====="
     echo ''
     env | grep -i proxy
   fi
@@ -289,11 +289,11 @@ function proxy_ssh_start() {
   local storm_command
 
   if __proxy_ssh_host_exists; then
-      _info "Editing Host: github.com"
-      storm_command='edit'
-    else
-      _info "Adding Host: github.com"
-      storm_command='add'
+    _info "Editing Host: github.com"
+    storm_command='edit'
+  else
+    _info "Adding Host: github.com"
+    storm_command='add'
   fi
 
   storm ${storm_command} 'github.com' 'ssh.github.com:443' --o 'proxycommand=corkscrew localhost 3128 %h %p'
@@ -316,7 +316,6 @@ function proxy_ssh_stop() {
 function __proxy_ssh_host_exists() {
   local -r search_result="$(storm search 'github.com')"
   local -r search_result_not_found="no results found."
-
 
   if [[ "${search_result}" = "${search_result_not_found}" ]]; then
     # _error_ "ssh host NOT found"

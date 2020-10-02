@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash disable=1090
+set -euo pipefail
+IFS=$'\n\t'
+
+source ~/.dotfiles/functions/logging.sh
+
+function __dotfiles_log_message() {
+  local message_type="$1"
+  local message_text="$2"
+  local should_bookend_flag="${3:-}"
+  local message_function_name="_${message_type}"
+
+  [ "$should_bookend_flag" = '--bookend' ] && message_function_name="${message_function_name}_"
+
+  "$message_function_name" "$message_text"
+}
+
+__dotfiles_log_message "$@"

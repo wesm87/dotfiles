@@ -82,11 +82,8 @@ alias fs='stat -f "%z bytes"'
 alias date-today='date +%Y-%m-%d'
 alias date-now='date-today'
 
-# Empty user Trash folder
-alias empty-trash='rm -rfv ~/.Trash/*'
-
-# Empty all the user Trash folders!
-alias -- empty-trash!='sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash/*'
+# Empty trash for all volumes (macOS only)
+alias -- empty-trash!='empty-trash --all-volumes'
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do

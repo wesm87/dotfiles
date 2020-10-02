@@ -9,10 +9,10 @@ function __dotfiles_populate_test_file() {
   local test_file_name="${test_file_path##*/}"
   local test_name="${test_file_name%.test.*}"
 
-  cat <<EOF >"${test_file_path}"
-describe('${test_name}', () => {
-  test.skip('skip', () => {});
-});
+  cat <<-EOF >"${test_file_path}"
+    describe('${test_name}', () => {
+      test.skip('skip', () => {});
+    });
 EOF
 }
 

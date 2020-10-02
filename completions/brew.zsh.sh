@@ -7,11 +7,7 @@ function __dotfiles_brew_completions_zsh() {
 
   if is-command brew && [ -d "$brew_completions_dir_path" ]; then
     FPATH="$brew_completions_dir_path:$FPATH"
-
-    echo "$FPATH"
-
     autoload -Uz compinit
-    compinit
   fi
 }
 

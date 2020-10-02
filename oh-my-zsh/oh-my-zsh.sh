@@ -47,7 +47,7 @@ function __dotfiles_oh_my_zsh_config() {
     # Use a custom folder other than $ZSH/custom
     ZSH_CUSTOM="$oh_my_zsh_custom_dir_path"
 
-    plugins=('dotenv' 'git' 'nvm' 'rvm' 'z' 'zsh-autosuggestions' 'zsh-syntax-highlighting')
+    plugins=('dotenv' 'git' 'z' 'zsh-autosuggestions' 'zsh-syntax-highlighting')
 
     source "$oh_my_zsh_script_file_path"
   fi

@@ -78,12 +78,12 @@ def get_source_files():
     return [file for file in glob('.*') if file not in IGNORE]
 
 
-def to_source_file_path(filename: str) -> str:
-    return path.join(SOURCE_DIR_RELATIVE, filename)
+def to_source_file_path(file_name: str) -> str:
+    return path.join(SOURCE_DIR_RELATIVE, file_name)
 
 
-def to_dest_file_path(filename: str) -> str:
-    return path.join(path.expanduser('~'), filename)
+def to_dest_file_path(file_name: str) -> str:
+    return path.join(path.expanduser('~'), file_name)
 
 
 def to_source_file_path_printable(source_path: str) -> str:
@@ -95,9 +95,9 @@ def to_dest_file_path_printable(dest_path: str) -> str:
 
 
 get_source_dest_path_pairs = compose(
-    map(lambda filename: [
-        to_source_file_path(filename),
-        to_dest_file_path(filename),
+    map(lambda file_name: [
+        to_source_file_path(file_name),
+        to_dest_file_path(file_name),
     ]),
     get_source_files,
 )

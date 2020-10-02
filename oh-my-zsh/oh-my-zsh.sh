@@ -19,8 +19,8 @@ function __dotfiles_oh_my_zsh_config() {
     git clone https://github.com/zsh-users/zsh-autosuggestions "$oh_my_zsh_custom_plugins_dir_path/zsh-autosuggestions"
   fi
 
-  if [ ! -d "$oh_my_zsh_custom_plugins_dir_path/zsh-syntax-highlighting " ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$oh_my_zsh_custom_plugins_dir_path/zsh-syntax-highlighting "
+  if [ ! -d "$oh_my_zsh_custom_plugins_dir_path/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$oh_my_zsh_custom_plugins_dir_path/zsh-syntax-highlighting"
   fi
 
   if can-source-file "$oh_my_zsh_script_file_path"; then

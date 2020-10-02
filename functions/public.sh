@@ -3,13 +3,13 @@
 # Reload bash profile
 function reload-bash-profile() {
   # shellcheck disable=1090
-  source "$HOME/.bash_profile"
+  can-source-file "$HOME/.bash_profile" && source "$HOME/.bash_profile"
 }
 
 # Reload zsh profile
 function reload-zsh-profile() {
   # shellcheck disable=1090
-  source "$HOME/.zshrc"
+  can-source-file "$HOME/.zshrc" && source "$HOME/.zshrc"
 }
 
 # Reload profile based on current shell
@@ -60,7 +60,7 @@ function fuzzy-find() {
 # List non-hidden files and directories, long format, permissions in octal
 function la() {
   # shellcheck disable=2012
-  ls -l  "$*" | awk '{
+  ls -l "$*" | awk '{
     k=0;
     for (i=0;i<=8;i++)
     k+=((substr($1,i+2,1)~/[rwx]/) *2^(8-i));
@@ -75,7 +75,6 @@ function la() {
 function cdf() {
   cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" || exit
 }
-
 
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
@@ -100,7 +99,7 @@ function gz() {
   local file_path="$1"
 
   echo "orig size (bytes): "
-  wc -c < "$file_path"
+  wc -c <"$file_path"
   echo "gzipped size (bytes): "
   gzip -c "$file_path" | wc -c
 }
@@ -110,7 +109,7 @@ function whois() {
   local domain
 
   domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
-  if [ -z "$domain" ] ; then
+  if [ -z "$domain" ]; then
     domain=$1
   fi
 
@@ -134,17 +133,17 @@ function network-info() {
   function print-ip() {
     local local_ip
     local_ip=$(local-ip-for-device "$1")
-    echo "📶 $local_ip";
+    echo "📶 $local_ip"
   }
   export -f print-ip
 
   local purple="\x1B\[35m"
   local reset="\x1B\[m"
 
-  networksetup -listallhardwareports | \
-    sed -r "s/Hardware Port: (.*)/${purple}\1${reset}/g" | \
-    sed -r "s/Device: (en.*)$/print-ip \1/e" | \
-    sed -r "s/Ethernet Address:/📘 /g" | \
+  networksetup -listallhardwareports |
+    sed -r "s/Hardware Port: (.*)/${purple}\1${reset}/g" |
+    sed -r "s/Device: (en.*)$/print-ip \1/e" |
+    sed -r "s/Ethernet Address:/📘 /g" |
     sed -r "s/(VLAN Configurations)|==*//g"
 }
 
@@ -153,7 +152,7 @@ function network-info() {
 function extract() {
   local file_path="$1"
 
-  if [ -f "$file_path" ] ; then
+  if [ -f "$file_path" ]; then
     local filename
     local foldername
     local fullpath
@@ -175,19 +174,19 @@ function extract() {
     mkdir -p "$foldername" && cd "$foldername" || exit
 
     case $file_path in
-      *.tar.bz2) tar xjf "$fullpath";;
-      *.tar.gz) tar xzf "$fullpath";;
-      *.tar.xz) tar Jxvf "$fullpath";;
-      *.tar.Z) tar xzf "$fullpath";;
-      *.tar) tar xf "$fullpath";;
-      *.taz) tar xzf "$fullpath";;
-      *.tb2) tar xjf "$fullpath";;
-      *.tbz) tar xjf "$fullpath";;
-      *.tbz2) tar xjf "$fullpath";;
-      *.tgz) tar xzf "$fullpath";;
-      *.txz) tar Jxvf "$fullpath";;
-      *.zip) unzip "$fullpath";;
-      *) echo "'$file_path' cannot be extracted via extract()" && cd .. && ! $folder_exists && rm -r "$foldername" ;;
+    *.tar.bz2) tar xjf "$fullpath" ;;
+    *.tar.gz) tar xzf "$fullpath" ;;
+    *.tar.xz) tar Jxvf "$fullpath" ;;
+    *.tar.Z) tar xzf "$fullpath" ;;
+    *.tar) tar xf "$fullpath" ;;
+    *.taz) tar xzf "$fullpath" ;;
+    *.tb2) tar xjf "$fullpath" ;;
+    *.tbz) tar xjf "$fullpath" ;;
+    *.tbz2) tar xjf "$fullpath" ;;
+    *.tgz) tar xzf "$fullpath" ;;
+    *.txz) tar Jxvf "$fullpath" ;;
+    *.zip) unzip "$fullpath" ;;
+    *) echo "'$file_path' cannot be extracted via extract()" && cd .. && ! $folder_exists && rm -r "$foldername" ;;
     esac
   else
     echo "'$file_path' is not a valid file"
@@ -210,10 +209,10 @@ function gifify() {
   if [[ -n "$input_file_name" ]]; then
     if [[ "$quality_flag" == '--good' ]]; then
       ffmpeg -i "$1" -r 10 -vcodec png out-static-%05d.png
-      time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > "$input_file_name.gif"
+      time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - >"$input_file_name.gif"
       rm out-static*.png
     else
-      ffmpeg -i "$input_file_name" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$input_file_name.gif"
+      ffmpeg -i "$input_file_name" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 >"$input_file_name.gif"
     fi
   else
     echo "proper usage: gifify <input_movie.mov>. You DO need to include extension."
@@ -222,7 +221,7 @@ function gifify() {
 
 # turn that video into webm.
 # brew reinstall ffmpeg --with-libvpx
-function webmify(){
+function webmify() {
   local input_file_name="$1"
   local output_file_name="$2"
 
@@ -245,7 +244,7 @@ function vscode() {
 #   Must be in /etc/shells
 function shellswitch() {
   if is-command brew; then
-    chsh -s "$(brew --prefix)/bin/${1}"
+    chsh -s "$(get-brew-prefix-path)/bin/${1}"
   else
     chsh -s "/bin/${1}"
   fi
@@ -258,7 +257,7 @@ curry shellswitch-fish shellswitch 'fish'
 function git-root() {
   local git_return
 
-  git rev-parse --is-inside-work-tree >& /dev/null
+  git rev-parse --is-inside-work-tree >&/dev/null
   git_return="$?"
 
   if [ "$git_return" == "128" ]; then

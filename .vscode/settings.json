@@ -1,4 +1,7 @@
 {
+  "search.exclude": {
+    "**/oh-my-zsh/custom/plugins": true
+  },
   "ruby.interpreter.commandPath": "/usr/share/rvm/rubies/ruby-2.7.0/bin/ruby",
   "ruby.useBundler": true,
   "ruby.useLanguageServer": true,
@@ -11,5 +14,9 @@
   "[ruby]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "rebornix.ruby"
+  },
+  "[shellscript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

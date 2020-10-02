@@ -12,11 +12,11 @@ function __dotfiles_gnu_utils_exports() {
   local sed_bin_path
   local sed_man_path
 
-  coreutils_base_path="$(brew --prefix coreutils)/libexec"
+  coreutils_base_path="$(get-brew-prefix-path coreutils)/libexec"
   coreutils_bin_path="$coreutils_base_path/gnubin"
   coreutils_man_path="$coreutils_base_path/gnuman"
 
-  sed_base_path="$(brew --prefix gnu-sed)/libexec"
+  sed_base_path="$(get-brew-prefix-path gnu-sed)/libexec"
   sed_bin_path="$sed_base_path/gnubin"
   sed_man_path="$sed_base_path/gnuman"
 

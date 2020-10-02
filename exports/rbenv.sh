@@ -5,7 +5,7 @@ function __dotfiles_rbenv_exports() {
     return
   fi
 
-  RBENV_ROOT="$(brew --prefix rbenv)"
+  RBENV_ROOT="$(get-brew-prefix-path rbenv)"
 
   if [ -d "$RBENV_ROOT" ]; then
     # Contains Ruby versions and shims.

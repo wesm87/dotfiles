@@ -5,7 +5,6 @@ function _dotfiles_exports() {
   local sources=(
     path.sh
     gnu-utils.sh
-    heroku-autocomplete.sh
     nvm.sh
     # RVM has to be last or it will complain about the current Ruby path
     # not being at the very beginning of the $PATH variable.

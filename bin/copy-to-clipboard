@@ -3,11 +3,20 @@ set -euo pipefail
 IFS=$'\n\t'
 
 function __dotfiles_copy_to_clipboard() {
-  if is-command pbcopy; then
-    pbcopy
-  elif is-command xclip; then
-    xclip -sel clip
-  fi
+  case "$(get-os-short-name)" in
+  macOS)
+    if is-command pbcopy; then
+      pbcopy
+    fi
+    ;;
+  Linux)
+    if is-command xclip; then
+      xclip -in -selection clipboard
+    elif is-command xsel; then
+      xsel --clipboard --input
+    fi
+    ;;
+  esac
 
   exit 1
 }

@@ -51,23 +51,16 @@ fi
 #   C = show in column view
 #   l = show in list view
 #   h = show byte unit suffixes
-ls_flags="-AFhp ${colorflag} --group-directories-first"
-lsc_flags="-C ${ls_flags}"
-lsl_flags="-l ${ls_flags}"
+ls_flags="-AFhp $colorflag --group-directories-first"
+lsc_flags="-C $ls_flags"
+lsl_flags="-l $ls_flags"
 
-# TODO: Figure out what is overriding my ls / grep aliases in Ubuntu
-alias __lsc="gls ${lsc_flags}"  # column view
-alias __lsl="gls ${lsl_flags}"  # list view
-alias __lsd='__lsl | grep "^d"' # only directories
-alias __lsf='__lsl | grep "^-"' # only files
-alias __lsa='__lsl'             # files and directories
-
-alias ls='__lsc'
-alias lsc='__lsc'
-alias lsl='__lsl'
-alias lsd='__lsd'
-alias lsf='__lsf'
-alias lsd='__lsd'
+alias lsc="gls $lsc_flags"  # column view
+alias lsl="gls $lsl_flags"  # list view
+alias lsd='lsl | grep "^d"' # only directories
+alias lsf='lsl | grep "^-"' # only files
+alias lsa='lsl'             # files and directories
+alias ls='lsc'
 
 # `cat` with beautiful colors. requires: sudo easy_install -U Pygments
 alias c='pygmentize -O style=monokai -f console256 -g'

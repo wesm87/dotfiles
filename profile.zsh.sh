@@ -24,9 +24,9 @@ function __dotfiles_profile() {
     exports.noninteractive.sh
   )
   local profile_sources=(
-    aliases.sh
     exports.interactive.sh
-    oh-my-zsh.sh
+    oh-my-zsh/oh-my-zsh.sh
+    aliases.sh
   )
 
   if __dotfiles_is_zsh_env; then

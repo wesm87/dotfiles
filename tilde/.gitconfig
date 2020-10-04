@@ -3,7 +3,7 @@
   email = wesm87@users.noreply.github.com
 
 [core]
-  excludesfile = ~/.dotfiles/config/gitignore
+  excludesfile = ~/.gitignore_global
   editor       = vim
   pager        = "diff-so-fancy | less -eFiJM --tabs=2"
 

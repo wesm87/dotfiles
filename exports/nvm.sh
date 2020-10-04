@@ -1,5 +1,4 @@
-# shellcheck shell=bash
-# shellcheck disable=1090
+# shellcheck shell=bash disable=1090
 
 function __dotfiles_nvm_exports() {
   local nvm_script_file_path

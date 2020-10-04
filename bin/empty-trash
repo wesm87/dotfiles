@@ -7,6 +7,7 @@ IFS=$'\n\t'
 ###
 function __dotfiles_empty_trash() {
   local -r all_flag="${1:-}"
+  local -r mac_trash_path="$HOME/.Trash"
   local -r linux_trash_path="$HOME/.local/share/Trash"
 
   if ! is-mac-os && ! is-linux-os; then
@@ -15,13 +16,14 @@ function __dotfiles_empty_trash() {
   fi
 
   if is-mac-os; then
-    rm -rfv "$HOME"/.Trash/*
+    rm -rf "${mac_trash_path:?}"/*
 
     if [ "$all_flag" = '--all-volumes' ]; then
-      sudo rm -rfv /Volumes/*/.Trashes
+      sudo rm -rf /Volumes/*/.Trashes
     fi
-  elif is-linux; then
-    rm -rfv "$linux_trash_path"/files/* && rm -rf "$linux_trash_path"/info/*
+  elif is-linux-os; then
+    rm -rf "${linux_trash_path:?}"/files/*
+    rm -rf "${linux_trash_path:?}"/info/*
   fi
 }
 

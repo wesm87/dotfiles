@@ -1,2 +1,124 @@
+[user]
+  name  = Wes Moberly
+  email = wesm87@users.noreply.github.com
+
+[core]
+  excludesfile = ~/.dotfiles/config/gitignore
+  editor       = vim
+  pager        = "diff-so-fancy | less -eFiJM --tabs=2"
+
+[credential]
+  helper = osxkeychain
+
+[pull]
+  rebase = true
+
+[push]
+  default = simple
+
+[filter "lfs"]
+  required = true
+  clean    = git-lfs clean %f
+  smudge   = git-lfs smudge %f
+
+[color]
+  ui = true
+
+[color "diff-highlight"]
+  oldNormal    = "red bold"
+  oldHighlight = "red bold 52"
+  newNormal    = "green bold"
+  newHighlight = "green bold 22"
+
+[color "diff"]
+  meta       = "yellow"
+  frag       = "magenta bold"
+  commit     = "yellow bold"
+  old        = "red bold"
+  new        = "green bold"
+  whitespace = "red reverse"
+
+[merge]
+  tool = vimdiff
+
+[alias]
+  s                 = status
+  f                 = fetch
+  p                 = pull
+  b                 = branch
+  branches          = branch --all
+  rename-branch     = branch -m
+  delete-branch     = branch -d
+  branch-name       = "!. ~/.dotfiles/libs/git-helpers.sh && __git_branch_name"
+  remotes           = remote -v
+  m                 = merge
+  c                 = commit --verbose
+  cm                = commit --verbose -m
+  co                = checkout
+  cob               = checkout -b
+  d                 = diff
+  dc                = diff --cached
+  amend             = commit --amend
+  un-commit         = reset --mixed HEAD~
+  re-commit         = commit --amend -C HEAD
+  un-stage          = reset HEAD --
+  revert-last       = revert HEAD~
+  aa                = add --all
+  ff                = merge --ff-only
+  pull-ff           = pull --ff-only
+  no-ff             = merge --no-ff
+  fa                = fetch --all
+  pom               = push origin master
+  undo-push         = push -f origin HEAD^:master
+  ds                = diff --stat=160,120
+  dh1               = diff HEAD~1
+  conflicts         = diff --name-status --diff-filter=U
+  patch             = "!. ~/.dotfiles/libs/git-helpers.sh && __git_patch"
+  detach            = checkout --detach
+  discard           = checkout --
+  merge-from        = "!. ~/.dotfiles/libs/git-helpers.sh && __git_merge_from"
+  init-submodules   = submodule update --init --recursive --remote
+  update-submodules = submodule update --recursive --remote
+
+  # Divergence (commits we added and commits remote added)
+  div = divergence
+
+  # Goodness (summary of diff lines added/removed/total)
+  gn  = goodness
+  gnc = goodness --cached
+
+  # Fancy logging.
+  #   h = head
+  #   hp = head with patch
+  #   r = recent commits, only current branch
+  #   ra = recent commits, all reachable refs
+  #   l = all commits, only current branch
+  #   la = all commits, all reachable refs
+  #   b = all branches
+  #   bs = all branches, sorted by last commit date
+  head = !git r -1
+  h    = !git head
+  hp   = "!. ~/.dotfiles/libs/git-helpers.sh && __git_show_head"
+  r    = !GIT_NO_PAGER=1 git l -30
+  ra   = !git r --all
+  l    = "!. ~/.dotfiles/libs/git-helpers.sh && __git_pretty_log"
+  la   = !git l --all
+  b    = "!. ~/.dotfiles/libs/git-helpers.sh && __git_pretty_branch"
+  bs   = "!. ~/.dotfiles/libs/git-helpers.sh && __git_pretty_branch_sorted"
+
+  # Open any files with merge conflicts in vim (or your preferred editor)
+  view-conflicts = "!. ~/.dotfiles/libs/git-helpers.sh && __git_view_conflicts"
+
+  # Add a `.keep` file inside the specified directory.
+  # Useful for ignoring files in a directory but not the directory itself.
+  keep = "!. ~/.dotfiles/libs/git-helpers.sh && __git_keep"
+
+  # Add a new entry to `.gitignore`
+  ignore = "!. ~/.dotfiles/libs/git-helpers.sh && __git_ignore"
+
+[alias-config]
+  viewer = vim
+
+# Allow local overrides so things like user.email can be modified
 [include]
-  path = ~/.dotfiles/config/gitconfig
+  path = ~/.gitconfig_overrides

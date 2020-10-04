@@ -54,10 +54,10 @@ function __git_pretty_branch_sorted() {
 function __git_pretty_format() {
   # Replace (2 years ago) with (2 years)
   sed -Ee 's/(^[^<]*) ago\)/\1)/' |
-  # Replace (2 years, 5 months) with (2 years)
-  sed -Ee 's/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/' |
-  # Line columns up based on } delimiter
-  column -s '}' -t
+    # Replace (2 years, 5 months) with (2 years)
+    sed -Ee 's/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/' |
+    # Line columns up based on } delimiter
+    column -s '}' -t
 }
 
 function __git_page_maybe() {
@@ -82,7 +82,7 @@ function __git_keep() {
 
 function __git_ignore() {
   touch .gitignore
-  printf %"s\n" "$@" >> .gitignore
+  printf %"s\n" "$@" >>.gitignore
 }
 
 function __git_branch_name() {
@@ -95,10 +95,10 @@ function __git_merge_from() {
   local current_branch="$(__git_branch_name)"
   local target_branch="${2:-$current_branch}"
 
-  git checkout "$source_branch" \
-    && git pull \
-    && git checkout "$target_branch" \
-    && git merge "$source_branch"
+  git checkout "$source_branch" &&
+    git pull &&
+    git checkout "$target_branch" &&
+    git merge "$source_branch"
 }
 
 function __git_patch() {

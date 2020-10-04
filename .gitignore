@@ -13,4 +13,7 @@
 
 # Log files
 *.log
-libs/tmux-plugins
+
+# Ignore tmux plugins but keep the tpm git submodule
+libs/tmux-plugins/*
+!libs/tmux-plugins/tpm

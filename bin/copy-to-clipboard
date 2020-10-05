@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash disable=1090
 set -euo pipefail
 IFS=$'\n\t'
 
+source "$HOME/.dotfiles/bin/_lib/utils.sh"
+
 function __dotfiles_copy_to_clipboard() {
-  if ! is-mac-os && ! is-linux-os; then
-    log-message 'error' '[copy-to-clipboard]: only macOS and Linux are supported'
-    exit 1
-  fi
+  __validate_is_supported_os 'copy-to-clipboard'
 
   if is-mac-os; then
     if is-command pbcopy; then

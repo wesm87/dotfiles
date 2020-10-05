@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash disable=1090
 set -euo pipefail
 IFS=$'\n\t'
+
+source "$HOME/.dotfiles/bin/_lib/utils.sh"
 
 ###
 # Empty user Trash folder
@@ -10,10 +13,7 @@ function __dotfiles_empty_trash() {
   local -r mac_trash_path="$HOME/.Trash"
   local -r linux_trash_path="$HOME/.local/share/Trash"
 
-  if ! is-mac-os && ! is-linux-os; then
-    log-message 'error' '[empty-trash]: only macOS and Linux are supported'
-    exit 1
-  fi
+  __validate_is_supported_os 'empty-trash'
 
   if is-mac-os; then
     rm -rf "${mac_trash_path:?}"/*

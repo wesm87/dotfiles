@@ -42,7 +42,7 @@ function __dotfiles_package_command() {
       sudo apt "$command" "$@"
       ;;
     outdated)
-      apt list --upgradable
+      apt list --upgradable "$@"
       ;;
     search | info | list)
       apt "$command" "$@"

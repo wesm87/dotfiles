@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash disable=1090
+set -euo pipefail
+IFS=$'\n\t'
+
+source "$HOME/.dotfiles/bin/_lib/utils.sh"
+
+###
+# Acts as a middle-man for `brew` on macOS or `apt` on Linux.
+#
+# Usage:
+#   package search <search_pattern>
+#   package info [<package_name>...]
+#   package install <package_name>...
+#   package uninstall, rm, remove <package_name>...
+#   package update
+#   package upgrade [<package_name>...]
+#   package list [<package_name>...]
+#   package outdated
+#   package clean [<package_name>...]
+#   package purge [<package_name>...]
+###
+
+function __dotfiles_package_command() {
+  local command="$1"
+  shift
+
+  __validate_is_supported_os 'package'
+
+  if is-mac-os; then
+    if ! is-command 'brew'; then
+      echo '[package]: brew is not installed'
+    fi
+
+    brew "$command" "$@"
+  elif is-linux-os; then
+    case "$command" in
+    uninstall | rm | remove)
+      sudo apt remove "$@"
+      ;;
+    install | update | upgrade | clean | purge)
+      sudo apt "$command" "$@"
+      ;;
+    search | info | list | outdated)
+      apt "$command" "$@"
+      ;;
+    esac
+  fi
+}
+
+__dotfiles_package_command "$@"

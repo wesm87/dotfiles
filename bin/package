@@ -41,7 +41,10 @@ function __dotfiles_package_command() {
     install | update | upgrade | clean | purge)
       sudo apt "$command" "$@"
       ;;
-    search | info | list | outdated)
+    outdated)
+      apt list --upgradable
+      ;;
+    search | info | list)
       apt "$command" "$@"
       ;;
     esac

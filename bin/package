@@ -36,15 +36,18 @@ function __dotfiles_package_command() {
   elif is-linux-os; then
     case "$command" in
     uninstall | rm | remove)
-      sudo apt remove "$@"
+      sudo apt remove -y "$@"
       ;;
-    install | update | upgrade | clean | purge)
-      sudo apt "$command" "$@"
+    install | update | upgrade)
+      sudo apt "$command" -y "$@"
       ;;
     outdated)
       apt list --upgradable "$@"
       ;;
-    search | info | list)
+    clean | purge) # TODO: Implement these commands
+      sudo apt "$command" "$@"
+      ;;
+    search | info | list) # TODO: Implement these commands
       apt "$command" "$@"
       ;;
     esac

@@ -1,6 +1,9 @@
 {
   "search.exclude": {
-    "**/oh-my-zsh/custom/plugins": true
+    "**/libs/z": true,
+    "**/libs/tmux-plugins/tpm": true,
+    "**/oh-my-zsh/custom/plugins/zsh-autosuggestions": true,
+    "**/oh-my-zsh/custom/plugins/zsh-syntax-highlighting": true
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

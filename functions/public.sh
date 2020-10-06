@@ -27,6 +27,31 @@ function reload-profile() {
   return 1
 }
 
+function append-or-prepend-to-path() {
+  local prepend_or_append="$1"
+  local path_to_add="${2:-}"
+
+  if [ -n "$path_to_add" ] && [ -d "$path_to_add" ] && ! string-contains "$path_to_add" "$PATH"; then
+    if [ "$prepend_or_append" = 'prepend' ]; then
+      export PATH="${path_to_add}:${PATH}"
+    else
+      export PATH="${PATH}:${path_to_add}"
+    fi
+  fi
+}
+
+function prepend-to-path() {
+  local path_to_add="${1:-}"
+
+  append-or-prepend-to-path 'prepend' "$path_to_add"
+}
+
+function append-to-path() {
+  local path_to_add="${1:-}"
+
+  append-or-prepend-to-path 'append' "$path_to_add"
+}
+
 # Create a new directory and enter it
 function md() {
   local file_path="$1"

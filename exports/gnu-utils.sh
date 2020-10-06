@@ -6,35 +6,18 @@ function __dotfiles_gnu_utils_exports() {
   fi
 
   local coreutils_base_path
-  local coreutils_bin_path
-  local coreutils_man_path
   local sed_base_path
-  local sed_bin_path
-  local sed_man_path
 
   coreutils_base_path="$(get-brew-prefix-path coreutils)/libexec"
-  coreutils_bin_path="$coreutils_base_path/gnubin"
-  coreutils_man_path="$coreutils_base_path/gnuman"
-
   sed_base_path="$(get-brew-prefix-path gnu-sed)/libexec"
-  sed_bin_path="$sed_base_path/gnubin"
-  sed_man_path="$sed_base_path/gnuman"
 
   # Update `$PATH`.
-  if ! string-contains "$sed_bin_path" "$PATH"; then
-    export PATH="$sed_bin_path:$PATH"
-  fi
-  if ! string-contains "$coreutils_bin_path" "$PATH"; then
-    export PATH="$coreutils_bin_path:$PATH"
-  fi
+  prepend-to-path "$sed_base_path/gnubin"
+  prepend-to-path "$coreutils_base_path/gnubin"
 
   # Update `$MANPATH`
-  if ! string-contains "$sed_man_path" "$MANPATH"; then
-    export MANPATH="$sed_man_path:$MANPATH"
-  fi
-  if ! string-contains "$coreutils_man_path" "$MANPATH"; then
-    export MANPATH="$coreutils_man_path:$PATH"
-  fi
+  prepend-to-path "$sed_base_path/gnuman"
+  prepend-to-path "$coreutils_base_path/gnuman"
 }
 
 __dotfiles_gnu_utils_exports

@@ -1,11 +1,9 @@
 # shellcheck shell=bash disable=1090
 
-function _dotfiles_exports() {
+function __dotfiles_exports() {
   local base_dir="$HOME/.dotfiles/exports"
   local sources=(
     cli-colors.sh
-    vim.sh
-    yarn.sh
     z.sh
   )
 
@@ -27,4 +25,4 @@ function _dotfiles_exports() {
   fi
 }
 
-_dotfiles_exports
+__dotfiles_exports

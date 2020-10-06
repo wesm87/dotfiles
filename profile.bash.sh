@@ -21,10 +21,10 @@ function __dotfiles_profile() {
     exports.noninteractive.sh
   )
   local profile_sources=(
-    aliases.sh
     exports.interactive.sh
-    libs.sh
     completions.bash.sh
+    libs.sh
+    aliases.sh
   )
 
   __dotfiles_profile_includes "$base_dir" "${rc_sources[@]}"

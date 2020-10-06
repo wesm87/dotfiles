@@ -1,12 +1,10 @@
-# shellcheck shell=bash disable=1090
+# shellcheck shell=bash disable=1090,2128,2206
 
 function __dotfiles_profile_includes() {
   local base_dir="${1:-}"
   shift
-  # shellcheck disable=2206
   local sources=($*)
 
-  # shellcheck disable=2128
   for file in $sources; do
     [ -f "$base_dir/$file" ] && source "$base_dir/$file"
   done
@@ -25,19 +23,18 @@ function __dotfiles_profile() {
   )
   local profile_sources=(
     exports.interactive.sh
+    completions.zsh.sh
     oh-my-zsh/oh-my-zsh.sh
     aliases.sh
   )
 
   if __dotfiles_is_zsh_env; then
-    # shellcheck disable=2206,2128
     sources=($env_sources)
   else
-    # shellcheck disable=2206,2128
     sources=($profile_sources)
   fi
 
-  # shellcheck disable=2086,2128
+  # shellcheck disable=2086
   __dotfiles_profile_includes "$base_dir" $sources
 }
 
@@ -48,7 +45,7 @@ function __dotfiles_local_profile() {
   )
 
   if ! __dotfiles_is_zsh_env; then
-    # shellcheck disable=2086,2128
+    # shellcheck disable=2086
     __dotfiles_profile_includes "$base_dir" $sources
   fi
 }

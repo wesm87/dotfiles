@@ -1,30 +1,15 @@
-# shellcheck shell=bash disable=1090,2034
+# shellcheck shell=bash disable=1090,2034,2128,2206
 
 function __dotfiles_oh_my_zsh_config() {
-  local oh_my_zsh_dir_path
-  local oh_my_zsh_script_file_path
-  local oh_my_zsh_custom_dir_path
-  local oh_my_zsh_custom_plugins_dir_path
+  local -r omz_dir_path="$HOME/.oh-my-zsh"
+  local -r omz_script_file_path="$omz_dir_path/oh-my-zsh.sh"
+  local -r omz_custom_dir_path="$HOME/.dotfiles/oh-my-zsh/custom"
+  local -r omz_custom_plugins_dir_path="$omz_custom_dir_path/plugins"
+  local -a omz_built_in_plugin_names=()
+  local -a omz_custom_plugin_names=()
 
-  oh_my_zsh_dir_path="$HOME/.oh-my-zsh"
-  oh_my_zsh_script_file_path="$oh_my_zsh_dir_path/oh-my-zsh.sh"
-  oh_my_zsh_custom_dir_path="$HOME/.dotfiles/oh-my-zsh/custom"
-  oh_my_zsh_custom_plugins_dir_path="$oh_my_zsh_custom_dir_path/plugins"
-
-  if [ ! -d "$oh_my_zsh_dir_path" ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  fi
-
-  if [ ! -d "$oh_my_zsh_custom_plugins_dir_path/zsh-autosuggestions" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$oh_my_zsh_custom_plugins_dir_path/zsh-autosuggestions"
-  fi
-
-  if [ ! -d "$oh_my_zsh_custom_plugins_dir_path/zsh-syntax-highlighting" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$oh_my_zsh_custom_plugins_dir_path/zsh-syntax-highlighting"
-  fi
-
-  if can-source-file "$oh_my_zsh_script_file_path"; then
-    export ZSH="$oh_my_zsh_dir_path"
+  if can-source-file "$omz_script_file_path"; then
+    export ZSH="$omz_dir_path"
 
     #* Themes to try: wezm, wedisagree, theunraveler, terminalparty
     #* https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -44,12 +29,25 @@ function __dotfiles_oh_my_zsh_config() {
     # Disable marking untracked files under VCS as dirty.
     DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-    # Use a custom folder other than $ZSH/custom
-    ZSH_CUSTOM="$oh_my_zsh_custom_dir_path"
+    # Use a custom folder other than $ZSH/custom.
+    ZSH_CUSTOM="$omz_custom_dir_path"
 
-    plugins=('dotenv' 'git' 'z' 'zsh-autosuggestions' 'zsh-syntax-highlighting')
+    # Built-in OMZ plugins.
+    omz_built_in_plugin_names=(
+      git
+      z
+    )
 
-    source "$oh_my_zsh_script_file_path"
+    # Custom OMZ plugins.
+    for plugin_path in "$omz_custom_plugins_dir_path"/*; do
+      omz_custom_plugin_names+=("$(basename "$plugin_path")")
+    done
+
+    # Combine built-in / custom plugins to create plugins array.
+    plugins=($omz_built_in_plugin_names $omz_custom_plugin_names)
+
+    # Source oh-my-zsh init script.
+    source "$omz_script_file_path"
   fi
 }
 

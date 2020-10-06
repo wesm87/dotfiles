@@ -23,7 +23,7 @@ function __dotfiles_create_detached_tmux_session() {
   (TMUX='' tmux new-session -Ad -s "$session_name")
 }
 
-function _dotfiles_tmux_session() {
+function __dotfiles_tmux_session() {
   local path_name
   local session_name
 
@@ -41,4 +41,4 @@ function _dotfiles_tmux_session() {
   tmux switch-client -t "$session_name"
 }
 
-_dotfiles_tmux_session "$@"
+__dotfiles_tmux_session "$@"

@@ -2,8 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Returns true if the specified path is either a file or a link to a file
-# that is both readable by the current user and not empty
+# Returns true if the specified path is either a file or a link to a file,
+# AND is readable by the current user, AND is not empty.
 function __dotfiles_can_source_file() {
   [ -f "$1" ] && [ -r "$1" ] && [ -s "$1" ]
 }

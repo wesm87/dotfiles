@@ -6,7 +6,9 @@ function __dotfiles_profile_includes() {
   local sources=($*)
 
   for file in $sources; do
-    [ -f "$base_dir/$file" ] && source "$base_dir/$file"
+    if "${HOME}/.dotfiles/bin/can-source-file" "${base_dir}/${file}"; then
+      source "${base_dir}/${file}"
+    fi
   done
 }
 

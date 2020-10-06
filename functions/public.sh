@@ -1,15 +1,19 @@
-# shellcheck shell=bash
+# shellcheck shell=bash disable=1090
+
+function safe-source() {
+  local -r source_file_path="${1:-}"
+
+  can-source-file "$source_file_path" && source "$source_file_path"
+}
 
 # Reload bash profile
 function reload-bash-profile() {
-  # shellcheck disable=1090
-  can-source-file "$HOME/.bash_profile" && source "$HOME/.bash_profile"
+  safe-source "${HOME}/.bash_profile"
 }
 
 # Reload zsh profile
 function reload-zsh-profile() {
-  # shellcheck disable=1090
-  can-source-file "$HOME/.zshrc" && source "$HOME/.zshrc"
+  safe-source "${HOME}/.zshrc"
 }
 
 # Reload profile based on current shell
@@ -28,58 +32,60 @@ function reload-profile() {
 }
 
 function append-or-prepend-to-path() {
-  local prepend_or_append="$1"
-  local path_to_add="${2:-}"
+  local -r prepend_or_append="$1"
+  local -r path_to_add="${2:-}"
+  local did_find_in_path
 
-  if [ -n "$path_to_add" ] && [ -d "$path_to_add" ] && ! string-contains "$path_to_add" "$PATH"; then
-    if [ "$prepend_or_append" = 'prepend' ]; then
-      export PATH="${path_to_add}:${PATH}"
-    else
-      export PATH="${PATH}:${path_to_add}"
-    fi
+  did_find_in_path=$(echo "$PATH" | tr ':' '\n' | grep -x "$path_to_add")
+
+  # Bail if path is empty, not a directory, or already in $PATH
+  if [ -z "$path_to_add" ] || [ ! -d "$path_to_add" ] || [ -n "$did_find_in_path" ]; then
+    return 0
+  fi
+
+  if [ "$prepend_or_append" = 'prepend' ]; then
+    export PATH="${path_to_add}:${PATH}"
+  else
+    export PATH="${PATH}:${path_to_add}"
   fi
 }
 
 function prepend-to-path() {
-  local path_to_add="${1:-}"
-
-  append-or-prepend-to-path 'prepend' "$path_to_add"
+  append-or-prepend-to-path 'prepend' "$1"
 }
 
 function append-to-path() {
-  local path_to_add="${1:-}"
-
-  append-or-prepend-to-path 'append' "$path_to_add"
+  append-or-prepend-to-path 'append' "$1"
 }
 
 # Create a new directory and enter it
 function md() {
-  local file_path="$1"
+  local -r file_path="$1"
   shift
-  local mkdir_args="$*"
+  local -r mkdir_args="$*"
 
   mkdir -p "$file_path" "$mkdir_args" && cd "$file_path" || exit
 }
 
 function copy_dir() {
-  local source="$1"
-  local dest="${2:-.}"
+  local -r source="$1"
+  local -r dest="${2:-.}"
 
   cp -rT "$source" "$dest"
 }
 
 # find shorthand
 function f() {
-  local pattern="$1"
+  local -r pattern="$1"
 
   find . -name "$pattern" 2>&1 | grep -v 'Permission denied'
 }
 
 # fuzzy find
 function fuzzy-find() {
-  local pattern="$1"
+  local -r pattern="$1"
 
-  f "*$pattern*"
+  f "*${pattern}*"
 }
 
 # List non-hidden files and directories, long format, permissions in octal
@@ -103,7 +109,7 @@ function cdf() {
 
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
-  local port="${1:-8000}"
+  local -r port="${1:-8000}"
 
   open "http://localhost:${port}/"
   # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
@@ -121,7 +127,7 @@ function cp-p() {
 
 # get gzipped size
 function gz() {
-  local file_path="$1"
+  local -r file_path="$1"
 
   echo "orig size (bytes): "
   wc -c <"$file_path"
@@ -134,6 +140,7 @@ function whois() {
   local domain
 
   domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
+
   if [ -z "$domain" ]; then
     domain=$1
   fi
@@ -156,7 +163,7 @@ function local-ip() {
 
 function network-info() {
   function print-ip() {
-    local local_ip
+    local -r local_ip
     local_ip=$(local-ip-for-device "$1")
     echo "📶 $local_ip"
   }
@@ -175,7 +182,7 @@ function network-info() {
 # Extract archives - use: extract <file>
 # Based on http://dotfiles.org/~pseup/.bashrc
 function extract() {
-  local file_path="$1"
+  local -r file_path="$1"
 
   if [ -f "$file_path" ]; then
     local filename
@@ -247,10 +254,13 @@ function gifify() {
 # turn that video into webm.
 # brew reinstall ffmpeg --with-libvpx
 function webmify() {
-  local input_file_name="$1"
-  local output_file_name="$2"
+  local -r input_file_name="$1"
+  local -r output_file_name="$2"
 
-  ffmpeg -i "$input_file_name" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$output_file_name" "$input_file_name.webm"
+  ffmpeg -i "$input_file_name" \
+    -vcodec libvpx -acodec libvorbis -isync -copyts \
+    -aq 80 -threads 3 -qmax 30 -y \
+    "$output_file_name" "$input_file_name.webm"
 }
 
 # visual studio code. a la `subl`
@@ -268,10 +278,14 @@ function vscode() {
 # `shellswitch [bash |zsh | fish]`
 #   Must be in /etc/shells
 function shellswitch() {
-  if is-command brew; then
-    chsh -s "$(get-brew-prefix-path)/bin/${1}"
+  local -r shell_name="$1"
+  local -r brew_shell_path="$(get-brew-prefix-path)/bin/${shell_name}"
+  local -r default_shell_path="/bin/${shell_name}"
+
+  if [ -f "$brew_shell_path" ]; then
+    chsh -s "$brew_shell_path"
   else
-    chsh -s "/bin/${1}"
+    chsh -s "$default_shell_path"
   fi
 }
 
@@ -293,8 +307,8 @@ function git-root() {
 }
 
 function set-terminal-title-for-target() {
-  local target="${1:-}"
-  local title="${2:-}"
+  local -r target="${1:-}"
+  local -r title="${2:-}"
 
   if [ -n "$target" ]; then
     printf '\e]%s;%s\a' "$target" "$title"
@@ -306,7 +320,7 @@ curry set-terminal-tab-title set-terminal-title-for-target '1'
 curry set-terminal-window-title set-terminal-title-for-target '2'
 
 function set-wifi-status() {
-  local status="$1"
+  local -r status="$1"
 
   sudo ifconfig en0 "$status"
 }
@@ -339,7 +353,9 @@ function get-network-location() {
 }
 
 function set-network-location() {
-  scselect "${1}"
+  local -r location_name="${1:-}"
+
+  scselect "$location_name"
 }
 
 function docker-list-all-ids() {
@@ -351,24 +367,21 @@ function docker-list-unused-ids() {
 }
 
 function docker-clean-unused() {
-  # shellcheck disable=2155
-  local images=$(docker-list-unused-ids)
+  local -r images=$(docker-list-unused-ids)
 
   # shellcheck disable=2086
   [ -n "$images" ] && docker rmi $images
 }
 
 function docker-stop-all() {
-  # shellcheck disable=2155
-  local images=$(docker-list-all-ids)
+  local -r images=$(docker-list-all-ids)
 
   # shellcheck disable=2086
   [ -n "$images" ] && docker stop $images
 }
 
 function docker-remove-all() {
-  # shellcheck disable=2155
-  local images=$(docker-list-all-ids)
+  local -r images=$(docker-list-all-ids)
 
   # shellcheck disable=2086
   [ -n "$images" ] && docker rm $images

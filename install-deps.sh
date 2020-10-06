@@ -3,5 +3,5 @@
 
 source "$HOME/.dotfiles/exports/rvm.sh"
 
-pip3 install -r requirements.txt
+poetry install
 rvm use && bundle install

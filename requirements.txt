@@ -1,6 +1,0 @@
-autopep8
-docopt
-pycodestyle
-pylint
-toolz
-urllib3

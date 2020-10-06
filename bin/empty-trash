@@ -9,7 +9,6 @@ source "$HOME/.dotfiles/bin/_lib/utils.sh"
 # Empty user Trash folder
 ###
 function __dotfiles_empty_trash() {
-  local -r all_flag="${1:-}"
   local -r mac_trash_path="$HOME/.Trash"
   local -r linux_trash_path="$HOME/.local/share/Trash"
 
@@ -17,10 +16,6 @@ function __dotfiles_empty_trash() {
 
   if is-mac-os; then
     rm -rf "${mac_trash_path:?}"/*
-
-    if [ "$all_flag" = '--all-volumes' ]; then
-      sudo rm -rf /Volumes/*/.Trashes
-    fi
   elif is-linux-os; then
     rm -rf "${linux_trash_path:?}"/files/*
     rm -rf "${linux_trash_path:?}"/info/*

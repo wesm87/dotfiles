@@ -1,13 +1,13 @@
 # shellcheck shell=bash
 
 # Xcode
-if ! xcode-select --print-path &> /dev/null; then
+if ! xcode-select --print-path &>/dev/null; then
 
   # Prompt user to install the command line tools
-  xcode-select --install &> /dev/null
+  xcode-select --install &>/dev/null
 
   # Wait until the command line tools are installed
-  until xcode-select --print-path &> /dev/null; do
+  until xcode-select --print-path &>/dev/null; do
     sleep 5
   done
   print_result $? 'Install Xcode Command Line Tools'
@@ -21,11 +21,6 @@ if ! xcode-select --print-path &> /dev/null; then
   sudo xcodebuild -license
   print_result $? 'Agree with the Xcode Command Line Tools licence'
 
-fi
-
-# Install Homebrew if it's not already installed
-if ! is-command brew; then
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 # Make sure we’re using the latest Homebrew
@@ -58,9 +53,6 @@ brew install gnu-sed
 # chsh -s $BASHPATH # will set for current user only.
 
 # Ruby + rbenv
-echo 'gem: --no-document' > ~/.gemrc
-brew install rbenv
-eval "$(rbenv init -)"
 RBENV_VERSION=${RBENV_VERSION:-'2.7.0'}
 rbenv install "$RBENV_VERSION"
 rbenv global "$RBENV_VERSION"
@@ -80,9 +72,6 @@ gem install tmuxinator
 
 # Install Vim and Vundle
 brew install vim
-if ! [ -f "$HOME/.vim/bundle/Vundle.vim" ]; then
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-fi
 
 # Install Fira Code font
 brew cask install font-fira-code
@@ -98,9 +87,6 @@ brew install watchman
 
 # Git
 brew install git
-git config --global user.name 'Wes Moberly'
-git config --global user.email 'github.wes@mailhero.io'
-git config --global credential.helper osxkeychain
 
 # -- Git flow
 brew install git-flow-avh

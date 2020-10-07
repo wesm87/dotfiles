@@ -31,31 +31,55 @@ function reload-profile() {
   return 1
 }
 
-function append-or-prepend-to-path() {
-  local -r prepend_or_append="$1"
-  local -r path_to_add="${2:-}"
-  local did_find_in_path
-
-  did_find_in_path=$(echo "$PATH" | tr ':' '\n' | grep -x "$path_to_add")
+function add-to-path-like-value() {
+  local -r position="$1"
+  local -r path_to_add="$2"
+  local -r path_like_value="$3"
+  local -r did_find_in_path=$(echo "$path_like_value" | tr ':' '\n' | grep -x "$path_to_add")
 
   # Bail if path is empty, not a directory, or already in $PATH
   if [ -z "$path_to_add" ] || [ ! -d "$path_to_add" ] || [ -n "$did_find_in_path" ]; then
+    echo "$path_like_value"
     return 0
   fi
 
-  if [ "$prepend_or_append" = 'prepend' ]; then
-    export PATH="${path_to_add}:${PATH}"
+  if [ "$position" = 'prepend' ]; then
+    echo "${path_to_add}:${path_like_value}"
   else
-    export PATH="${PATH}:${path_to_add}"
+    echo "${path_like_value}:${path_to_add}"
   fi
 }
 
+function add-to-manpath() {
+  local -r position="$1"
+  local -r path_to_add="${2:-}"
+  local -r new_manpath=$(add-to-path-like-value "$position" "$path_to_add" "$MANPATH")
+
+  export MANPATH="$new_manpath"
+}
+
+function prepend-to-manpath() {
+  add-to-manpath 'prepend' "$1"
+}
+
+function append-to-manpath() {
+  add-to-manpath 'append' "$1"
+}
+
+function add-to-path() {
+  local -r position="$1"
+  local -r path_to_add="${2:-}"
+  local -r new_path=$(add-to-path-like-value "$position" "$path_to_add" "$PATH")
+
+  export PATH="$new_path"
+}
+
 function prepend-to-path() {
-  append-or-prepend-to-path 'prepend' "$1"
+  add-to-path 'prepend' "$1"
 }
 
 function append-to-path() {
-  append-or-prepend-to-path 'append' "$1"
+  add-to-path 'append' "$1"
 }
 
 # Create a new directory and enter it

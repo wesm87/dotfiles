@@ -3,14 +3,14 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source "$HOME/.dotfiles/bin/_lib/utils.sh"
+source "${HOME}/.dotfiles/bin/_lib/utils.sh"
 
 ###
 # Empty user Trash folder
 ###
 function __dotfiles_empty_trash() {
-  local -r mac_trash_path="$HOME/.Trash"
-  local -r linux_trash_path="$HOME/.local/share/Trash"
+  local -r mac_trash_path="${HOME}/.Trash"
+  local -r linux_trash_path="${HOME}/.local/share/Trash"
 
   __validate_is_supported_os 'empty-trash'
 

@@ -64,7 +64,7 @@ function _info_() {
 }
 
 function _debug() {
-  " _color $COLOR_DEBUG" "$1"
+  _color "$COLOR_DEBUG" "$1"
 }
 
 function _debug_() {
@@ -74,7 +74,7 @@ function _debug_() {
 }
 
 function _log() {
-  " _color $COLOR_LOG" "$1"
+  _color "$COLOR_LOG" "$1"
 }
 
 function _log_() {
@@ -84,7 +84,7 @@ function _log_() {
 }
 
 function _special() {
-  " _color $COLOR_SPECIAL" "$1"
+  _color "$COLOR_SPECIAL" "$1"
 }
 
 function _special_() {

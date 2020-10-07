@@ -1,7 +1,7 @@
 # shellcheck shell=bash disable=1090
 
 function __dotfiles_exports() {
-  local base_dir="$HOME/.dotfiles/exports"
+  local base_dir="${HOME}/.dotfiles/exports"
   local sources=(
     cli-colors.sh
     z.sh

@@ -6,8 +6,10 @@ function __dotfiles_profile_includes() {
   local sources=($*)
 
   for file in $sources; do
-    if "${HOME}/.dotfiles/bin/can-source-file" "${base_dir}/${file}"; then
-      source "${base_dir}/${file}"
+    local -r full_path="${base_dir}/${file}"
+
+    if "${HOME}/.dotfiles/bin/can-source-file" "$full_path"; then
+      source "$full_path"
     fi
   done
 }
@@ -17,7 +19,7 @@ function __dotfiles_is_zsh_env() {
 }
 
 function __dotfiles_profile() {
-  local base_dir="$HOME/.dotfiles"
+  local base_dir="${HOME}/.dotfiles"
   local sources
   local env_sources=(
     functions.sh

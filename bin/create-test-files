@@ -20,6 +20,7 @@ function __dotfiles_create_test_files_for_file_type() {
   # Strip out trailing slash if it was included
   local target_dir="${1%/}"
   local file_type="${2:-js}"
+  local debug_only_flag="${3:-}"
 
   for file_path in "${target_dir}"/**/*."${file_type}"; do
     if [ ! -f "$file_path" ]; then
@@ -32,7 +33,7 @@ function __dotfiles_create_test_files_for_file_type() {
     local test_file_name="${file_name/.${file_type}/.test.${file_type}}"
     local test_file_path="${test_dir_path}/${test_file_name}"
 
-    if $__DOTFILES_DEBUG_ONLY; then
+    if [ -n "$debug_only_flag" ]; then
       echo "Original file path:  ${dir_path}/${file_name}"
       echo "Test file path:      $test_file_path"
     else
@@ -50,7 +51,7 @@ function __dotfiles_create_test_files() {
   local target_dir="$1"
 
   for file_type in js jsx ts tsx; do
-    __dotfiles_create_test_files_for_file_type "$target_dir" "$file_type"
+    __dotfiles_create_test_files_for_file_type "$target_dir" "$file_type" "$__DOTFILES_DEBUG_ONLY"
   done
 }
 

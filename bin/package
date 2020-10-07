@@ -3,7 +3,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source "$HOME/.dotfiles/bin/_lib/utils.sh"
+source "${HOME}/.dotfiles/bin/_lib/utils.sh"
 
 ###
 # Acts as a middle-man for `brew` on macOS or `apt` on Linux.

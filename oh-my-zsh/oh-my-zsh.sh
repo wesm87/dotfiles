@@ -1,10 +1,10 @@
 # shellcheck shell=bash disable=1090,2034,2128,2206
 
 function __dotfiles_oh_my_zsh_config() {
-  local -r omz_dir_path="$HOME/.oh-my-zsh"
-  local -r omz_script_file_path="$omz_dir_path/oh-my-zsh.sh"
-  local -r omz_custom_dir_path="$HOME/.dotfiles/oh-my-zsh/custom"
-  local -r omz_custom_plugins_dir_path="$omz_custom_dir_path/plugins"
+  local -r omz_dir_path="${HOME}/.oh-my-zsh"
+  local -r omz_script_file_path="${omz_dir_path}/oh-my-zsh.sh"
+  local -r omz_custom_dir_path="${HOME}/.dotfiles/oh-my-zsh/custom"
+  local -r omz_custom_plugins_dir_path="${omz_custom_dir_path}/plugins"
   local -a omz_built_in_plugin_names=()
   local -a omz_custom_plugin_names=()
 
@@ -40,7 +40,8 @@ function __dotfiles_oh_my_zsh_config() {
 
     # Custom OMZ plugins.
     for plugin_path in "$omz_custom_plugins_dir_path"/*; do
-      omz_custom_plugin_names+=("$(basename "$plugin_path")")
+      local -r current_plugin_name=$(basename "$plugin_path")
+      omz_custom_plugin_names+=("$current_plugin_name")
     done
 
     # Combine built-in / custom plugins to create plugins array.

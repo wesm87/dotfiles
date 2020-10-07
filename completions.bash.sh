@@ -6,11 +6,11 @@ function __dotfiles_bash_completions() {
     return
   fi
 
-  local -r dotfiles_completions_dir_path="$HOME/.dotfiles/completions"
+  local -r dotfiles_completions_dir_path="${HOME}/.dotfiles/completions"
 
   # -- Load completions from `./completions`
   if [ -d "$dotfiles_completions_dir_path" ]; then
-    for completion_file in "$dotfiles_completions_dir_path/"*.bash.sh; do
+    for completion_file in "${dotfiles_completions_dir_path}/"*.bash.sh; do
       can-source-file "$completion_file" && source "$completion_file"
     done
   fi

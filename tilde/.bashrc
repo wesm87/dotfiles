@@ -6,7 +6,7 @@ case $- in
 *) return ;;
 esac
 
-__DOTFILES_IS_BASH_RC='true' source "$HOME/.dotfiles/profile.bash.sh"
+__DOTFILES_IS_BASH_RC='true' source "${HOME}/.dotfiles/profile.bash.sh"
 
 # append to the history file, don't overwrite it
 shopt -s histappend

@@ -14,7 +14,7 @@ function __dotfiles_brew_completions_bash() {
       export BASH_COMPLETIONs_COMPAT_DIR="$brew_completions_compat_dir_path"
       source "$brew_completions_file_path"
     elif [ -d "$brew_completions_compat_dir_path" ]; then
-      for completions_file in "$brew_completions_compat_dir_path/"*; do
+      for completions_file in "${brew_completions_compat_dir_path}/"*; do
         can-source-file "$completions_file" && source "$completions_file"
       done
     fi

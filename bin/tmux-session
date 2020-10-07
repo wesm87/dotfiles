@@ -14,7 +14,7 @@ function __dotfiles_not_in_tmux() {
 }
 
 function __dotfiles_tmux_session_exists() {
-  tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$session_name$"
+  tmux list-sessions | sed -E 's/:.*$//' | grep -q "^${session_name}$"
 }
 
 function __dotfiles_create_detached_tmux_session() {

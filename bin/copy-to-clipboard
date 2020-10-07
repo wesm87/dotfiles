@@ -3,7 +3,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source "$HOME/.dotfiles/bin/_lib/utils.sh"
+source "${HOME}/.dotfiles/bin/_lib/utils.sh"
 
 function __dotfiles_copy_to_clipboard() {
   __validate_is_supported_os 'copy-to-clipboard'

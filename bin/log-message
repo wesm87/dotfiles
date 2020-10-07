@@ -3,7 +3,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source "$HOME/.dotfiles/functions/logging.sh"
+source "${HOME}/.dotfiles/functions/logging.sh"
 
 function __dotfiles_log_message() {
   local message_type="$1"

@@ -1,7 +1,6 @@
 # shellcheck shell=bash
 # shellcheck disable=1090
 
-
 function __dotfiles_is_bash() {
   [[ -n "${BASH:-}" || -n "${BASH_VERSION:-}" ]]
 }
@@ -11,7 +10,7 @@ function __dotfiles_is_zsh() {
 }
 
 function __dotfiles_functions() {
-  local base_dir="$HOME/.dotfiles/functions"
+  local base_dir="${HOME}/.dotfiles/functions"
   local sources=(
     fp.sh
     public.sh

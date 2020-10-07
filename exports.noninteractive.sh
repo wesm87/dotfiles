@@ -1,7 +1,7 @@
 # shellcheck shell=bash disable=1090
 
 function __dotfiles_exports() {
-  local -r base_dir="$HOME/.dotfiles/exports"
+  local -r base_dir="${HOME}/.dotfiles/exports"
   local -a sources=(
     dotfiles-bin-path.sh
     brew.sh

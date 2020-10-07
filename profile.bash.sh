@@ -6,7 +6,11 @@ function __dotfiles_profile_includes() {
   local sources="$*"
 
   for file in $sources; do
-    can-source-file "$base_dir/$file" && source "$base_dir/$file"
+    local -r full_path="${base_dir}/${file}"
+
+    if "${HOME}/.dotfiles/bin/can-source-file" "$full_path"; then
+      source "$full_path"
+    fi
   done
 }
 
@@ -15,7 +19,7 @@ function __dotfiles_is_bash_rc() {
 }
 
 function __dotfiles_profile() {
-  local base_dir="$HOME/.dotfiles"
+  local base_dir="${HOME}/.dotfiles"
   local rc_sources=(
     functions.sh
     exports.noninteractive.sh

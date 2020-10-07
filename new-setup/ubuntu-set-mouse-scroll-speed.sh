@@ -26,7 +26,7 @@ function set_imwheel_config_value() {
   local button_name="$1"
   local new_value="$2"
 
-  sed -i "s/\($TARGET_KEY *$button_name, *\).*/\1$new_value/" ~/.imwheelrc
+  sed -i "s/\(${TARGET_KEY} *${button_name}, *\).*/\1${new_value}/" ~/.imwheelrc
 }
 
 function set_imwheel_config_scroll_speed() {

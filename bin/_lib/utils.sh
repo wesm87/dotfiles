@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-source "$HOME/.dotfiles/functions/logging.sh"
+source "${HOME}/.dotfiles/functions/logging.sh"
 
 function __log_message() {
   local message_type="$1"

@@ -7,6 +7,7 @@ function __dotfiles_installer_vim_vundle() {
 
   if [ ! -d "$vundle_dir_path" ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    vim +PluginInstall +qall
   fi
 }
 

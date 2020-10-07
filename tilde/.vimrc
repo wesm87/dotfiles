@@ -223,10 +223,16 @@ set re=1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 set t_Co=256 " 256 colors
 set background=dark
-color grb256
-colorscheme smyck
+
+try
+  color grb256
+  colorscheme smyck
+catch /^Vim\%((\a\+)\)\=:E185/
+  colorscheme default
+endtry
 
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline

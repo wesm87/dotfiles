@@ -3,16 +3,15 @@
 function __dotfiles_exports() {
   local -r base_dir="$HOME/.dotfiles/exports"
   local -a sources=(
+    dotfiles-bin-path.sh
+    brew.sh
     gnu-utils.sh
-    nvm.sh
     poetry.sh
-    rvm.sh
     vim.sh
     yarn.sh
+    nvm.sh
+    rvm.sh
   )
-
-  # Add custom bin path
-  prepend-to-path "$HOME/.dotfiles/bin"
 
   if [ -n "$BASH" ]; then
     __dotfiles_profile_includes "$base_dir" "${sources[@]}"

@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_nvm_completions_zsh() {
+function __dotfiles_completions_nvm_zsh() {
   local nvm_bash_completion_file_path
 
   #* Uses `bashcompinit` to generate ZSH completions from Bash completions.
@@ -11,4 +11,4 @@ function __dotfiles_nvm_completions_zsh() {
   fi
 }
 
-__dotfiles_nvm_completions_zsh
+__dotfiles_completions_nvm_zsh

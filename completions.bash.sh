@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_bash_completions() {
+function __dotfiles_completions_bash() {
   # Bail if this is a non-interactive shell
   if shopt -oq posix; then
     return
@@ -16,4 +16,4 @@ function __dotfiles_bash_completions() {
   fi
 }
 
-__dotfiles_bash_completions
+__dotfiles_completions_bash

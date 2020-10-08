@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-function __dotfiles_cli_colors_exports() {
+function __dotfiles_exports_cli_colors() {
   # Always use colors, even when piping (to `awk`, `grep`, etc).
   export CLICOLOR_FORCE=1
 
@@ -17,4 +17,4 @@ function __dotfiles_cli_colors_exports() {
   fi
 }
 
-__dotfiles_cli_colors_exports
+__dotfiles_exports_cli_colors

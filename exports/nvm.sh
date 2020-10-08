@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_nvm_exports() {
+function __dotfiles_exports_nvm() {
   export NVM_DIR="${HOME}/.nvm"
 
   local -r nvm_script_file_path="${NVM_DIR}/nvm.sh"
@@ -10,4 +10,4 @@ function __dotfiles_nvm_exports() {
   fi
 }
 
-__dotfiles_nvm_exports
+__dotfiles_exports_nvm

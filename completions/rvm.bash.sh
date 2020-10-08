@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090,2206
 
-function __dotfiles_rvm_completions_zsh() {
+function __dotfiles_completions_rvm_zsh() {
   local -r rvm_dir_path="${rvm_path:-$RVM_PATH}"
   local -r rvm_completions_file_path="${rvm_dir_path}/scripts/extras/completion.bash"
 
@@ -9,4 +9,4 @@ function __dotfiles_rvm_completions_zsh() {
   fi
 }
 
-__dotfiles_rvm_completions_zsh
+__dotfiles_completions_rvm_zsh

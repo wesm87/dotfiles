@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_nvm_completions_bash() {
+function __dotfiles_completions_nvm_bash() {
   local nvm_bash_completion_file_path
 
   nvm_bash_completion_file_path="$NVM_DIR/bash_completion"
@@ -10,4 +10,4 @@ function __dotfiles_nvm_completions_bash() {
   fi
 }
 
-__dotfiles_nvm_completions_bash
+__dotfiles_completions_nvm_bash

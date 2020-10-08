@@ -1,7 +1,7 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_poetry_exports() {
+function __dotfiles_exports_poetry() {
   prepend-to-path "${HOME}/.poetry/bin"
 }
 
-__dotfiles_poetry_exports
+__dotfiles_exports_poetry

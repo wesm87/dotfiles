@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-function __dotfiles_rbenv_exports() {
+function __dotfiles_exports_rbenv() {
   if ! is-command brew; then
     return
   fi
@@ -21,4 +21,4 @@ function __dotfiles_rbenv_exports() {
   fi
 }
 
-__dotfiles_rbenv_exports
+__dotfiles_exports_rbenv

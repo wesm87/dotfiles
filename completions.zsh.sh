@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_zsh_completions() {
+function __dotfiles_completions_zsh() {
   local -r dotfiles_completions_dir_path="${HOME}/.dotfiles/completions"
 
   # -- Load completions from `./completions`
@@ -11,4 +11,4 @@ function __dotfiles_zsh_completions() {
   fi
 }
 
-__dotfiles_zsh_completions
+__dotfiles_completions_zsh

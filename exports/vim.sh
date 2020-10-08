@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
-function __dotfiles_vim_exports() {
+function __dotfiles_exports_vim() {
   export EDITOR='vim'
 }
 
-__dotfiles_vim_exports
+__dotfiles_exports_vim

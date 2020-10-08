@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_bash_completions() {
+function __dotfiles_completions_bash() {
   if is-linux-os; then
     bash_completions_file_path='/usr/share/bash-completion/bash_completion'
     fallback_bash_completions_file_path='/etc/bash_completion'
@@ -13,4 +13,4 @@ function __dotfiles_bash_completions() {
   fi
 }
 
-__dotfiles_bash_completions
+__dotfiles_completions_bash

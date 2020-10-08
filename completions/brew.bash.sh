@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_brew_completions_bash() {
+function __dotfiles_completions_brew_bash() {
   local brew_prefix
   local brew_completions_file_path
   local brew_completions_compat_dir_path
@@ -21,4 +21,4 @@ function __dotfiles_brew_completions_bash() {
   fi
 }
 
-__dotfiles_brew_completions_bash
+__dotfiles_completions_brew_bash

@@ -2,7 +2,7 @@
 
 # Git Prompt (enhanced prompt with Git repo info).
 
-function __dotfiles_bash_git_prompt_exports() {
+function __dotfiles_exports_bash_git_prompt() {
   local git_prompt_dir_path
   local git_prompt_script_file_path
   local git_prompt_colors_file_path
@@ -33,4 +33,4 @@ function __dotfiles_bash_git_prompt_exports() {
   fi
 }
 
-__dotfiles_bash_git_prompt_exports
+__dotfiles_exports_bash_git_prompt

@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=1090
 
-function __dotfiles_rvm_exports() {
+function __dotfiles_exports_rvm() {
   local -r rvm_dir_path="${HOME}/.rvm"
   local -r default_ruby_version="ruby-2.7.0"
   local -r rvm_script_file_path="$rvm_dir_path/scripts/rvm"
@@ -15,4 +15,4 @@ function __dotfiles_rvm_exports() {
   fi
 }
 
-__dotfiles_rvm_exports
+__dotfiles_exports_rvm

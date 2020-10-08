@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-function __dotfiles_gnu_utils_exports() {
+function __dotfiles_exports_gnu_utils() {
   if ! is-command brew; then
     return
   fi
@@ -17,4 +17,4 @@ function __dotfiles_gnu_utils_exports() {
   prepend-to-manpath "$coreutils_base_path/gnuman"
 }
 
-__dotfiles_gnu_utils_exports
+__dotfiles_exports_gnu_utils

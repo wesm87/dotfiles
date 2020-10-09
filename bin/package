@@ -29,7 +29,7 @@ function __dotfiles_package_command() {
 
   if is-mac-os; then
     if ! is-command 'brew'; then
-      echo '[package]: brew is not installed'
+      __log_command_error 'package' 'brew is not installed'
     fi
 
     brew "$command" "$@"
@@ -38,8 +38,11 @@ function __dotfiles_package_command() {
     uninstall | rm | remove)
       sudo apt remove -y "$@"
       ;;
-    install | update | upgrade)
+    install | update)
       sudo apt "$command" -y "$@"
+      ;;
+    upgrade)
+      sudo apt update && sudo apt upgrade -y "$@"
       ;;
     outdated)
       apt list --upgradable "$@"

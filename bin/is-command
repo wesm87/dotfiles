@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 # Check if command exists
 function __dotfiles_is_command() {
-  command -v "$1" >/dev/null
+  command -v "$1" &>/dev/null
 }
 
 __dotfiles_is_command "$@"

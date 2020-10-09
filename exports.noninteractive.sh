@@ -9,6 +9,7 @@ function __dotfiles_exports() {
     poetry.sh
     vim.sh
     yarn.sh
+    pyenv.sh
     nvm.sh
     rvm.sh
   )

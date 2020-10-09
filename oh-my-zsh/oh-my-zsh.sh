@@ -7,6 +7,7 @@ function __dotfiles_oh_my_zsh_config() {
   local -r omz_custom_plugins_dir_path="${omz_custom_dir_path}/plugins"
   local -a omz_built_in_plugin_names=()
   local -a omz_custom_plugin_names=()
+  local current_plugin_name
 
   if can-source-file "$omz_script_file_path"; then
     export ZSH="$omz_dir_path"
@@ -40,7 +41,7 @@ function __dotfiles_oh_my_zsh_config() {
 
     # Custom OMZ plugins.
     for plugin_path in "$omz_custom_plugins_dir_path"/*; do
-      local -r current_plugin_name=$(basename "$plugin_path")
+      current_plugin_name=$(basename "$plugin_path")
       omz_custom_plugin_names+=("$current_plugin_name")
     done
 

@@ -4,9 +4,10 @@ function __dotfiles_profile_includes() {
   local base_dir="${1:-}"
   shift
   local sources="$*"
+  local full_path
 
   for file in $sources; do
-    local -r full_path="${base_dir}/${file}"
+    full_path="${base_dir}/${file}"
 
     if "${HOME}/.dotfiles/bin/can-source-file" "$full_path"; then
       source "$full_path"

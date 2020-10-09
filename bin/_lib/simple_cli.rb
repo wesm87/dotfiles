@@ -2,7 +2,6 @@
 
 require_relative 'utils'
 
-ANY_QUOTE_REGEXP = /['"]/.freeze
 HAS_SINGLE_QUOTES_REGEXP = /'[^'"]*'/.freeze
 HAS_DOUBLE_QUOTES_REGEXP = /"[^'"]*"/.freeze
 
@@ -12,6 +11,10 @@ PARSE_ARGS_MODE_INCLUSIVE = 'INCLUSIVE'
 # Use stdin only if it exists, otherwise use args only
 PARSE_ARGS_MODE_EXCLUSIVE = 'EXCLUSIVE'
 
+# Defines how to determine how args are separated when parsing them
+# NEWLINE = foo \n bar \n baz
+# WHITESPACE = foo bar baz
+# QUOTES = 'quoted foo arg' bar baz
 STDIN_SEPARATOR_NEWLINE = 'NEWLINE'
 STDIN_SEPARATOR_WHITESPACE = 'WHITESPACE'
 STDIN_SEPARATOR_QUOTES = 'QUOTES'
@@ -26,19 +29,19 @@ class SimpleArgsParser
   attr_reader :parse_args_mode, :stdin_separator
 
   def initialize(
-    parse_args_mode = PARSE_ARGS_MODE_INCLUSIVE,
-    stdin_separator = STDIN_SEPARATOR_QUOTES
+    parse_args_mode: PARSE_ARGS_MODE_INCLUSIVE,
+    stdin_separator: STDIN_SEPARATOR_QUOTES
   )
     @parse_args_mode = parse_args_mode
     @stdin_separator = stdin_separator
   end
 
-  def has_args?
-    parsed_args.any?
-  end
-
   def parsed_args
     stdin_items_and_args
+  end
+
+  def has_args?
+    parsed_args.any?
   end
 
   def is_flag_arg?(str)
@@ -117,7 +120,7 @@ class SimpleArgsParser
 
     {
       'params' => params,
-      'flags' => flags
+      'flags' => flags,
     }
   end
 
@@ -157,10 +160,13 @@ class SimpleCLI
   attr_reader :args_parser, :parsed_args
 
   def initialize(
-    parse_args_mode = PARSE_ARGS_MODE_INCLUSIVE,
-    stdin_separator = STDIN_SEPARATOR_QUOTES
+    parse_args_mode: PARSE_ARGS_MODE_INCLUSIVE,
+    stdin_separator: STDIN_SEPARATOR_QUOTES
   )
-    @args_parser = SimpleArgsParser.new(parse_args_mode, stdin_separator)
+    @args_parser = SimpleArgsParser.new(
+      parse_args_mode: parse_args_mode,
+      stdin_separator: stdin_separator,
+    )
     @parsed_args = args_parser.parsed_args
 
     exit unless has_args?

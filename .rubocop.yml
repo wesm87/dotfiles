@@ -2,6 +2,12 @@ AllCops:
   DisplayCopNames: true
   NewCops: enable
   TargetRubyVersion: 2.7
+  Exclude:
+    - 'data/**/*'
+    - 'libs/tmux-plugins/**/*'
+    - 'libs/z/**/*'
+    - 'oh-my-zsh/custom/plugins/zsh-autosuggestions/**/*'
+    - 'oh-my-zsh/custom/plugins/zsh-syntax-highlighting/**/*'
 
 Metrics/MethodLength:
   Enabled: false
@@ -17,3 +23,12 @@ Naming/AccessorMethodName:
 
 Style/PreferredHashMethods:
   EnforcedStyle: verbose
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma

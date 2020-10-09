@@ -10,13 +10,14 @@
   "shellcheck.customArgs": ["-x"],
   "shellcheck.useWorkspaceRootAsCwd": true,
   "eslint.format.enable": true,
-  "ruby.interpreter.commandPath": "/usr/share/rvm/rubies/ruby-2.7.0/bin/ruby",
-  "ruby.codeCompletion": "rcodetools",
+  "ruby.interpreter.commandPath": "~/.rvm/rubies/ruby-2.7.0/bin/",
+  "ruby.pathToBundler": "~/.rvm/rubies/ruby-2.7.0/bin/bundle",
   "ruby.format": "rubocop",
   "ruby.intellisense": "rubyLocate",
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.rctComplete.commandPath": "~/.rvm/gems/ruby-2.7.0/bin/rct-complete",
   "ruby.useLanguageServer": true,
   "ruby.useBundler": true,
-  "ruby.rubocop.useBundler": true,
   "ruby.lint": {
     "rubocop": {
       "useBundler": true

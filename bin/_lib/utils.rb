@@ -73,14 +73,6 @@ def merge_hashes(hash_a, hash_b)
   {}.merge(hash_a, hash_b)
 end
 
-def to_pair(val)
-  [val, val]
-end
-
-def list_to_hash(list)
-  list.map { |item| to_pair(item) }.to_h
-end
-
 def to_lower_case(str)
   str.downcase
 end

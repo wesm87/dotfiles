@@ -22,7 +22,7 @@ function __dotfiles_oh_my_zsh_config() {
     # DISABLE_AUTO_TITLE="true"
 
     # Enable command auto-correction.
-    ENABLE_CORRECTION="true"
+    # ENABLE_CORRECTION="true"
 
     # Display red dots whilst waiting for completion.
     COMPLETION_WAITING_DOTS="true"

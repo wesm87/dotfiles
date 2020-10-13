@@ -7,7 +7,17 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "conventionalCommits.scopes": ["config"],
+  "conventionalCommits.scopes": [
+    "bin",
+    "config",
+    "completions",
+    "exports",
+    "functions",
+    "installers",
+    "libs",
+    "oh-my-zsh",
+    "tilde"
+  ],
   "shellcheck.customArgs": ["-x"],
   "shellcheck.useWorkspaceRootAsCwd": true,
   "eslint.format.enable": true,

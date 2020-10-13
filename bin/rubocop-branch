@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles_rubocop_branch() {
+  git diff --name-only master | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop
+}
+
+__dotfiles_rubocop_branch "$@"

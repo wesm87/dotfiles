@@ -6,17 +6,38 @@ function safe-source() {
   can-source-file "$source_file_path" && source "$source_file_path"
 }
 
-# Reload bash profile
+function reload-bash-env() {
+  safe-source "${HOME}/.bashrc"
+}
+
 function reload-bash-profile() {
+  reload-bash-env
   safe-source "${HOME}/.bash_profile"
 }
 
-# Reload zsh profile
+function reload-zsh-env() {
+  safe-source "${HOME}/.zshenv"
+}
+
 function reload-zsh-profile() {
+  reload-zsh-env
   safe-source "${HOME}/.zshrc"
 }
 
-# Reload profile based on current shell
+function reload-env() {
+  if __dotfiles_is_bash; then
+    reload-bash-env
+    return 0
+  fi
+
+  if __dotfiles_is_zsh; then
+    reload-zsh-env
+    return 0
+  fi
+
+  return 1
+}
+
 function reload-profile() {
   if __dotfiles_is_bash; then
     reload-bash-profile
@@ -31,29 +52,29 @@ function reload-profile() {
   return 1
 }
 
-function add-to-path-like-value() {
+function add-to-pathlike-value() {
   local -r position="$1"
   local -r path_to_add="$2"
-  local -r path_like_value="$3"
-  local -r did_find_in_path=$(echo "$path_like_value" | tr ':' '\n' | grep -x "$path_to_add")
+  local -r pathlike_value="$3"
+  local -r did_find_in_path=$(echo "$pathlike_value" | tr ':' '\n' | grep -x "$path_to_add")
 
   # Bail if path is empty, not a directory, or already in $PATH
   if [ -z "$path_to_add" ] || [ ! -d "$path_to_add" ] || [ -n "$did_find_in_path" ]; then
-    echo "$path_like_value"
+    echo "$pathlike_value"
     return 0
   fi
 
   if [ "$position" = 'prepend' ]; then
-    echo "${path_to_add}:${path_like_value}"
+    echo "${path_to_add}:${pathlike_value}"
   else
-    echo "${path_like_value}:${path_to_add}"
+    echo "${pathlike_value}:${path_to_add}"
   fi
 }
 
 function add-to-manpath() {
   local -r position="$1"
   local -r path_to_add="${2:-}"
-  local -r new_manpath=$(add-to-path-like-value "$position" "$path_to_add" "$MANPATH")
+  local -r new_manpath=$(add-to-pathlike-value "$position" "$path_to_add" "$MANPATH")
 
   export MANPATH="$new_manpath"
 }
@@ -69,7 +90,7 @@ function append-to-manpath() {
 function add-to-path() {
   local -r position="$1"
   local -r path_to_add="${2:-}"
-  local -r new_path=$(add-to-path-like-value "$position" "$path_to_add" "$PATH")
+  local -r new_path=$(add-to-pathlike-value "$position" "$path_to_add" "$PATH")
 
   export PATH="$new_path"
 }

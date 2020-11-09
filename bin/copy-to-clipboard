@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# shellcheck shell=bash disable=1090
+# shellcheck shell=bash
 set -euo pipefail
 IFS=$'\n\t'
 
+# shellcheck source=./bin/_lib/utils.sh
 source "${HOME}/.dotfiles/bin/_lib/utils.sh"
 
 function __dotfiles_copy_to_clipboard() {

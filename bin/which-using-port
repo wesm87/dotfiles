@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 set -euo pipefail
 IFS=$'\n\t'
+
+# shellcheck source=./bin/_lib/utils.sh
+source "${HOME}/.dotfiles/bin/_lib/utils.sh"
 
 function __dotfiles_which_using_port() {
   local port="${1:-}"
 
-  lsof -P -i ":${port}"
+  __validate_is_supported_os 'which-using-port'
+
+  if is-mac-os; then
+    lsof -P -i ":${port}"
+  fi
+
+  if is-linux-os; then
+    sudo lsof -P -i ":${port}"
+  fi
 }
 
 __dotfiles_which_using_port "$@"

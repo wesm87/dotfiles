@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t '
+
+function __dotfiles_get_ping_results() {
+  local -r target="$1"
+  local -r num_reps="$2"
+
+  ping -c "$num_reps" "$target" |
+    grep 'time=' |
+    field 7 |
+    sed 's/time=//g' |
+    tr '\r\n' ' ' |
+    sed -e 's/[[:space:]]*$//'
+}
+
+function __dotfiles_sum_ping_results() {
+  local -a results=()
+  local sum=0
+
+  read -ra results <<<"$1"
+
+  for n in ${results[*]}; do
+    sum=$(echo "scale=2; $sum + $n" | bc)
+  done
+
+  echo "$sum"
+}
+
+function __dotfiles_average_ping_results() {
+  local -r sum="$1"
+  local -r num_reps="$2"
+
+  echo "scale=2; $sum / $num_reps" | bc
+}
+
+function __dotfiles_ping_time() {
+  local -r target="$1"
+  local -r num_reps="${2:-3}"
+  local -r ping_results=$(__dotfiles_get_ping_results "$target" "$num_reps")
+  local -r ping_sum=$(__dotfiles_sum_ping_results "$ping_results")
+  local -r ping_average=$(__dotfiles_average_ping_results "$ping_sum" "$num_reps")
+
+  if [ -n "${__DOTFILES_DEBUG:-}" ]; then
+    echo 'Results:'
+    echo "$ping_results"
+    echo 'Sum:'
+    echo "$ping_sum"
+  fi
+  echo "Reps: ${num_reps}, Average: ${ping_average}ms"
+}
+
+__dotfiles_ping_time "$@"

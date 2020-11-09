@@ -65,9 +65,13 @@ alias ls='lsc'
 # `cat` with beautiful colors. requires: sudo easy_install -U Pygments
 alias c='pygmentize -O style=monokai -f console256 -g'
 
-# Networking. IP address, dig, DNS
+# Networking - IP address, DNS, ping
 alias ip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias dig='dig +nocmd any +multiline +noall +answer'
+for n in $(seq 10); do
+  # shellcheck disable=2086
+  alias ping$n="ping -c $n"
+done
 
 # Recursively delete `.DS_Store` files
 alias cleanup-dsstore='find . -name "*.DS_Store" -type f -ls -delete'

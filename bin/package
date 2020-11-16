@@ -14,7 +14,7 @@ source "${HOME}/.dotfiles/bin/_lib/utils.sh"
 #   package info [<package_name>...]
 #   package install <package_name>...
 #   package uninstall, rm, remove <package_name>...
-#   package update
+#   package update, refresh
 #   package upgrade [<package_name>...]
 #   package list [<package_name>...]
 #   package outdated
@@ -33,14 +33,24 @@ function __dotfiles_package_command() {
       __log_command_error 'package' 'brew is not installed'
     fi
 
-    brew "$command" "$@"
+    case "$command" in
+    update | refresh)
+      brew update "$@"
+      ;;
+    *)
+      brew "$command" "$@"
+      ;;
+    esac
   elif is-linux-os; then
     case "$command" in
     uninstall | rm | remove)
       sudo apt remove -y "$@"
       ;;
-    install | update)
+    install)
       sudo apt "$command" -y "$@"
+      ;;
+    update | refresh)
+      sudo apt update -y "$@"
       ;;
     upgrade)
       sudo apt update && sudo apt upgrade -y "$@"

@@ -10,7 +10,8 @@ function __dotfiles_exports_pyenv() {
   fi
 
   export PYENV_ROOT="$pyenv_dir_path"
-  export PATH="${PYENV_ROOT}/bin:${PATH}"
+
+  prepend-to-path "${PYENV_ROOT}/bin"
 
   if is-command pyenv; then
     eval "$(pyenv init -)"

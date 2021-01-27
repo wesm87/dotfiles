@@ -199,11 +199,19 @@ function whois() {
 }
 
 function local-ip-for-device() {
-  ipconfig getifaddr "$1"
+  if is-mac-os; then
+    ipconfig getifaddr "$1"
+  elif is-linux-os; then
+    ip -v -brief address show dev "$1"
+  fi
 }
 
 function local-ip() {
-  local-ip-for-device en0 || local-ip-for-device en1
+  if is-mac-os; then
+    local-ip-for-device en0 || local-ip-for-device en1
+  elif is-linux-os; then
+    ip -4 -brief address show | grep UP | head -n 1 | field 3
+  fi
 }
 
 function network-info() {
@@ -320,23 +328,26 @@ function vscode() {
   fi
 }
 
-# `shellswitch [bash |zsh | fish]`
+# `change-shell [bash |zsh | fish]`
 #   Must be in /etc/shells
-function shellswitch() {
+function change-shell() {
   local -r shell_name="$1"
   local -r brew_shell_path="$(get-brew-prefix-path)/bin/${shell_name}"
   local -r default_shell_path="/bin/${shell_name}"
 
   if [ -f "$brew_shell_path" ]; then
     chsh -s "$brew_shell_path"
-  else
+  elif [ -f "$default_shell_path" ]; then
     chsh -s "$default_shell_path"
+  else
+    echo "Could not find shell \"${shell_name}\". Make sure it's installed and available in \"/etc/shells\""
+    exit 1
   fi
 }
 
-curry shellswitch-bash shellswitch 'bash'
-curry shellswitch-zsh shellswitch 'zsh'
-curry shellswitch-fish shellswitch 'fish'
+curry change-shell-bash change-shell 'bash'
+curry change-shell-zsh change-shell 'zsh'
+curry change-shell-fish change-shell 'fish'
 
 function git-root() {
   local git_return
@@ -449,5 +460,5 @@ function docker-prune-volumes() {
 }
 
 function docker-prune-all() {
-  docker system prune
+  docker system prune -f "$@"
 }

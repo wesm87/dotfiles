@@ -16,7 +16,8 @@
     "installers",
     "libs",
     "oh-my-zsh",
-    "tilde"
+    "tilde",
+    "aliases"
   ],
   "shellcheck.customArgs": ["-x"],
   "shellcheck.useWorkspaceRootAsCwd": true,

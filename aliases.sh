@@ -39,6 +39,7 @@ grep -E --color >/dev/null 2>&1 && alias egrep='grep -E --color'
 # use coreutils `ls` if possible…
 hash gls >/dev/null 2>&1 || alias gls='ls'
 
+# Colorized ls
 if gls --color >/dev/null 2>&1; then
   colorflag='--color'
 else
@@ -65,8 +66,12 @@ alias ls='lsc'
 # `cat` with beautiful colors. requires: sudo easy_install -U Pygments
 alias c='pygmentize -O style=monokai -f console256 -g'
 
+# Colorized ip
+alias ip='ip --color=auto'
+
 # Networking - IP address, DNS, ping
-alias ip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias public-ip='curl -w "\n" -ssS ifconfig.me'
+alias my-ip='public-ip'
 alias dig='dig +nocmd any +multiline +noall +answer'
 for n in $(seq 10); do
   # shellcheck disable=2086

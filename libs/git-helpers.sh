@@ -34,24 +34,24 @@ BRANCH_CONTENTS="%(contents:subject)"
 
 BRANCH_FORMAT="$BRANCH_PREFIX}$BRANCH_REF}$BRANCH_HASH}$BRANCH_DATE}$BRANCH_AUTHOR}$BRANCH_CONTENTS"
 
-function __git_show_head() {
+__git_show_head() {
   __git_pretty_log -1
   git show -p --pretty="tformat:"
 }
 
-function __git_pretty_log() {
+__git_pretty_log() {
   git log --graph --pretty="tformat:${LOG_FORMAT}" "$@" | __git_pretty_format | __git_page_maybe
 }
 
-function __git_pretty_branch() {
+__git_pretty_branch() {
   git branch -v --color=always --format="${BRANCH_FORMAT}" "$@" | __git_pretty_format
 }
 
-function __git_pretty_branch_sorted() {
+__git_pretty_branch_sorted() {
   git branch -v --color=always --sort=-committerdate --format="${BRANCH_FORMAT}" "$@" | __git_pretty_format
 }
 
-function __git_pretty_format() {
+__git_pretty_format() {
   # Replace (2 years ago) with (2 years)
   sed -Ee 's/(^[^<]*) ago\)/\1)/' |
     # Replace (2 years, 5 months) with (2 years)
@@ -60,7 +60,7 @@ function __git_pretty_format() {
     column -s '}' -t
 }
 
-function __git_page_maybe() {
+__git_page_maybe() {
   # Page only if we're asked to.
   if [ -n "$GIT_NO_PAGER" ]; then
     cat
@@ -70,29 +70,29 @@ function __git_page_maybe() {
   fi
 }
 
-function __git_view_conflicts() {
+__git_view_conflicts() {
   git diff --name-only --diff-filter=U | xargs "$(git config alias-config.viewer)"
 }
 
-function __git_keep() {
+__git_keep() {
   local path="${1:-'.'}"
 
   touch "${path%/}/.keep"
 }
 
-function __git_ignore() {
+__git_ignore() {
   touch .gitignore
   printf %"s\n" "$@" >>.gitignore
 }
 
-function __git_branch_name() {
-  git rev-parse --abbrev-ref HEAD
+__git_push_origin_branch() {
+  git push -u origin "$(git branch --show-current)"
 }
 
-function __git_merge_from() {
+__git_merge_from() {
   local source_branch="${1:-'develop'}"
   # shellcheck disable=2155
-  local current_branch="$(__git_branch_name)"
+  local current_branch="$(git branch --show-current)"
   local target_branch="${2:-$current_branch}"
 
   git checkout "$source_branch" &&
@@ -101,6 +101,6 @@ function __git_merge_from() {
     git merge "$source_branch"
 }
 
-function __git_patch() {
+__git_patch() {
   git --no-pager diff --no-color
 }

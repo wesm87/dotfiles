@@ -49,7 +49,7 @@
   branches          = branch --all
   rename-branch     = branch -m
   delete-branch     = branch -d
-  branch-name       = "!. ~/.dotfiles/libs/git-helpers.sh && __git_branch_name"
+  branch-name       = branch --show-current
   remotes           = remote -v
   m                 = merge
   c                 = commit --verbose
@@ -69,6 +69,7 @@
   no-ff             = merge --no-ff
   fa                = fetch --all
   pom               = push origin master
+  pob               = "!. ~/.dotfiles/libs/git-helpers.sh && __git_push_origin_branch"
   undo-push         = push -f origin HEAD^:master
   ds                = diff --stat=160,120
   dh1               = diff HEAD~1

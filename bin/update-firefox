@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # shellcheck shell=bash
-set -euo pipefail
-IFS=$'\n\t'
+
+SCRIPT_PATH=$(realpath "$0")
+DIR_PATH=$(dirname "$SCRIPT_PATH")
+DOTFILES_PATH=$(dirname "$DIR_PATH")
+
+# shellcheck source=libs/z/z.sh
+source "${DOTFILES_PATH}/libs/z/z.sh"
 
 z firefox-developer-edition-installer
 

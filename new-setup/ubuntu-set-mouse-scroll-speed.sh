@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 
 function install_imwheel_if_needed() {
   if ! is-command imwheel; then

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 set -euo pipefail
 IFS=$'\n\t'
 
 # Check if function exists
 function __dotfiles_is_function() {
-  declare -f "$1" > /dev/null
+  declare -f "$1" >/dev/null
 }
 
 __dotfiles_is_function "$@"

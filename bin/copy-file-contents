@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 set -euo pipefail
 IFS=$'\n\t'
 
 function __dotfiles_copy_file() {
   local file="$1"
 
-  copy-to-clipboard < "$file"
+  copy-to-clipboard <"$file"
 }
 
 __dotfiles_copy_file "$@"

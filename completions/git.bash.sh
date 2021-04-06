@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 
 # bash completion support for core Git.
 
 case "$COMP_WORDBREAKS" in
 *:*) : great ;;
-*)   COMP_WORDBREAKS="$COMP_WORDBREAKS:"
+*) COMP_WORDBREAKS="$COMP_WORDBREAKS:" ;;
 esac
 
 # __gitdir accepts 0 or 1 arguments (i.e., location)
@@ -107,8 +108,8 @@ __gitcomp_1() {
   for c in $1; do
     case "$c$2" in
     --*=*) printf %s$'\n' "$c$2" ;;
-    *.)    printf %s$'\n' "$c$2" ;;
-    *)     printf %s$'\n' "$c$2 " ;;
+    *.) printf %s$'\n' "$c$2" ;;
+    *) printf %s$'\n' "$c$2 " ;;
     esac
   done
 }
@@ -152,8 +153,14 @@ __git_heads() {
     case "$is_hash,$i" in
     y,*) is_hash=n ;;
     n,*^{}) is_hash=y ;;
-    n,refs/heads/*) is_hash=y; echo "${i#refs/heads/}" ;;
-    n,*) is_hash=y; echo "$i" ;;
+    n,refs/heads/*)
+      is_hash=y
+      echo "${i#refs/heads/}"
+      ;;
+    n,*)
+      is_hash=y
+      echo "$i"
+      ;;
     esac
   done
 }
@@ -177,8 +184,14 @@ __git_tags() {
     case "$is_hash,$i" in
     y,*) is_hash=n ;;
     n,*^{}) is_hash=y ;;
-    n,refs/tags/*) is_hash=y; echo "${i#refs/tags/}" ;;
-    n,*) is_hash=y; echo "$i" ;;
+    n,refs/tags/*)
+      is_hash=y
+      echo "${i#refs/tags/}"
+      ;;
+    n,*)
+      is_hash=y
+      echo "$i"
+      ;;
     esac
   done
 }
@@ -194,7 +207,7 @@ __git_refs() {
 
   if [ -d "$dir" ]; then
     case "$cur" in
-    refs|refs/*)
+    refs | refs/*)
       format="refname"
       refs="${cur%/*}"
       ;;
@@ -212,10 +225,22 @@ __git_refs() {
     case "$is_hash,$i" in
     y,*) is_hash=n ;;
     n,*^{}) is_hash=y ;;
-    n,refs/tags/*) is_hash=y; echo "${i#refs/tags/}" ;;
-    n,refs/heads/*) is_hash=y; echo "${i#refs/heads/}" ;;
-    n,refs/remotes/*) is_hash=y; echo "${i#refs/remotes/}" ;;
-    n,*) is_hash=y; echo "$i" ;;
+    n,refs/tags/*)
+      is_hash=y
+      echo "${i#refs/tags/}"
+      ;;
+    n,refs/heads/*)
+      is_hash=y
+      echo "${i#refs/heads/}"
+      ;;
+    n,refs/remotes/*)
+      is_hash=y
+      echo "${i#refs/remotes/}"
+      ;;
+    n,*)
+      is_hash=y
+      echo "$i"
+      ;;
     esac
   done
 }
@@ -239,8 +264,8 @@ __git_refs_remotes() {
       ;;
     y,*) is_hash=n ;;
     n,*^{}) is_hash=y ;;
-    n,refs/tags/*) is_hash=y;;
-    n,*) is_hash=y; ;;
+    n,refs/tags/*) is_hash=y ;;
+    n,*) is_hash=y ;;
     esac
   done
 }
@@ -275,7 +300,7 @@ __git_merge_strategies() {
     return
   fi
   git merge -s help 2>&1 |
-  sed -n -e '/[Aa]vailable strategies are: /,/^$/{
+    sed -n -e '/[Aa]vailable strategies are: /,/^$/{
     s/\.$//
     s/.*://
     s/^[   ]*//
@@ -302,17 +327,17 @@ __git_complete_file() {
     *)
       ls="$ref"
       ;;
-      esac
+    esac
 
     case "$COMP_WORDBREAKS" in
     *:*) : great ;;
-    *)   pfx="$ref:$pfx" ;;
+    *) pfx="$ref:$pfx" ;;
     esac
 
     local IFS=$'\n'
     COMPREPLY=($(compgen -P "$pfx" \
-      -W "$(git --git-dir="$(__gitdir)" ls-tree "$ls" \
-        | sed '/^100... blob /{
+      -W "$(git --git-dir="$(__gitdir)" ls-tree "$ls" |
+        sed '/^100... blob /{
                    s,^.*  ,,
                    s,$, ,
                }
@@ -359,9 +384,12 @@ __git_complete_remote_or_refspec() {
   while [ $c -lt $COMP_CWORD ]; do
     i="${COMP_WORDS[c]}"
     case "$i" in
-    --all|--mirror) [ "$cmd" = "push" ] && no_complete_refspec=1 ;;
+    --all | --mirror) [ "$cmd" = "push" ] && no_complete_refspec=1 ;;
     -*) ;;
-    *) remote="$i"; break ;;
+    *)
+      remote="$i"
+      break
+      ;;
     esac
     c=$((++c))
   done
@@ -378,7 +406,7 @@ __git_complete_remote_or_refspec() {
   *:*)
     case "$COMP_WORDBREAKS" in
     *:*) : great ;;
-    *)   pfx="${cur%%:*}:" ;;
+    *) pfx="${cur%%:*}:" ;;
     esac
     cur="${cur#*:}"
     lhs=0
@@ -414,10 +442,11 @@ __git_complete_remote_or_refspec() {
 }
 
 __git_complete_strategy() {
-  case "${COMP_WORDS[COMP_CWORD-1]}" in
-  -s|--strategy)
+  case "${COMP_WORDS[COMP_CWORD - 1]}" in
+  -s | --strategy)
     __gitcomp "$(__git_merge_strategies)"
     return 0
+    ;;
   esac
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "$cur" in
@@ -435,11 +464,10 @@ __git_all_commands() {
     return
   fi
   local i IFS=" "$'\n'
-  for i in $(git help -a|egrep '^ ')
-  do
+  for i in $(git help -a | egrep '^ '); do
     case $i in
-    *--*)             : helper pattern;;
-    *) echo $i;;
+    *--*) : helper pattern ;;
+    *) echo $i ;;
     esac
   done
 }
@@ -452,84 +480,83 @@ __git_porcelain_commands() {
     return
   fi
   local i IFS=" "$'\n'
-  for i in "help" $(__git_all_commands)
-  do
+  for i in "help" $(__git_all_commands); do
     case $i in
-    *--*)             : helper pattern;;
-    applymbox)        : ask gittus;;
-    applypatch)       : ask gittus;;
-    archimport)       : import;;
-    cat-file)         : plumbing;;
-    check-attr)       : plumbing;;
-    check-ref-format) : plumbing;;
-    checkout-index)   : plumbing;;
-    commit-tree)      : plumbing;;
-    count-objects)    : infrequent;;
-    cvsexportcommit)  : export;;
-    cvsimport)        : import;;
-    cvsserver)        : daemon;;
-    daemon)           : daemon;;
-    diff-files)       : plumbing;;
-    diff-index)       : plumbing;;
-    diff-tree)        : plumbing;;
-    fast-import)      : import;;
-    fast-export)      : export;;
-    fsck-objects)     : plumbing;;
-    fetch-pack)       : plumbing;;
-    fmt-merge-msg)    : plumbing;;
-    for-each-ref)     : plumbing;;
-    hash-object)      : plumbing;;
-    http-*)           : transport;;
-    index-pack)       : plumbing;;
-    init-db)          : deprecated;;
-    local-fetch)      : plumbing;;
-    lost-found)       : infrequent;;
-    ls-files)         : plumbing;;
-    ls-remote)        : plumbing;;
-    ls-tree)          : plumbing;;
-    mailinfo)         : plumbing;;
-    mailsplit)        : plumbing;;
-    merge-*)          : plumbing;;
-    mktree)           : plumbing;;
-    mktag)            : plumbing;;
-    pack-objects)     : plumbing;;
-    pack-redundant)   : plumbing;;
-    pack-refs)        : plumbing;;
-    parse-remote)     : plumbing;;
-    patch-id)         : plumbing;;
-    peek-remote)      : plumbing;;
-    prune)            : plumbing;;
-    prune-packed)     : plumbing;;
-    quiltimport)      : import;;
-    read-tree)        : plumbing;;
-    receive-pack)     : plumbing;;
-    reflog)           : plumbing;;
-    repo-config)      : deprecated;;
-    rerere)           : plumbing;;
-    rev-list)         : plumbing;;
-    rev-parse)        : plumbing;;
-    runstatus)        : plumbing;;
-    sh-setup)         : internal;;
-    shell)            : daemon;;
-    show-ref)         : plumbing;;
-    send-pack)        : plumbing;;
-    show-index)       : plumbing;;
-    ssh-*)            : transport;;
-    stripspace)       : plumbing;;
-    symbolic-ref)     : plumbing;;
-    tar-tree)         : deprecated;;
-    unpack-file)      : plumbing;;
-    unpack-objects)   : plumbing;;
-    update-index)     : plumbing;;
-    update-ref)       : plumbing;;
-    update-server-info) : daemon;;
-    upload-archive)   : plumbing;;
-    upload-pack)      : plumbing;;
-    write-tree)       : plumbing;;
-    var)              : infrequent;;
-    verify-pack)      : infrequent;;
-    verify-tag)       : plumbing;;
-    *) echo $i;;
+    *--*) : helper pattern ;;
+    applymbox) : ask gittus ;;
+    applypatch) : ask gittus ;;
+    archimport) : import ;;
+    cat-file) : plumbing ;;
+    check-attr) : plumbing ;;
+    check-ref-format) : plumbing ;;
+    checkout-index) : plumbing ;;
+    commit-tree) : plumbing ;;
+    count-objects) : infrequent ;;
+    cvsexportcommit) : export ;;
+    cvsimport) : import ;;
+    cvsserver) : daemon ;;
+    daemon) : daemon ;;
+    diff-files) : plumbing ;;
+    diff-index) : plumbing ;;
+    diff-tree) : plumbing ;;
+    fast-import) : import ;;
+    fast-export) : export ;;
+    fsck-objects) : plumbing ;;
+    fetch-pack) : plumbing ;;
+    fmt-merge-msg) : plumbing ;;
+    for-each-ref) : plumbing ;;
+    hash-object) : plumbing ;;
+    http-*) : transport ;;
+    index-pack) : plumbing ;;
+    init-db) : deprecated ;;
+    local-fetch) : plumbing ;;
+    lost-found) : infrequent ;;
+    ls-files) : plumbing ;;
+    ls-remote) : plumbing ;;
+    ls-tree) : plumbing ;;
+    mailinfo) : plumbing ;;
+    mailsplit) : plumbing ;;
+    merge-*) : plumbing ;;
+    mktree) : plumbing ;;
+    mktag) : plumbing ;;
+    pack-objects) : plumbing ;;
+    pack-redundant) : plumbing ;;
+    pack-refs) : plumbing ;;
+    parse-remote) : plumbing ;;
+    patch-id) : plumbing ;;
+    peek-remote) : plumbing ;;
+    prune) : plumbing ;;
+    prune-packed) : plumbing ;;
+    quiltimport) : import ;;
+    read-tree) : plumbing ;;
+    receive-pack) : plumbing ;;
+    reflog) : plumbing ;;
+    repo-config) : deprecated ;;
+    rerere) : plumbing ;;
+    rev-list) : plumbing ;;
+    rev-parse) : plumbing ;;
+    runstatus) : plumbing ;;
+    sh-setup) : internal ;;
+    shell) : daemon ;;
+    show-ref) : plumbing ;;
+    send-pack) : plumbing ;;
+    show-index) : plumbing ;;
+    ssh-*) : transport ;;
+    stripspace) : plumbing ;;
+    symbolic-ref) : plumbing ;;
+    tar-tree) : deprecated ;;
+    unpack-file) : plumbing ;;
+    unpack-objects) : plumbing ;;
+    update-index) : plumbing ;;
+    update-ref) : plumbing ;;
+    update-server-info) : daemon ;;
+    upload-archive) : plumbing ;;
+    upload-pack) : plumbing ;;
+    write-tree) : plumbing ;;
+    var) : infrequent ;;
+    verify-pack) : infrequent ;;
+    verify-tag) : plumbing ;;
+    *) echo $i ;;
     esac
   done
 }
@@ -616,6 +643,7 @@ _git_am() {
       --whitespace=
       "
     return
+    ;;
   esac
   COMPREPLY=()
 }
@@ -635,6 +663,7 @@ _git_apply() {
       --whitespace= --inaccurate-eof --verbose
       "
     return
+    ;;
   esac
   COMPREPLY=()
 }
@@ -652,6 +681,7 @@ _git_add() {
       --ignore-errors --intent-to-add
       "
     return
+    ;;
   esac
   COMPREPLY=()
 }
@@ -694,7 +724,7 @@ _git_bisect() {
   fi
 
   case "$subcommand" in
-  bad|good|reset|skip)
+  bad | good | reset | skip)
     __gitcomp "$(__git_refs)"
     ;;
   *)
@@ -709,8 +739,8 @@ _git_branch() {
   while [ $c -lt $COMP_CWORD ]; do
     i="${COMP_WORDS[c]}"
     case "$i" in
-    -d|-m)  only_local_ref="y" ;;
-    -r)  has_r="y" ;;
+    -d | -m) only_local_ref="y" ;;
+    -r) has_r="y" ;;
     esac
     c=$((++c))
   done
@@ -743,8 +773,8 @@ _git_bundle() {
     ;;
   *)
     case "$cmd" in
-      create)
-        __git_complete_revlist
+    create)
+      __git_complete_revlist
       ;;
     esac
     ;;
@@ -827,6 +857,7 @@ _git_commit() {
       --edit --amend --include --only --interactive
       "
     return
+    ;;
   esac
   COMPREPLY=()
 }
@@ -840,6 +871,7 @@ _git_describe() {
       --exact-match --debug --long --match --always
       "
     return
+    ;;
   esac
   __gitcomp "$(__git_refs)"
 }
@@ -1146,6 +1178,7 @@ _git_merge() {
   --*)
     __gitcomp "$__git_merge_options"
     return
+    ;;
   esac
   __gitcomp "$(__git_refs)"
 }
@@ -1205,10 +1238,11 @@ _git_pull() {
 
 _git_push() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
-  case "${COMP_WORDS[COMP_CWORD-1]}" in
+  case "${COMP_WORDS[COMP_CWORD - 1]}" in
   --repo)
     __gitcomp "$(__git_remotes)"
     return
+    ;;
   esac
   case "$cur" in
   --repo=*)
@@ -1243,6 +1277,7 @@ _git_rebase() {
   --*)
     __gitcomp "--onto --merge --strategy --interactive"
     return
+    ;;
   esac
   __gitcomp "$(__git_refs)"
 }
@@ -1288,7 +1323,7 @@ _git_send_email() {
 
 _git_config() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
-  local prv="${COMP_WORDS[COMP_CWORD-1]}"
+  local prv="${COMP_WORDS[COMP_CWORD - 1]}"
   case "$prv" in
   branch.*.remote)
     __gitcomp "$(__git_remotes)"
@@ -1312,11 +1347,11 @@ _git_config() {
       refs/heads)"
     return
     ;;
-  pull.twohead|pull.octopus)
+  pull.twohead | pull.octopus)
     __gitcomp "$(__git_merge_strategies)"
     return
     ;;
-  color.branch|color.diff|color.interactive|color.status|color.ui)
+  color.branch | color.diff | color.interactive | color.status | color.ui)
     __gitcomp "always never auto"
     return
     ;;
@@ -1660,7 +1695,7 @@ _git_remote() {
   fi
 
   case "$subcommand" in
-  rename|rm|show|prune)
+  rename | rm | show | prune)
     __gitcomp "$(__git_remotes)"
     ;;
   update)
@@ -1696,8 +1731,7 @@ _git_reset() {
   __gitcomp "$(__git_refs)"
 }
 
-_git_revert ()
-{
+_git_revert() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "$cur" in
   --*)
@@ -1769,8 +1803,7 @@ _git_show() {
   __git_complete_file
 }
 
-_git_show_branch ()
-{
+_git_show_branch() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "$cur" in
   --*)
@@ -1785,8 +1818,7 @@ _git_show_branch ()
   __git_complete_revlist
 }
 
-_git_stash ()
-{
+_git_stash() {
   local subcommand
   local subcommands='save list show apply clear drop pop create branch'
 
@@ -1803,12 +1835,12 @@ _git_stash ()
     apply,--*)
       __gitcomp "--index"
       ;;
-    show,--*|drop,--*|pop,--*|branch,--*)
+    show,--* | drop,--* | pop,--* | branch,--*)
       COMPREPLY=()
       ;;
-    show,*|apply,*|drop,*|pop,*|branch,*)
-      __gitcomp "$(git --git-dir="$(__gitdir)" stash list \
-          | sed -n -e 's/:.*//p')"
+    show,* | apply,* | drop,* | pop,* | branch,*)
+      __gitcomp "$(git --git-dir="$(__gitdir)" stash list |
+        sed -n -e 's/:.*//p')"
       ;;
     *)
       COMPREPLY=()
@@ -1837,8 +1869,7 @@ _git_submodule() {
   fi
 }
 
-_git_svn ()
-{
+_git_svn() {
   local subcommands="
     init fetch clone rebase dcommit log find-rev
     set-tree commit-diff info create-ignore propget
@@ -1893,8 +1924,8 @@ _git_svn ()
     set-tree,--*)
       __gitcomp "--stdin $cmt_opts $fc_opts"
       ;;
-    create-ignore,--*|propget,--*|proplist,--*|show-ignore,--*|\
-    show-externals,--*)
+    create-ignore,--* | propget,--* | proplist,--* | show-ignore,--* | \
+      show-externals,--*)
       __gitcomp "--revision="
       ;;
     log,--*)
@@ -1938,13 +1969,12 @@ _git_svn ()
   fi
 }
 
-_git_tag ()
-{
+_git_tag() {
   local i c=1 f=0
   while [ $c -lt $COMP_CWORD ]; do
     i="${COMP_WORDS[c]}"
     case "$i" in
-    -d|-v)
+    -d | -v)
       __gitcomp "$(__git_tags)"
       return
       ;;
@@ -1955,11 +1985,11 @@ _git_tag ()
     c=$((++c))
   done
 
-  case "${COMP_WORDS[COMP_CWORD-1]}" in
-  -m|-F)
+  case "${COMP_WORDS[COMP_CWORD - 1]}" in
+  -m | -F)
     COMPREPLY=()
     ;;
-  -*|tag)
+  -* | tag)
     if [ $f = 1 ]; then
       __gitcomp "$(__git_tags)"
     else
@@ -1972,25 +2002,31 @@ _git_tag ()
   esac
 }
 
-_git ()
-{
+_git() {
   local i c=1 command __git_dir
 
   while [ $c -lt $COMP_CWORD ]; do
     i="${COMP_WORDS[c]}"
     case "$i" in
     --git-dir=*) __git_dir="${i#--git-dir=}" ;;
-    --bare)      __git_dir="." ;;
-    --version|-p|--paginate) ;;
-    --help) command="help"; break ;;
-    *) command="$i"; break ;;
+    --bare) __git_dir="." ;;
+    --version | -p | --paginate) ;;
+    --help)
+      command="help"
+      break
+      ;;
+    *)
+      command="$i"
+      break
+      ;;
     esac
     c=$((++c))
   done
 
   if [ -z "$command" ]; then
     case "${COMP_WORDS[COMP_CWORD]}" in
-    --*)   __gitcomp "
+    --*)
+      __gitcomp "
       --paginate
       --no-pager
       --git-dir=
@@ -2002,7 +2038,7 @@ _git ()
       --help
       "
       ;;
-    *)     __gitcomp "$(__git_porcelain_commands) $(__git_aliases)" ;;
+    *) __gitcomp "$(__git_porcelain_commands) $(__git_aliases)" ;;
     esac
     return
   fi
@@ -2016,57 +2052,57 @@ _git ()
   fi
 
   case "$command" in
-  am)          _git_am ;;
-  add)         _git_add ;;
-  apply)       _git_apply ;;
-  archive)     _git_archive ;;
-  bisect)      _git_bisect ;;
-  bundle)      _git_bundle ;;
-  branch)      _git_branch ;;
-  checkout)    _git_checkout ;;
-  cherry)      _git_cherry ;;
+  am) _git_am ;;
+  add) _git_add ;;
+  apply) _git_apply ;;
+  archive) _git_archive ;;
+  bisect) _git_bisect ;;
+  bundle) _git_bundle ;;
+  branch) _git_branch ;;
+  checkout) _git_checkout ;;
+  cherry) _git_cherry ;;
   cherry-pick) _git_cherry_pick ;;
-  clean)       _git_clean ;;
-  clone)       _git_clone ;;
-  commit)      _git_commit ;;
-  config)      _git_config ;;
-  describe)    _git_describe ;;
-  diff)        _git_diff ;;
-  difftool)    _git_difftool ;;
-  fetch)       _git_fetch ;;
+  clean) _git_clean ;;
+  clone) _git_clone ;;
+  commit) _git_commit ;;
+  config) _git_config ;;
+  describe) _git_describe ;;
+  diff) _git_diff ;;
+  difftool) _git_difftool ;;
+  fetch) _git_fetch ;;
   format-patch) _git_format_patch ;;
-  fsck)        _git_fsck ;;
-  gc)          _git_gc ;;
-  grep)        _git_grep ;;
-  help)        _git_help ;;
-  init)        _git_init ;;
-  log)         _git_log ;;
-  ls-files)    _git_ls_files ;;
-  ls-remote)   _git_ls_remote ;;
-  ls-tree)     _git_ls_tree ;;
-  merge)       _git_merge;;
-  mergetool)   _git_mergetool;;
-  merge-base)  _git_merge_base ;;
-  mv)          _git_mv ;;
-  name-rev)    _git_name_rev ;;
-  pull)        _git_pull ;;
-  push)        _git_push ;;
-  rebase)      _git_rebase ;;
-  remote)      _git_remote ;;
-  reset)       _git_reset ;;
-  revert)      _git_revert ;;
-  rm)          _git_rm ;;
-  send-email)  _git_send_email ;;
-  shortlog)    _git_shortlog ;;
-  show)        _git_show ;;
+  fsck) _git_fsck ;;
+  gc) _git_gc ;;
+  grep) _git_grep ;;
+  help) _git_help ;;
+  init) _git_init ;;
+  log) _git_log ;;
+  ls-files) _git_ls_files ;;
+  ls-remote) _git_ls_remote ;;
+  ls-tree) _git_ls_tree ;;
+  merge) _git_merge ;;
+  mergetool) _git_mergetool ;;
+  merge-base) _git_merge_base ;;
+  mv) _git_mv ;;
+  name-rev) _git_name_rev ;;
+  pull) _git_pull ;;
+  push) _git_push ;;
+  rebase) _git_rebase ;;
+  remote) _git_remote ;;
+  reset) _git_reset ;;
+  revert) _git_revert ;;
+  rm) _git_rm ;;
+  send-email) _git_send_email ;;
+  shortlog) _git_shortlog ;;
+  show) _git_show ;;
   show-branch) _git_show_branch ;;
-  stash)       _git_stash ;;
-  stage)       _git_add ;;
-  submodule)   _git_submodule ;;
-  svn)         _git_svn ;;
-  tag)         _git_tag ;;
+  stash) _git_stash ;;
+  stage) _git_add ;;
+  submodule) _git_submodule ;;
+  svn) _git_svn ;;
+  tag) _git_tag ;;
   whatchanged) _git_log ;;
-  *)           COMPREPLY=() ;;
+  *) COMPREPLY=() ;;
   esac
 }
 
@@ -2097,7 +2133,7 @@ _gitk() {
   __git_complete_revlist
 }
 
-complete -o bashdefault -o default -o nospace -F _git git 2>/dev/null \
-  || complete -o default -o nospace -F _git git
-complete -o bashdefault -o default -o nospace -F _gitk gitk 2>/dev/null \
-  || complete -o default -o nospace -F _gitk gitk
+complete -o bashdefault -o default -o nospace -F _git git 2>/dev/null ||
+  complete -o default -o nospace -F _git git
+complete -o bashdefault -o default -o nospace -F _gitk gitk 2>/dev/null ||
+  complete -o default -o nospace -F _gitk gitk

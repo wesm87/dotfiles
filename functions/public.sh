@@ -202,15 +202,7 @@ function local-ip-for-device() {
   if is-mac-os; then
     ipconfig getifaddr "$1"
   elif is-linux-os; then
-    ip -v -brief address show dev "$1"
-  fi
-}
-
-function local-ip() {
-  if is-mac-os; then
-    local-ip-for-device en0 || local-ip-for-device en1
-  elif is-linux-os; then
-    ip -4 -brief address show | grep UP | head -n 1 | field 3
+    ip -4 -brief address show dev "$1"
   fi
 }
 

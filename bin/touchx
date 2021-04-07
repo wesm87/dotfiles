@@ -17,40 +17,56 @@ from docopt import docopt
 
 CHMOD_755 = 0o755
 SHEBANG_PREFIX = '#!/usr/bin/env'
-BASH_SETOPTS_LINE = 'set -euo pipefail'
-BASH_IFS_LINE = "IFS=$'\\n\\t'"
-RUBY_FROZEN_STRING_LITERAL_LINE = '# frozen_string_literal: true'
+
+BASH_HEADER_LINES = [
+    '# shellcheck shell=bash',
+    'set -euo pipefail',
+    "IFS=$'\\n\\t'",
+]
+
+RUBY_HEADER_LINES = [
+    '# frozen_string_literal: true',
+]
 
 
-def get_file_shebang(file_type: str) -> str:
-    shebang_command = 'python3' if file_type == 'python' else file_type
-
-    return '{} {}\n'.format(SHEBANG_PREFIX, shebang_command)
+def join_with_newlines(lines: list[str]) -> str:
+    return '\n'.join(lines)
 
 
-def format_bash_header(shebang: str) -> str:
-    return '{}{}\n{}\n'.format(shebang, BASH_SETOPTS_LINE, BASH_IFS_LINE)
+def get_shebang_command(file_type: str) -> str:
+    if file_type == 'python':
+        return 'python3'
+
+    return file_type
 
 
-def format_ruby_header(shebang: str) -> str:
-    return '{}{}\n'.format(shebang, RUBY_FROZEN_STRING_LITERAL_LINE)
+def get_shebang(file_type: str) -> str:
+    return ' '.join([
+        SHEBANG_PREFIX,
+        get_shebang_command(file_type),
+    ])
+
+
+def get_extra_header_lines(file_type: str) -> str:
+    if file_type == 'bash':
+        return BASH_HEADER_LINES
+
+    if file_type == 'ruby':
+        return RUBY_HEADER_LINES
+
+    return []
 
 
 def get_file_header(file_type: str) -> str:
-    shebang = get_file_shebang(file_type)
-
-    if file_type == 'bash':
-        return format_bash_header(shebang)
-
-    if file_type == 'ruby':
-        return format_ruby_header(shebang)
-
-    return shebang
+    return join_with_newlines([
+        get_shebang(file_type),
+        *get_extra_header_lines(file_type),
+    ])
 
 
 def get_file_contents(file_path: str) -> str:
     if not path.exists(file_path):
-        return
+        return ''
 
     with open(file_path, 'r') as file_descriptor:
         file_contents = file_descriptor.read().strip()
@@ -62,14 +78,15 @@ def get_file_contents(file_path: str) -> str:
 
 def write_template_to_file(file_type: str, file_path: str) -> None:
     with open(file_path, 'w') as file_descriptor:
-        file_descriptor.write(get_file_header(file_type))
+        file_header = '{}\n'.format(get_file_header(file_type))
+        file_descriptor.write(file_header)
 
     file_descriptor.close()
 
 
 def main(arguments: dict) -> None:
-    file_type = arguments['--type']
-    file_paths = arguments['<file_path>'] or stdin
+    file_type = arguments.get('--type')
+    file_paths = arguments.get('<file_path>') or stdin
 
     for file_path_line in file_paths:
         file_path = file_path_line.strip()

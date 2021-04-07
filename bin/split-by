@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+"""split-by
+
+Usage:
+  split-by  <delimiter>  [<string>]
+
+Options:
+  -h --help  Show this screen.
+
+"""
+
+from sys import stdin
+
+from docopt import docopt
+
+
+def split_by(delimiter: str, string: str) -> str:
+    string_list = string.strip().split(delimiter)
+
+    return ' '.join(string_list)
+
+
+def create_print_split_string(delimiter: str):
+    def _print_split_string(string: str) -> str:
+        print(split_by(delimiter, string))
+
+    return _print_split_string
+
+
+def main(arguments: dict) -> None:
+    delimiter = arguments.get('<delimiter>')
+    string = arguments.get('<string>')
+
+    print_split_string = create_print_split_string(delimiter)
+
+    if string:
+        print_split_string(string)
+        return None
+
+    for stdin_line in stdin:
+        print_split_string(stdin_line)
+
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__)
+    main(arguments)

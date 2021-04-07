@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+"""join-by
+
+Usage:
+  join-by  <delimiter>  [<string>...]
+
+Options:
+  -h --help  Show this screen.
+
+"""
+
+from sys import stdin
+
+from docopt import docopt
+
+
+def join_by(delimiter: str, string_list: list[str]) -> str:
+    string_list_stripped = list(map(
+        lambda string_line: string_line.strip(),
+        string_list,
+    ))
+
+    return delimiter.join(string_list_stripped)
+
+
+def create_print_joined_string(delimiter: str):
+    def _print_joined_string(string_list: list[str]) -> str:
+        print(join_by(delimiter, string_list))
+
+    return _print_joined_string
+
+
+def main(arguments: dict) -> None:
+    delimiter = arguments.get('<delimiter>')
+    string_list = arguments.get('<string>')
+
+    print_joined_string = create_print_joined_string(delimiter)
+
+    if string_list:
+        print_joined_string(string_list)
+        return None
+
+    for stdin_line in stdin:
+        print_joined_string(stdin_line.split(' '))
+
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__)
+    main(arguments)

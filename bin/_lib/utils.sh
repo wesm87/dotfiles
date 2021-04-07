@@ -1,5 +1,6 @@
-# shellcheck shell=bash disable=1090
+# shellcheck shell=bash
 
+# shellcheck source=./functions/logging.sh
 source "${HOME}/.dotfiles/functions/logging.sh"
 
 function __log_message() {

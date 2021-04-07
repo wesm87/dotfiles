@@ -9,9 +9,8 @@ e.g. `~/dotfiles/tilde/.zshrc` -> `~/.zshrc`.
 from os import path, chdir, readlink, symlink, unlink
 from glob import glob
 from shutil import rmtree
-from typing import Callable
 
-from toolz.curried import curry, compose, identity, map
+from toolz.curried import curry, compose, map
 
 TILDE_FILES_DIR = 'tilde'
 SOURCE_DIR = '~/.dotfiles/{}'.format(TILDE_FILES_DIR)

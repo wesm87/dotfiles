@@ -8,6 +8,6 @@ DOTFILES_PATH=$(dirname "$DIR_PATH")
 # shellcheck source=libs/z/z.sh
 source "${DOTFILES_PATH}/libs/z/z.sh"
 
-z firefox-developer-edition-installer
+_z firefox-developer-edition-installer
 
 ./script.sh build_and_install

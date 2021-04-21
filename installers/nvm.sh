@@ -4,12 +4,24 @@ set -euo pipefail
 IFS=$'\n\t'
 
 function __dotfiles_installer_nvm() {
+  local -r command_arg="${1:-}"
   local -r nvm_dir_path_default="${HOME}/.nvm"
   local -r nvm_dir_path="${NVM_DIR:-$nvm_dir_path_default}"
 
   if ! can-source-file "${nvm_dir_path}/nvm.sh"; then
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+    git clone https://github.com/nvm-sh/nvm.git "$nvm_dir_path"
+
+    cd "$nvm_dir_path"
+
+    if [[ "$command_arg" == 'update' ]]; then
+      git fetch --tags origin
+    fi
+
+    local -r latest_release_commit=$(git rev-list --tags --max-count=1)
+    local -r latest_release_tag=$(git describe --abbrev=0 --tags --match "v[0-9]*" "$latest_release_commit")
+
+    git checkout "$latest_release_tag"
   fi
 }
 
-__dotfiles_installer_nvm
+__dotfiles_installer_nvm "$@"

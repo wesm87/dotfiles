@@ -5,6 +5,9 @@ function __dotfiles_exports() {
   local sources=(
     cli-colors.sh
     z.sh
+    # We add this in a 2nd time to make sure our pyenv shims come before the
+    # paths that are automatically added on macOS after rc and before profile
+    pyenv.sh
   )
 
   if [ -n "$BASH" ]; then

@@ -407,11 +407,15 @@ function set-network-location() {
 }
 
 function docker-list-all-ids() {
+  docker image ls -a -q
+}
+
+function docker-list-running-ids() {
   docker ps -a -q
 }
 
 function docker-list-unused-ids() {
-  docker images -qf "dangling=true"
+  docker image ls -a -qf "dangling=true"
 }
 
 function docker-clean-unused() {

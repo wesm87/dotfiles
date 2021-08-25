@@ -7,9 +7,6 @@
   editor       = vim
   pager        = "diff-so-fancy | less -eFiJM --tabs=2"
 
-[credential]
-  helper = osxkeychain
-
 [pull]
   rebase = true
 

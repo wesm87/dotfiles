@@ -35,6 +35,9 @@ function __dotfiles_zshrc() {
   # Auto-escape URLs
   autoload -Uz url-quote-magic
   zle -N self-insert url-quote-magic
+
+  # Better file renaming
+  autoload -U zmv
 }
 
 __dotfiles_zshrc

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# shellcheck source=./bin/_lib/utils.sh
+source "${HOME}/.dotfiles/bin/_lib/utils.sh"
+
+function __dotfiles_show_installed_packages() {
+  if is-mac-os; then
+    echo 'Not implemented yet'
+    return 0
+  fi
+
+  if is-linux-os; then
+    comm -23 <(
+      aptitude search '~i !~M' -F '%p' |
+        sed 's/ *$//' |
+        sort -u
+    ) <(
+      gzip -dc /var/log/installer/initial-status.gz |
+        sed -n 's/^Package: //p' |
+        sort -u
+    )
+    return 0
+  fi
+}
+
+__dotfiles_show_installed_packages "$@"

@@ -39,7 +39,7 @@
   "solargraph.references": true,
   "solargraph.formatting": true,
   "solargraph.useBundler": true,
-  "python.pythonPath": "~/.pyenv/versions/3.9.2/bin/python",
+  "python.pythonPath": "/usr/local/opt/pyenv/versions/3.10.1",
   "[markdown]": {
     "editor.wordWrap": "on"
   },

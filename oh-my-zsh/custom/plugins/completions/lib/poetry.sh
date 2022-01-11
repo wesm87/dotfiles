@@ -1,8 +1,8 @@
-# shellcheck shell=bash disable=1090,2034,2053,2068,2154,2206
+# shellcheck shell=bash disable=2034,2053,2068,2154
 
 #compdef poetry
 
-_poetry_4c3c16a722712646_complete() {
+_poetry_89ecb073514be749_complete() {
   local state com cur
 
   cur=${words[${#words[@]}]}
@@ -133,5 +133,5 @@ _poetry_4c3c16a722712646_complete() {
   esac
 }
 
-# _poetry_4c3c16a722712646_complete "$@"
-compdef _poetry_4c3c16a722712646_complete poetry
+# _poetry_89ecb073514be749_complete "$@"
+compdef _poetry_89ecb073514be749_complete /Users/computer3452/Library/Application Support/pypoetry/venv/bin/poetry

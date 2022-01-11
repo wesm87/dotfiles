@@ -9,8 +9,7 @@ e.g. `~/dotfiles/tilde/.zshrc` -> `~/.zshrc`.
 from os import path, chdir, readlink, symlink, unlink
 from glob import glob
 from shutil import rmtree
-
-from toolz.curried import curry, compose, map
+from typing import List, Tuple
 
 TILDE_FILES_DIR = 'tilde'
 SOURCE_DIR = '~/.dotfiles/{}'.format(TILDE_FILES_DIR)
@@ -65,12 +64,15 @@ def force_remove(path_to_remove: str) -> None:
     unlink(path_to_remove)
 
 
-is_equal_with = curry(lambda fn, a, b: fn(a) == fn(b))
-is_link_to_path = is_equal_with(strip_trailing_slash)
+def is_matching_path(dest: str, source: str) -> bool:
+    return strip_trailing_slash(dest) == strip_trailing_slash(source)
 
 
 def is_link_to(dest_path: str, source_path: str) -> bool:
-    return is_link(dest_path) and is_link_to_path(read_link(dest_path), source_path)
+    if not is_link(dest_path):
+        return False
+
+    return is_matching_path(read_link(dest_path), source_path)
 
 
 def get_source_files():
@@ -93,13 +95,14 @@ def to_dest_file_path_printable(dest_path: str) -> str:
     return dest_path.replace(path.expanduser('~'), '~')
 
 
-get_source_dest_path_pairs = compose(
-    map(lambda file_name: [
-        to_source_file_path(file_name),
-        to_dest_file_path(file_name),
-    ]),
-    get_source_files,
-)
+def get_source_dest_path_pairs() -> List[Tuple[str, str]]:
+    return list(map(
+        lambda file_name: (
+            to_source_file_path(file_name),
+            to_dest_file_path(file_name),
+        ),
+        get_source_files(),
+    ))
 
 
 def get_should_skip_file(dest_path: str, source_path: str) -> bool:

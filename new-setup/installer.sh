@@ -74,7 +74,7 @@ gem install tmuxinator
 brew install vim
 
 # Install Fira Code font
-brew cask install font-fira-code
+brew install --cask font-fira-code
 
 # Node
 brew install node
@@ -112,7 +112,7 @@ brew install \
   stormssh
 
 # QuickLook plugins
-brew cask install \
+brew install --cask \
   qlcolorcode \
   qlstephen \
   qlmarkdown \
@@ -122,13 +122,13 @@ brew cask install \
   suspicious-package
 
 # Browsers
-brew cask install \
+brew install --cask \
   google-chrome \
   firefox \
   firefox-developer-edition
 
 # Developer tools
-brew cask install \
+brew install --cask \
   atom \
   visual-studio-code \
   dash \
@@ -142,7 +142,7 @@ brew cask install \
   spike
 
 # Some other useful apps
-brew cask install \
+brew install --cask \
   appcleaner \
   dropbox \
   slack \

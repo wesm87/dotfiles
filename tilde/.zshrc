@@ -1,5 +1,6 @@
 # shellcheck shell=bash disable=1090
 
+# shellcheck source=profile.zsh.sh
 source "${HOME}/.dotfiles/profile.zsh.sh"
 
 function __dotfiles_zshrc() {

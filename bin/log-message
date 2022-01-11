@@ -3,6 +3,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# shellcheck source=./functions/logging.sh
 source "${HOME}/.dotfiles/functions/logging.sh"
 
 function __dotfiles_log_message() {

@@ -8,7 +8,7 @@ function __dotfiles_installer_poetry() {
   local -r poetry_script_file_path="${poetry_bin_dir_path}/poetry"
 
   if [ ! -f "$poetry_script_file_path" ]; then
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - --no-modify-path
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --no-modify-path
   else
     poetry self update
   fi

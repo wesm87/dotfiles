@@ -15,8 +15,6 @@ function __dotfiles_exports_pyenv_interactive() {
 
   if is-command pyenv; then
     eval "$(pyenv init --path)"
-
-    prepend-to-path "$(pyenv root)/shims"
   fi
 }
 

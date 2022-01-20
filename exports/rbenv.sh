@@ -16,7 +16,7 @@ function __dotfiles_exports_rbenv() {
 
     # Set global version if one isn't already set.
     if [ -z "$(rbenv global)" ]; then
-      rbenv global 2.7.0
+      rbenv global 2.7.2
     fi
   fi
 }

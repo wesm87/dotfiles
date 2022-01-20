@@ -53,7 +53,7 @@ brew install gnu-sed
 # chsh -s $BASHPATH # will set for current user only.
 
 # Ruby + rbenv
-RBENV_VERSION=${RBENV_VERSION:-'2.7.0'}
+RBENV_VERSION=${RBENV_VERSION:-'2.7.2'}
 rbenv install "$RBENV_VERSION"
 rbenv global "$RBENV_VERSION"
 
@@ -109,7 +109,8 @@ brew install \
   rename \
   tree \
   zopfli \
-  stormssh
+  stormssh \
+  gpg2
 
 # QuickLook plugins
 brew install --cask \

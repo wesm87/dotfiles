@@ -30,6 +30,9 @@ function __dotfiles_oh_my_zsh_config() {
     # Disable marking untracked files under VCS as dirty.
     DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+    # Only use current list of branches for `git checkout` auto-complete
+    GIT_COMPLETION_CHECKOUT_NO_GUESS="1"
+
     # Use a custom folder other than $ZSH/custom.
     ZSH_CUSTOM="$omz_custom_dir_path"
 

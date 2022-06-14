@@ -1,5 +1,5 @@
 # Private functions
-/functions/private
+/functions/private.sh
 
 # Secret keys, tokens, etc.
 /exports/secrets

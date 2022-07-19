@@ -64,7 +64,7 @@ Plugin 'tpope/vim-eunuch'
 Plugin 'airblade/vim-gitgutter'
 
 " Color schemes
-Plugin 'flazz/vim-colorschemes'
+Plugin 'EvitanRelta/vim-colorschemes'
 
 " Comment / un-comment code
 Plugin 'tpope/vim-commentary'

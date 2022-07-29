@@ -11,3 +11,5 @@ function __dotfiles_completions_ssh_zsh() {
   # shellcheck disable=2086
   zstyle ':completion:*:hosts' hosts $_ssh_config
 }
+
+__dotfiles_completions_ssh_zsh

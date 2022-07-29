@@ -2,7 +2,7 @@
 
 #compdef poetry
 
-_poetry_89ecb073514be749_complete() {
+_poetry_ddcf130698caf051_complete() {
   local state com cur
 
   cur=${words[${#words[@]}]}
@@ -133,5 +133,5 @@ _poetry_89ecb073514be749_complete() {
   esac
 }
 
-# _poetry_89ecb073514be749_complete "$@"
-compdef _poetry_89ecb073514be749_complete /Users/computer3452/Library/Application Support/pypoetry/venv/bin/poetry
+# _poetry_ddcf130698caf051_complete "$@"
+compdef _poetry_ddcf130698caf051_complete "${POETRY_HOME}/venv/bin/poetry"

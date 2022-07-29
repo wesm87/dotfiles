@@ -39,6 +39,8 @@ function __dotfiles_zshrc() {
 
   # Better file renaming
   autoload -U zmv
+
+  autoload -Uz compinit && compinit
 }
 
 __dotfiles_zshrc

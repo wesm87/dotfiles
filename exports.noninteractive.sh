@@ -11,6 +11,8 @@ function __dotfiles_exports() {
     pyenv.sh
     nvm.sh
     rvm.sh
+    jenv.sh
+    sdkman.sh
   )
 
   if [ -n "$BASH" ]; then

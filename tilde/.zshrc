@@ -1,4 +1,4 @@
-# shellcheck shell=bash disable=1090
+# shellcheck shell=bash
 
 # shellcheck source=profile.zsh.sh
 source "${HOME}/.dotfiles/profile.zsh.sh"
@@ -41,6 +41,14 @@ function __dotfiles_zshrc() {
   autoload -U zmv
 
   autoload -Uz compinit && compinit
+
+  # THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+  local -r sdkman_init_script_path="${SDKMAN_DIR}/bin/sdkman-init.sh"
+
+  if [[ -s "$sdkman_init_script_path" ]]; then
+    # shellcheck source=~/.sdkman/bin/sdkman-init.sh disable=1090
+    source "$sdkman_init_script_path"
+  fi
 }
 
 __dotfiles_zshrc

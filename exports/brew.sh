@@ -8,8 +8,10 @@ function __dotfiles_exports_brew() {
   if is-linux-os; then
     brew_dir_path="${HOMEBREW_PREFIX:-/home/linuxbrew/.linuxbrew}"
   else
-    brew_dir_path="${HOMEBREW_PREFIX:-/usr/local}"
+    brew_dir_path="${HOMEBREW_PREFIX:-/opt/homebrew}"
   fi
+
+  export HOMEBREW_PREFIX="$brew_dir_path"
 
   brew_exec_path="${brew_dir_path}/bin/brew"
 

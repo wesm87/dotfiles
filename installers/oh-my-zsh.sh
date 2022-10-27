@@ -10,6 +10,8 @@ function __dotfiles_installer_oh_my_zsh() {
 
   if [ ! -d "$oh_my_zsh_dir_path" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  else
+    omz update
   fi
 
   if [ ! -d "${oh_my_zsh_custom_plugins_dir_path}/zsh-autosuggestions" ]; then

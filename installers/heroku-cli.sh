@@ -10,9 +10,7 @@ function __dotfiles_installer_heroku_cli() {
     elif "${HOME}/.dotfiles/bin/is-linux-os"; then
       sudo snap install --classic heroku
     fi
-  fi
-
-  if "${HOME}/.dotfiles/bin/is-command" heroku; then
+  else
     heroku update && heroku autocomplete
   fi
 }

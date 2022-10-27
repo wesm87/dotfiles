@@ -36,7 +36,7 @@ brew tap homebrew/core
 brew tap homebrew/services
 brew tap burnsra/tap
 
-# GNU core utilities (those that come with OS X are outdated)
+# GNU core utilities (those that come with macOS are outdated)
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils moreutils
 
@@ -63,7 +63,7 @@ brew install grc
 # Install wget
 brew install wget
 
-# Install more recent versions of some OS X tools
+# Install more recent versions of some macOS tools
 brew install grep screen
 
 # Install tmux and tmuxinator

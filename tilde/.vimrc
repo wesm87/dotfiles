@@ -76,7 +76,7 @@ Plugin 'tpope/vim-endwise'
 Plugin 'raimondi/delimitmate'
 
 " Visual indentation guide
-Plugin 'yggdroot/indentline'
+" Plugin 'yggdroot/indentline'
 
 " Highlight trailing whitespace, `:FixWhitespace` helper
 Plugin 'bronson/vim-trailing-whitespace'

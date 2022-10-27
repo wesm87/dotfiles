@@ -1,5 +1,6 @@
 {
   "search.exclude": {
+    "data": true,
     "**/libs/z": true,
     "**/libs/tmux-plugins/tpm": true,
     "**/oh-my-zsh/custom/plugins/zsh-autosuggestions": true,

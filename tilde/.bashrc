@@ -10,16 +10,24 @@ esac
 __DOTFILES_IS_BASH_RC='true' source "${HOME}/.dotfiles/profile.bash.sh"
 
 function __dotfiles_bashrc() {
+  local -r history_dir_path="${HOME}/.dotfiles/data/history"
+
+  if [ -n "$NIX_STORE" ]; then
+    export HISTFILE="${history_dir_path}/nix"
+  else
+    export HISTFILE="${history_dir_path}/bash"
+  fi
+
+  export HISTSIZE="50000"
+  export SAVEHIST="$HISTSIZE"
+  export HISTFILESIZE="$HISTSIZE"
+
   # append to the history file, don't overwrite it
   shopt -s histappend
 
   # don't put duplicate lines or lines starting with space in the history.
   # See bash(1) for more options
   HISTCONTROL=ignoreboth
-
-  # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-  HISTSIZE=1000
-  HISTFILESIZE=2000
 
   # check the window size after each command and, if necessary,
   # update the values of LINES and COLUMNS.
@@ -30,7 +38,9 @@ function __dotfiles_bashrc() {
   #shopt -s globstar
 
   # make less more friendly for non-text input files, see lesspipe(1)
-  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+  if [ -x /usr/bin/lesspipe ]; then
+    eval "$(SHELL=/bin/sh lesspipe)"
+  fi
 
   # Add an "alert" alias for long running commands.  Use like so:
   #   sleep 10; alert

@@ -5,4 +5,5 @@ function __dotfiles_exports_gatsby() {
   # https://www.gatsbyjs.org/docs/telemetry/
   export GATSBY_TELEMETRY_DISABLED=1
 }
+
 __dotfiles_exports_gatsby

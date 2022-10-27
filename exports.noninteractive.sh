@@ -8,6 +8,7 @@ function __dotfiles_exports() {
     gnu-utils.sh
     poetry.sh
     vim.sh
+    docker.sh
     nix-shell.sh
     pyenv.sh
     nvm.sh

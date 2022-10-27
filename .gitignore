@@ -4,10 +4,8 @@
 # Secret keys, tokens, etc.
 /exports/secrets
 
-# Personal data
-/data/vim-tmp/*
-/data/z
-/data/z.*
+# Personal data, caches, history files, etc.
+/data/**/*
 !/data/**/*.keep
 !/data/**/*.secret
 

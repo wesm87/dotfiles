@@ -115,7 +115,6 @@ brew install \
 # QuickLook plugins
 brew install --cask \
   qlcolorcode \
-  qlstephen \
   qlmarkdown \
   quicklook-json \
   qlimagesize \

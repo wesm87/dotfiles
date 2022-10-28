@@ -5,8 +5,9 @@
 /exports/secrets
 
 # Personal data, caches, history files, etc.
-/data/**/*
-!/data/**/*.keep
+/data/*/*
+/data/z
+!/data/*/*.keep
 !/data/**/*.secret
 
 # Log files

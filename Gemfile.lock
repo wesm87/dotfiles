@@ -29,7 +29,7 @@ GEM
     parser (3.0.0.0)
       ast (~> 2.4.1)
     racc (1.5.2)
-    rack (2.2.3)
+    rack (3.0.4.2)
     rainbow (3.0.0)
     rcodetools (0.8.5.0)
     regexp_parser (2.1.1)

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles_get_jira_ticket_from_git_branch() {
+  local branch_name
+  local ticket_name
+
+  branch_name="$(git branch-name)"
+  ticket_name="${branch_name%%/*}"
+
+  echo "${ticket_name}"
+}
+
+function __dotfiles_git_jira_ticket() {
+  local action
+  local ticket_name
+
+  action="${1:-}"
+  ticket_name="$(__dotfiles_get_jira_ticket_from_git_branch)"
+
+  if [ "$action" == "--print" ]; then
+    echo "$ticket_name"
+  else
+    printf '%s' "$ticket_name" | pbcopy
+  fi
+}
+
+__dotfiles_git_jira_ticket "$@"

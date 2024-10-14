@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash disable=1090
+set -euo pipefail
+IFS=$'\n\t'
+
+function __dotfiles_lorem() {
+  curl -s "http://metaphorpsum.com/sentences/${1-3}" | pbcopy
+  pbpaste | grep .
+}
+
+__dotfiles_lorem "$@"

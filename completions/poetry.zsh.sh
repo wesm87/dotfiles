@@ -133,5 +133,15 @@ _poetry_ddcf130698caf051_complete() {
   esac
 }
 
-# _poetry_ddcf130698caf051_complete "$@"
-compdef _poetry_ddcf130698caf051_complete "${POETRY_HOME}/venv/bin/poetry"
+function __dotfiles_completions_poetry_zsh() {
+  # Bail if Poetry is not installed
+  if ! command -v poetry &>/dev/null; then
+    return
+  fi
+
+  autoload -Uz compinit
+  compinit
+  compdef _poetry_ddcf130698caf051_complete "${POETRY_HOME}/venv/bin/poetry"
+}
+
+__dotfiles_completions_poetry_zsh

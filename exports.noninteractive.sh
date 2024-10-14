@@ -11,6 +11,7 @@ function __dotfiles_exports() {
     docker.sh
     nix-shell.sh
     pyenv.sh
+    mysql.sh
     nvm.sh
     rvm.sh
     jenv.sh

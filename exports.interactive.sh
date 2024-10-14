@@ -6,6 +6,7 @@ function __dotfiles_exports() {
     cli-colors.sh
     z.sh
     pyenv.interactive.sh
+    herd.sh
   )
 
   if [ -n "$BASH" ]; then

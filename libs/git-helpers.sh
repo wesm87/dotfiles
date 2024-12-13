@@ -86,7 +86,7 @@ __git_ignore() {
 }
 
 __git_push_origin_branch() {
-  git push -u origin "$(git branch --show-current)"
+  git push -u origin "$(git branch --show-current)" "$@"
 }
 
 __git_merge_from() {
@@ -103,4 +103,8 @@ __git_merge_from() {
 
 __git_patch() {
   git --no-pager diff --no-color
+}
+
+__get_delete_merged_branches() {
+  git branch --merged | grep -Ev "(^\*|master|main|dev)" | xargs git branch -d
 }

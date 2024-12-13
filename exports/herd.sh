@@ -21,6 +21,9 @@ function __dotfiles_exports_herd() {
 
   # Herd injected PHP 8.3 configuration.
   export HERD_PHP_83_INI_SCAN_DIR="${herd_php_versions_folder}/83/"
+
+  # Herd injected PHP 8.4 configuration.
+  export HERD_PHP_84_INI_SCAN_DIR="${herd_php_versions_folder}/84/"
 }
 
 __dotfiles_exports_herd

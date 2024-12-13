@@ -6,6 +6,8 @@ function __dotfiles_completions_one_password_zsh() {
     return
   fi
 
+  autoload -Uz compinit
+  compinit
   eval "$(op completion zsh)"
   compdef _op op
 

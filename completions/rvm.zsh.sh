@@ -20,6 +20,8 @@ function __dotfiles_completions_rvm_zsh() {
   if [ -d "$rvm_completions_dir_path" ] && can-source-file "$rvm_completions_file_path"; then
     fpath=($rvm_completions_dir_path $fpath)
 
+    autoload -Uz compinit
+    compinit
     compdef __dotfiles_do_rvm_completions rvm
   fi
 }

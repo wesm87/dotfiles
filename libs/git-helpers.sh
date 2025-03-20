@@ -106,5 +106,5 @@ __git_patch() {
 }
 
 __get_delete_merged_branches() {
-  git branch --merged | grep -Ev "(^\*|master|main|dev)" | xargs git branch -d
+  git branch --merged | grep -Ev "(^\*|^\+|master|main|develop)" | xargs --no-run-if-empty git branch -d
 }
